@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { StyleSheet, ScrollView, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import MainView from '../../../core/layout/MainView';
 import { ButtonGroup, Text, Icon } from 'react-native-elements';
 import PurchaseMonthTable from './PurchaseMonthTable';
@@ -11,16 +11,13 @@ import Spinner from '../../../core/layout/Spinner';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-const tableHead = ['JOUR', 'BI', 'BG', 'PET', 'CA'];
-
 class PurchaseMonth extends Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
-            selectedIndex: 0,
-            purchases: []
+            selectedIndex: 0
         };
     }
 
@@ -28,14 +25,6 @@ class PurchaseMonth extends Component {
         const { getMonthPurchases, profile } = this.props;
 
         getMonthPurchases(profile.numero, profile.password);
-    }
-
-    componentWillReceiveProps(nextProps) {
-        const { purchases } = nextProps;
-
-        if(this.state.purchases.length === 0) {
-            this.setState({ purchases: purchases });
-        }
     }
 
     _updateIndex = (selectedIndex) => {
@@ -81,8 +70,8 @@ class PurchaseMonth extends Component {
     }
 
     render() {
-        const { navigation, isLoading } = this.props;
-        const { selectedIndex, purchases } = this.state;
+        const { navigation, isLoading, purchases} = this.props;
+        const { selectedIndex } = this.state;
         const buttons = [
             { element: this.tableLabel }, 
             { element: this.chartLabel }, 
@@ -102,15 +91,15 @@ class PurchaseMonth extends Component {
                     <Spinner containerStyle={{marginTop: 150, alignItems: 'center'}} 
                         color="blue" /> :
                     <Fragment>
-                        <ScrollView style={styles.contentContainerStyle}>
+                        <View style={styles.contentContainerStyle}>
                         {
                             selectedIndex === 0 ?
-                            <PurchaseMonthTable head={tableHead} purchases={purchases} /> :
+                            <PurchaseMonthTable purchases={purchases} /> :
                             selectedIndex === 1 ? 
                             <PurchaseMonthChart purchases={purchases} /> :
                             <PurchaseMonthDetails />  
                         }
-                        </ScrollView>
+                        </View>
                         <ButtonGroup 
                             onPress={this._updateIndex}
                             buttons={buttons}
