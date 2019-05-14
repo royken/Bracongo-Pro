@@ -1,36 +1,64 @@
 import React from 'react';
-import { StyleSheet, View, Dimensions, processColor } from 'react-native';
+import { StyleSheet, View, Dimensions } from 'react-native';
 import PropTypes from 'prop-types';
+import { LineChart } from 'react-native-chart-kit'
 
 const deviceWidth = Dimensions.get('window').width;
-
-const getDays = () => {
-    const dayOfMonth = (new Date()).getDate();
-    let i = 1;
-
-    return Array(dayOfMonth).fill().map(() => i++);
-}
-
-const xAxis = {
-    granularityEnabled: true,
-    granularity: 1,
-};
 
 const PurchaseMonthChart = (props) => {
     
     const { purchases } = props;
     
-    const bi = []; const bg = []; const pet = []; 
+    const bi = []; const bg = []; const pet = []; const jours = [];
     
     purchases.map((element, index) => {
-        bi.push({x: index + 1, y: element[0]});
-        bg.push({x: index + 1, y: element[1]});
-        pet.push({x: index + 1, y: element[2]});
+        jours.push(index + 1);
+        bi.push(element[0]);
+        bg.push(element[1]);
+        pet.push(element[2]);
     });
 
     return (
         <View style={styles.containerStyle}>
-            
+            <LineChart 
+                data={{
+                    labels: jours,
+                    datasets: [
+                        {
+                            data: bi,
+                            color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, 
+                            strokeWidth: 2 
+                        },
+                        {
+                            data: bg,
+                            color: (opacity = 1) => `rgba(34, 165, 244, ${opacity})`, 
+                            strokeWidth: 2 
+                        },
+                        {
+                            data: pet,
+                            color: (opacity = 1) => `rgba(134, 165, 144, ${opacity})`, 
+                            strokeWidth: 2 
+                        }
+                    ]
+                }}
+                width={deviceWidth} 
+                height={220}
+                chartConfig={{
+                    backgroundColor: '#7B7C9E',
+                    backgroundGradientFrom: '#7B7C9E',
+                    backgroundGradientTo: '#00151C',
+                    decimalPlaces: 2, 
+                    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                    style: {
+                      borderRadius: 16
+                    }
+                }}
+                bezier
+                style={{
+                    marginVertical: 8,
+                    borderRadius: 16
+                }}
+            />
         </View>
     );
 }
@@ -46,8 +74,7 @@ PurchaseMonthChart.propTypes = {
 const styles = StyleSheet.create({
     containerStyle: {
         flex: 1,
-        marginTop: 50,
-        backgroundColor: 'white'
+        marginTop: 50
     }
 });
 
