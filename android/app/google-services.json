@@ -1,0 +1,107 @@
+{
+    "project_info": {
+      "project_number": "513360151004",
+      "firebase_url": "https://bracongo-marketing.firebaseio.com",
+      "project_id": "bracongo-marketing",
+      "storage_bucket": "bracongo-marketing.appspot.com"
+    },
+    "client": [
+      {
+        "client_info": {
+          "mobilesdk_app_id": "1:513360151004:android:325255f697a9a9d0",
+          "android_client_info": {
+            "package_name": "com.bracongo.market.events"
+          }
+        },
+        "oauth_client": [
+          {
+            "client_id": "513360151004-156bb7aqgsn8en5l44pvti76g397k44h.apps.googleusercontent.com",
+            "client_type": 1,
+            "android_info": {
+              "package_name": "com.bracongo.market.events",
+              "certificate_hash": "0fbc7fb00210c371746893007f03c362ea4c01c7"
+            }
+          },
+          {
+            "client_id": "513360151004-epr1c77m0qcknsdn4kth47vt1jaie1pq.apps.googleusercontent.com",
+            "client_type": 1,
+            "android_info": {
+              "package_name": "com.bracongo.market.events",
+              "certificate_hash": "a2bd1afde8e7d32ee20ad56444dba6e798b4d64b"
+            }
+          },
+          {
+            "client_id": "513360151004-ot2kpub3ma39tpbk0tiqi0bnbd5bf6g7.apps.googleusercontent.com",
+            "client_type": 3
+          }
+        ],
+        "api_key": [
+          {
+            "current_key": "AIzaSyDStXETnFVxcKP8ORgTsrjLkBeJAEpNjWg"
+          }
+        ],
+        "services": {
+          "appinvite_service": {
+            "other_platform_oauth_client": [
+              {
+                "client_id": "513360151004-ot2kpub3ma39tpbk0tiqi0bnbd5bf6g7.apps.googleusercontent.com",
+                "client_type": 3
+              },
+              {
+                "client_id": "513360151004-gooa46l3pnte8fq4cm65cmek7nbud1n5.apps.googleusercontent.com",
+                "client_type": 2,
+                "ios_info": {
+                  "bundle_id": "com.test"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "client_info": {
+          "mobilesdk_app_id": "1:513360151004:android:7f4b4e4f3d17fb69",
+          "android_client_info": {
+            "package_name": "com.bracongo.market.events.pro"
+          }
+        },
+        "oauth_client": [
+          {
+            "client_id": "513360151004-t4v5ebl64ksd234s9bq6v6c6uofuva3d.apps.googleusercontent.com",
+            "client_type": 1,
+            "android_info": {
+              "package_name": "com.bracongo.market.events.pro",
+              "certificate_hash": "a2bd1afde8e7d32ee20ad56444dba6e798b4d64b"
+            }
+          },
+          {
+            "client_id": "513360151004-ot2kpub3ma39tpbk0tiqi0bnbd5bf6g7.apps.googleusercontent.com",
+            "client_type": 3
+          }
+        ],
+        "api_key": [
+          {
+            "current_key": "AIzaSyDStXETnFVxcKP8ORgTsrjLkBeJAEpNjWg"
+          }
+        ],
+        "services": {
+          "appinvite_service": {
+            "other_platform_oauth_client": [
+              {
+                "client_id": "513360151004-ot2kpub3ma39tpbk0tiqi0bnbd5bf6g7.apps.googleusercontent.com",
+                "client_type": 3
+              },
+              {
+                "client_id": "513360151004-gooa46l3pnte8fq4cm65cmek7nbud1n5.apps.googleusercontent.com",
+                "client_type": 2,
+                "ios_info": {
+                  "bundle_id": "com.test"
+                }
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "configuration_version": "1"
+  }

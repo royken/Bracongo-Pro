@@ -1,0 +1,129 @@
+import { decryptPass } from '../../sign/signHelper';
+import { getPurchases } from '../../../api/bracongoApi';
+import { 
+    GET_MONTH_PURCHASE, 
+    GET_YEAR_PURCHASE
+} from './types';
+import { isEmpty } from 'lodash';
+import { uiStartLoading, uiStopLoading } from '../../../core/actions/actions';
+import { toast } from '../../../utils/toast';
+import { CONNEXION_PROBLEM_MSG } from '../../../core/constants';
+
+export const getMonthPurchases = (numero, encryptedPass) => dispatch => {
+
+    dispatch(uiStartLoading());
+
+    if(!isEmpty(encryptedPass)) {
+        const password = decryptPass(encryptedPass);
+        
+        getPurchases(numero, password, true).then(
+            (data) => {
+                const dayOfMonth = (new Date()).getDate();
+                // ["bi" 0, bg: 0, pet: 0, ca: 0, products: []]
+                const purchases = [];
+                for(i = 0; i < dayOfMonth; i++) {
+                    purchases[i] = [0, 0, 0, 0, []]; 
+                }
+                
+                data.forEach(element => {
+                    switch (element.famille) {
+                        case "BI":
+                        case "BIERE":
+                            purchases[element.jour - 1][0] += element.quantite;   
+                            break;
+
+                        case "BG":
+                            purchases[element.jour - 1][1] += element.quantite;
+                            
+                            break;
+
+                        case "PET":
+                        case "PEG":
+                            purchases[element.jour - 1][2] += element.quantite;
+                            break;
+
+                        default:
+                            break;
+                    }
+                    
+                    purchases[element.jour - 1][3] += element.montant;
+                    purchases[element.jour - 1][4].push(element.produit);
+                    
+                });
+                    
+                dispatch({
+                    type: GET_MONTH_PURCHASE,
+                    value: purchases
+                });
+
+                dispatch(uiStopLoading());
+
+            }
+        ).catch((error) => {
+            dispatch(uiStopLoading());
+            toast(CONNEXION_PROBLEM_MSG, "danger", 10000);
+        });
+
+    } else {
+        dispatch(uiStopLoading());
+    }
+    
+}
+
+
+export const getYearPurchases = (numero, encryptedPass) => dispatch => {
+
+    dispatch(uiStartLoading());
+
+    if(!isEmpty(encryptedPass)) {
+        const password = decryptPass(encryptedPass);
+
+        getPurchases(numero, password, false).then(
+            (data) => {
+                const monthOfYear = (new Date()).getMonth();
+                // ["bi" 0, bg: 0, pet: 0, ca: 0, products: []]
+                const purchases = [];
+                for(i = 0; i < monthOfYear; i++) {
+                    purchases[i] = [0, 0, 0, 0, []]; 
+                }
+
+                data.forEach(element => {
+                    switch (element.famille) {
+                        case "BI":
+                        case "BIERE":
+                            purchases[element.jour - 1][0] += element.quantite;   
+                            break;
+
+                        case "BG":
+                            purchases[element.jour - 1][1] += element.quantite;
+                            
+                            break;
+
+                        case "PET":
+                        case "PEG":
+                            purchases[element.jour - 1][2] += element.quantite;
+                            break;
+
+                        default:
+                            break;
+                    }
+                    
+                    purchases[element.jour - 1][3] += element.montant;
+                    purchases[element.jour - 1][4].push(element.produit);
+                    
+                });
+
+                dispatch({
+                    type: GET_YEAR_PURCHASE,
+                    value: purchases
+                });
+                
+                dispatch(uiStopLoading());
+            }
+        ).catch((error) => dispatch(uiStopLoading()));
+
+    } else {
+        dispatch(uiStopLoading());
+    }
+
+}
