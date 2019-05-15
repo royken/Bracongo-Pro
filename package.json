@@ -13,6 +13,7 @@
     "react": "16.8.3",
     "react-native": "0.59.8",
     "react-native-chart-kit": "^2.6.1",
+    "react-native-device-info": "^1.6.2",
     "react-native-elements": "^1.1.0",
     "react-native-firebase": "^5.3.1",
     "react-native-geolocation-service": "^2.0.1",

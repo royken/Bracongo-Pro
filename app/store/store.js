@@ -3,11 +3,13 @@ import thunk from 'redux-thunk';
 import profileReducer  from '../modules/profile/reducers/profileReducer';
 import purchasesReducer from '../modules/purchase/reducers/purchasesReducer';
 import uiLoadingReducer from '../core/reducers/uiLoadingReducer';
+import trucksReducer from '../modules/van/reducers/trucksReducer';
 
 const rootReducer = combineReducers({
     uiLoading: uiLoadingReducer,
     profile: profileReducer,
-    purchases: purchasesReducer
+    purchases: purchasesReducer,
+    trucks: trucksReducer
 }); 
 
 let composeEnhancers = compose;

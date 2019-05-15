@@ -1,7 +1,9 @@
 import { GET_DISCOUNT_AND_TURNOVER, GET_PROFILE, CLEAR_PROFILE } from "../actions/types";
+import DeviceInfo from 'react-native-device-info';
 
 const initialState = {
     id: null,
+    raisonSociale: null,
     categorie: null,
     cover: null,
     description: null,
@@ -12,6 +14,7 @@ const initialState = {
     ventes: true,
     turnover: 0,
     discount: 0,
+    uuid: DeviceInfo.getUniqueID(),
     isLoaded: false
 };
 
@@ -22,6 +25,7 @@ export default function(state = initialState, action) {
         case GET_PROFILE:
             const { 
                 id,
+                raisonSociale,
                 categorie, 
                 cover, 
                 description, 
@@ -35,6 +39,7 @@ export default function(state = initialState, action) {
             newState = {
                 ...state,
                 id: id,
+                raisonSociale: raisonSociale,
                 categorie: categorie, 
                 cover: cover, 
                 description: description, 

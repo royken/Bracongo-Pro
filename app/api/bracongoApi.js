@@ -1,6 +1,8 @@
 import axios from 'axios';
+import { getToken } from '../utils/buildTruckUrl';
 
 const baseURI = "https://api.bracongo-cd.com:8443/bracongo-api";
+const baseVODACOMURI = "https://ivtrackaz.vodacom.cd/ivtwcf/IVTrSvc.svc/GetCircInfoJS/BRC";
 
 export function signInWithApi(numero, password) {
     return new Promise((resolve, reject) => {
@@ -32,7 +34,7 @@ export function getPurchases(numero, password, isMonth) {
             `${baseURI}/achats/annee/${numero}/${password}`;
     
     if(isMonth === true) {
-        
+
         return new Promise((resolve, reject) => {
             axios.all([
                 axios.get(uri),
@@ -52,4 +54,15 @@ export function getPurchases(numero, password, isMonth) {
 
     }       
     
+}
+
+export function getTrucks(deviceId, ccode) {
+    const currentDate = (new Date()).getTime().toString();
+    const token = getToken(deviceId, ccode, currentDate);
+
+    return new Promise((resolve, reject) => {
+        axios.get(`${baseVODACOMURI}|${deviceId}|${ccode}|${currentDate}|${token}`)
+        .then((resp) => resolve(resp.data))
+        .catch((error) => reject(error));
+    });
 }

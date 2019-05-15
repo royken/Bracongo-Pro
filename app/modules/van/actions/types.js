@@ -1,0 +1,1 @@
+export const GET_TRUCKS_VAN = "GET_TRUCKS_VAN";

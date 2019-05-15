@@ -17,6 +17,7 @@ export function signInHelper(numero, password) {
                         const id = resp.user.uid;
                         const salepoint = {
                             numero: numero, 
+                            raisonSociale: data.raisonSociale,
                             cover: 'undefined', 
                             description: '',
                             latitude: data.latitude,
