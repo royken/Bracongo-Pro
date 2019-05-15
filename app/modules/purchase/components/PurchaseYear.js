@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import React, { Component, Fragment } from 'react';
+import { StyleSheet, View } from 'react-native';
 import MainView from '../../../core/layout/MainView';
 import { Icon, Text, ButtonGroup } from 'react-native-elements';
 import PurchaseYearTable from './PurchaseYearTable';
@@ -9,8 +9,6 @@ import { connect } from 'react-redux';
 import { getYearPurchases } from '../actions/actions';
 import PropTypes from 'prop-types';
 import Spinner from '../../../core/layout/Spinner';
-
-const tableHead = ['Mois', 'BI', 'BG', 'PET', 'CA'];
 
 class PurchaseYear extends Component {
 
@@ -24,7 +22,7 @@ class PurchaseYear extends Component {
 
     componentDidMount() {
         const { getYearPurchases, profile } = this.props;
-
+        
         getYearPurchases(profile.numero, profile.password);
     }
 
@@ -62,7 +60,7 @@ class PurchaseYear extends Component {
         const buttons = [
             { element: this.tableLabel }, 
             { element: this.chartLabel }, 
-        ];
+        ]; 
 
         return (
             <MainView 
@@ -77,13 +75,13 @@ class PurchaseYear extends Component {
                     <Spinner containerStyle={{marginTop: 150, alignItems: 'center'}} 
                         color="blue" /> :
                     <Fragment>
-                        <ScrollView style={styles.contentContainerStyle}>
+                        <View style={styles.contentContainerStyle}>
                         {
                             selectedIndex === 0 ?
-                            <PurchaseYearTable head={tableHead} purchases={purchases} /> :
+                            <PurchaseYearTable purchases={purchases} /> :
                             <PurchaseYearChart purchases={purchases} />   
                         }
-                        </ScrollView>
+                        </View>
                         <ButtonGroup 
                             onPress={this._updateIndex}
                             buttons={buttons}
@@ -101,7 +99,8 @@ class PurchaseYear extends Component {
 
 const styles = StyleSheet.create({
     contentContainerStyle: {
-        marginHorizontal: 5
+        marginHorizontal: 5,
+        flex: 1
     },
     tabButtonContainerStyle: {
         height: 50, 
@@ -120,10 +119,10 @@ PurchaseYear.propTypes = {
     purchases: PropTypes.array
 };
 
-const mapstateToProps = (state) => ({
+const mapStateToProps = (state) => ({
     profile: state.profile,
     isLoading: state.uiLoading.isLoading,
     purchases: state.purchases.purchasesYear
 });
 
-export default connect(mapstateToProps, { getYearPurchases })(PurchaseYear);
+export default connect(mapStateToProps, { getYearPurchases })(PurchaseYear);

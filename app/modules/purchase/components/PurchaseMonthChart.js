@@ -11,12 +11,25 @@ const PurchaseMonthChart = (props) => {
     
     const bi = []; const bg = []; const pet = []; const jours = [];
     
-    purchases.map((element, index) => {
-        jours.push(index + 1);
-        bi.push(element[0]);
-        bg.push(element[1]);
-        pet.push(element[2]);
-    });
+    if(purchases.length > 0) {
+        
+        purchases.map((element, index) => {
+            jours.push(index + 1);
+            bi.push(element[0]);
+            bg.push(element[1]);
+            pet.push(element[2]);
+        });
+
+    } else {
+
+        for(let i = 1; i <= (new Date).getDate(); i++) {
+            bi.push(0);
+            bg.push(0);
+            pet.push(0);
+            jours.push(i);
+        } 
+
+    }
 
     return (
         <View style={styles.containerStyle}>

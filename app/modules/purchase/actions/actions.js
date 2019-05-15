@@ -21,7 +21,7 @@ export const getMonthPurchases = (numero, encryptedPass) => dispatch => {
                 const dayOfMonth = (new Date()).getDate();
                 // ["bi" 0, bg: 0, pet: 0, ca: 0, products: []]
                 const purchases = [];
-                for(i = 0; i < dayOfMonth; i++) {
+                for(let i = 0; i < dayOfMonth; i++) {
                     purchases[i] = [0, 0, 0, 0, []]; 
                 }
                 
@@ -34,7 +34,7 @@ export const getMonthPurchases = (numero, encryptedPass) => dispatch => {
 
                         case "BG":
                             purchases[element.jour - 1][1] += element.quantite;
-                            
+
                             break;
 
                         case "PET":
@@ -61,7 +61,7 @@ export const getMonthPurchases = (numero, encryptedPass) => dispatch => {
             }
         ).catch((error) => {
             dispatch(uiStopLoading());
-            toast(CONNEXION_PROBLEM_MSG, "danger", 10000);
+            toast(CONNEXION_PROBLEM_MSG, "danger", 7000);
         });
 
     } else {
@@ -72,19 +72,19 @@ export const getMonthPurchases = (numero, encryptedPass) => dispatch => {
 
 
 export const getYearPurchases = (numero, encryptedPass) => dispatch => {
-
+    
     dispatch(uiStartLoading());
-
+    
     if(!isEmpty(encryptedPass)) {
         const password = decryptPass(encryptedPass);
 
         getPurchases(numero, password, false).then(
             (data) => {
-                const monthOfYear = (new Date()).getMonth();
-                // ["bi" 0, bg: 0, pet: 0, ca: 0, products: []]
+                const monthOfYear = (new Date()).getMonth() + 1;
+                // ["bi" 0, bg: 0, pet: 0, ca: 0]
                 const purchases = [];
-                for(i = 0; i < monthOfYear; i++) {
-                    purchases[i] = [0, 0, 0, 0, []]; 
+                for(let i = 0; i < monthOfYear; i++) {
+                    purchases[i] = [0, 0, 0, 0]; 
                 }
 
                 data.forEach(element => {
@@ -96,7 +96,6 @@ export const getYearPurchases = (numero, encryptedPass) => dispatch => {
 
                         case "BG":
                             purchases[element.jour - 1][1] += element.quantite;
-                            
                             break;
 
                         case "PET":
@@ -109,9 +108,8 @@ export const getYearPurchases = (numero, encryptedPass) => dispatch => {
                     }
                     
                     purchases[element.jour - 1][3] += element.montant;
-                    purchases[element.jour - 1][4].push(element.produit);
                     
-                });
+                });  
 
                 dispatch({
                     type: GET_YEAR_PURCHASE,
@@ -120,9 +118,12 @@ export const getYearPurchases = (numero, encryptedPass) => dispatch => {
                 
                 dispatch(uiStopLoading());
             }
-        ).catch((error) => dispatch(uiStopLoading()));
+        ).catch((error) => {
+            dispatch(uiStopLoading());
+            toast(CONNEXION_PROBLEM_MSG, "danger", 7000);
+        });
 
-    } else {
+    } else { 
         dispatch(uiStopLoading());
     }
 
