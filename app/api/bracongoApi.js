@@ -30,10 +30,26 @@ export function getPurchases(numero, password, isMonth) {
     const uri = isMonth === true ? 
             `${baseURI}/achats/${numero}/${password}` : 
             `${baseURI}/achats/annee/${numero}/${password}`;
-            
-    return new Promise((resolve, reject) => {
-        axios.get(uri)
-        .then((resp) => resolve(resp.data))
-        .catch((error) => reject(error));
-    });
+    
+    if(isMonth === true) {
+        
+        return new Promise((resolve, reject) => {
+            axios.all([
+                axios.get(uri),
+                axios.get(`${baseURI}/achats/produits/${numero}/${password}`)
+            ]).then(axios.spread((resp1, resp2) => {
+                resolve({data1: resp1.data, data2: resp2.data});
+            })).catch((error) => reject(error));
+        });
+
+    } else {
+
+        return new Promise((resolve, reject) => {
+            axios.get(uri)
+            .then((resp) => resolve(resp.data))
+            .catch((error) => reject(error));
+        });
+
+    }       
+    
 }

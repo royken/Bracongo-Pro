@@ -18,14 +18,19 @@ export const getMonthPurchases = (numero, encryptedPass) => dispatch => {
         
         getPurchases(numero, password, true).then(
             (data) => {
-                const dayOfMonth = (new Date()).getDate();
                 // ["bi" 0, bg: 0, pet: 0, ca: 0, products: []]
+                const data1 = data.data1;
+                const data2 = data.data2;
+
+                const dayOfMonth = (new Date()).getDate();
                 const purchases = [];
+                const products = [];
+
                 for(let i = 0; i < dayOfMonth; i++) {
                     purchases[i] = [0, 0, 0, 0, []]; 
                 }
                 
-                data.forEach(element => {
+                data1.forEach(element => {
                     switch (element.famille) {
                         case "BI":
                         case "BIERE":
@@ -50,10 +55,20 @@ export const getMonthPurchases = (numero, encryptedPass) => dispatch => {
                     purchases[element.jour - 1][4].push(element.produit);
                     
                 });
+
+                data2.forEach(element => {
+                    products.push({
+                        name: element.nomProduit,
+                        amount: element.quantite
+                    });
+                });
                     
                 dispatch({
                     type: GET_MONTH_PURCHASE,
-                    value: purchases
+                    value: {
+                        purchases: purchases,
+                        products: products
+                    }
                 });
 
                 dispatch(uiStopLoading());

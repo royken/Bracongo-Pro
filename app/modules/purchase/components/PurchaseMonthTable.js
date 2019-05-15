@@ -62,7 +62,7 @@ const PurchaseMonthTable = (props) => {
                     data={purchases}
                 /> :
                 <View style={{marginTop: 50}}>
-                    <Text style={styles.textStyle}>Erreur de connexion</Text>
+                    <Text style={styles.textStyle}>Aucun résultat trouvé.</Text>
                 </View>
             }      
         </View>

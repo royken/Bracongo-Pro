@@ -1,6 +1,6 @@
 import { 
     GET_MONTH_PURCHASE, 
-    GET_YEAR_PURCHASE, 
+    GET_YEAR_PURCHASE
 } from "../actions/types";
 
 const initialState = {
@@ -16,7 +16,8 @@ export default function(state = initialState, action) {
         case GET_MONTH_PURCHASE:
             newState = {
                 ...state,
-                purchasesMonth: action.value
+                purchasesMonth: action.value.purchases,
+                products: action.value.products
             }    
             break;
         
@@ -25,8 +26,8 @@ export default function(state = initialState, action) {
                 ...state,
                 purchasesYear: action.value
             }    
-            break;   
-
+            break;    
+        
         default:
             newState = state;
             break;

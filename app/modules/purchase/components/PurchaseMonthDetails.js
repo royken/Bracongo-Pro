@@ -1,32 +1,33 @@
 import React from 'react';
 import { StyleSheet, View, FlatList, Text } from 'react-native';
-
-const data = [
-    ['SKOL 50CL', 15],
-    ['SKOL 72CL', 15],
-    ['DOPPEL 50CL', 15],
-    ['BEAUFORT 50CL', 15],
-    ['TEMBO 50CL', 15]
-];
+import PropTypes from 'prop-types';
 
 const _renderItem = ({ item }) => (
     <View style={styles.productContainerStyle}>
         <View style={styles.producTitleStyle}>
-            <Text style={{color: 'white'}}>{item[0] + "".toUpperCase()}</Text>
+            <Text style={{color: 'white'}}>{item.name + "".toUpperCase()}</Text>
         </View>
-        <View><Text style={{color: 'white'}}>{item[1]}</Text></View>
+        <View><Text style={{color: 'white'}}>{item.amount}</Text></View>
     </View> 
 );
 
 const PurchaseMonthDetails = (props) => {
-    
+    const { products } = props;
+
     return (
         <View style={styles.containerStyle}>
-            <FlatList 
-                renderItem={_renderItem}
-                keyExtractor={(item, index) => index.toString()}
-                data={data}
-            />
+            {products.length > 0 ?
+                <FlatList 
+                    renderItem={_renderItem}
+                    keyExtractor={(item, index) => index.toString()}
+                    data={products}
+                /> :
+                <View style={{marginTop: 50}}>
+                    <Text style={{textAlign: 'center', color: 'white'}}>
+                        Aucun résultat trouvé.
+                    </Text>
+                </View>
+            }
         </View>
     );
 }
@@ -46,11 +47,19 @@ const styles = StyleSheet.create({
     producTitleStyle: {
         borderRadius: 10, 
         backgroundColor: '#7B7C9E', 
-        width: "40%", 
+        width: "70%", 
         height: 40,
         justifyContent: 'center',
         alignItems: 'center'
     }
 });
+
+PurchaseMonthDetails.defaultProps = {
+    products: []
+};
+
+PurchaseMonthDetails.propTypes = {
+    products: PropTypes.array
+};
 
 export default PurchaseMonthDetails;

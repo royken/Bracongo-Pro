@@ -70,7 +70,7 @@ class PurchaseMonth extends Component {
     }
 
     render() {
-        const { navigation, isLoading, purchases} = this.props;
+        const { navigation, isLoading, purchases, products } = this.props;
         const { selectedIndex } = this.state;
         const buttons = [
             { element: this.tableLabel }, 
@@ -97,7 +97,7 @@ class PurchaseMonth extends Component {
                             <PurchaseMonthTable purchases={purchases} /> :
                             selectedIndex === 1 ? 
                             <PurchaseMonthChart purchases={purchases} /> :
-                            <PurchaseMonthDetails />  
+                            <PurchaseMonthDetails products={products} />  
                         }
                         </View>
                         <ButtonGroup 
@@ -140,7 +140,8 @@ PurchaseMonth.propTypes = {
 const mapStateToProps = (state) => ({
     profile: state.profile,
     isLoading: state.uiLoading.isLoading,
-    purchases: state.purchases.purchasesMonth
+    purchases: state.purchases.purchasesMonth,
+    products: state.purchases.products
 });
 
 export default connect(mapStateToProps, { getMonthPurchases })(PurchaseMonth);
