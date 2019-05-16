@@ -19,7 +19,7 @@ const MarkerVan = (props) => {
 
     return (
         <Marker image={uri}  
-            coordinate={{latitude: lat, longitude: lng}}>
+            coordinate={{latitude: parseFloat(lat), longitude: parseFloat(lng)}}>
             <Callout>             
                 <View style={{flex: 1, backgroundColor: "#7B7C9E", padding: 5}}>
                     <Text style={{color: 'white', fontSize: 20}}>

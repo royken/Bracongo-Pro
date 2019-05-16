@@ -53,15 +53,15 @@ class VanHome extends Component {
 
             if(profile.latitude !== null && profile.longitude !== null) {
                 markers.push({ 
-                    latitude: profile.latitude,
-                    longitude: profile.longitude
+                    latitude: parseFloat(profile.latitude),
+                    longitude: parseFloat(profile.longitude)
                 });
             }
 
             vans.map((van) => {
                 markers.push({ 
-                    latitude: van.lat,
-                    longitude: van.lng
+                    latitude: parseFloat(van.lat),
+                    longitude: parseFloat(van.lng)
                 });
             });
 

@@ -9,7 +9,7 @@ const MarkerSalePoint = (props) => {
     const coverUrl = isEmpty(cover) ? "undefined" : cover;
 
     return (
-        <Marker coordinate={{latitude: latitude, longitude: longitude}}
+        <Marker coordinate={{latitude: parseFloat(latitude), longitude: parseFloat(longitude)}}
             title={raisonSociale ? raisonSociale : ""}
         >
             <Image style={styles.image_style} 
