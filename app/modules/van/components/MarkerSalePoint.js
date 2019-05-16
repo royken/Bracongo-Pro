@@ -3,13 +3,17 @@ import { StyleSheet, Image } from 'react-native';
 import { Marker } from 'react-native-maps';
 import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
+import { parseGeoCoord } from '../../../utils/helper';
 
 const MarkerSalePoint = (props) => {
     const { latitude, longitude, cover, raisonSociale } = props.profile;
     const coverUrl = isEmpty(cover) ? "undefined" : cover;
 
     return (
-        <Marker coordinate={{latitude: parseFloat(latitude), longitude: parseFloat(longitude)}}
+        <Marker coordinate={{
+                latitude: parseGeoCoord(latitude), 
+                longitude: parseGeoCoord(longitude)
+            }}
             title={raisonSociale ? raisonSociale : ""}
         >
             <Image style={styles.image_style} 

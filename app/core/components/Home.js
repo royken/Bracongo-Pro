@@ -45,7 +45,7 @@ class Home extends Component {
                 <View style={styles.turnoverStyle}>
                     <View style={styles.turnoverContentStyle}>
                         {isLoading ? 
-                            <Spinner containerStyle={{marginTop: '25%', alignItems: 'center'}} 
+                            <Spinner containerStyle={{marginTop: '40%', alignItems: 'center'}} 
                                 color="blue" />
                             :
                             <View>

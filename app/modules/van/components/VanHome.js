@@ -9,6 +9,7 @@ import Spinner from '../../../core/layout/Spinner';
 import MarkerSalePoint from './MarkerSalePoint';
 import MarkerVan from './MarkerVan';
 import IconWithText from '../../../core/layout/IconWithText';
+import { parseGeoCoord } from '../../../utils/helper';
 
 const deviceDimWidth = Dimensions.get('window').width;
 const deviceDimHeight = Dimensions.get('window').height;
@@ -63,22 +64,22 @@ class VanHome extends Component {
 
             if(profile.latitude !== null && profile.longitude !== null) {
                 markers.push({ 
-                    latitude: parseFloat(profile.latitude),
-                    longitude: parseFloat(profile.longitude)
+                    latitude: parseGeoCoord(profile.latitude),
+                    longitude: parseGeoCoord(profile.longitude)
                 });
             }
 
             vans.map((van) => {
                 markers.push({ 
-                    latitude: parseFloat(van.lat),
-                    longitude: parseFloat(van.lng)
+                    latitude: parseGeoCoord(van.lat),
+                    longitude: parseGeoCoord(van.lng)
                 });
             });
 
             this.setState({
                 markers: markers,
-                latitude: profile.latitude ? profile.latitude : this.state.latitude,
-                longitude: profile.longitude ? profile.longitude : this.state.longitude,
+                latitude: profile.latitude ? parseGeoCoord(profile.latitude) : this.state.latitude,
+                longitude: profile.longitude ? parseGeoCoord(profile.longitude) : this.state.longitude,
             });
              
         }
