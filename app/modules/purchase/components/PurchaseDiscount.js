@@ -1,26 +1,51 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
+import { connect } from 'react-redux';
 import MainView from '../../../core/layout/MainView';
-
-import { Icon } from 'react-native-elements';
+import { getMonthDiscountAndTurnoverByDate } from '../actions/actions';
 import MainHeader from '../../../core/layout/MainHeader';
+import Spinner from '../../../core/layout/Spinner';
+import MYCalendar from '../../../core/layout/MYCalendar';
+import { Button } from 'react-native-elements';
 
 class PurchaseDiscount extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            dateMonth: '01-2017'
+            showCalendar: false,
         };
     }
 
-    _handleDatePickedMonth(date) {
-        this.setState({ dateMonth: date });
+    componentDidMount() {
+        const { getMonthDiscountAndTurnoverByDate, profile } = this.props;
+
+        getMonthDiscountAndTurnoverByDate(profile.numero, profile.password, null, null);
+    }
+
+    _getDiscountAndTurnoverByDate = (selectedMonth, selectedYear) => {
+        const { getMonthDiscountAndTurnoverByDate, profile } = this.props;
+
+        getMonthDiscountAndTurnoverByDate(
+            profile.numero, 
+            profile.password, 
+            selectedYear, 
+            selectedMonth
+        );
+    
+    }
+
+    _handleShowCalendar() {
+        this.setState({ showCalendar: true });
+    }
+
+    _handleHideCalendar = () => {
+        this.setState({ showCalendar: false });
     }
 
     render() {
-        const { navigation } = this.props;
-        const { dateMonth } = this.state;
+        const { navigation, isLoading, turnover, discount } = this.props;
+        const { showCalendar } = this.state;
 
         return (
             <MainView 
@@ -32,19 +57,40 @@ class PurchaseDiscount extends Component {
                     containerStyle={{marginTop: '7%'}}
                 />
                 <View style={styles.dateContainerStyle}>
-                    
+                    <Button 
+                        buttonStyle={{backgroundColor: "#7B7C9E"}}
+                        titleStyle={{color: "white"}}
+                        title="Choisir une date" 
+                        onPress={() => this._handleShowCalendar()} 
+                    />
                 </View>
+                <MYCalendar 
+                    headerBackgroundColor="#7B7C9E"
+                    btnTextConfirmColor="#7B7C9E"
+                    btnTextCancelColor="#7B7C9E"
+                    selectedBackgroundColor="#7B7C9E"
+                    hide={this._handleHideCalendar} 
+                    isVisible={showCalendar} 
+                    confirm={this._getDiscountAndTurnoverByDate} 
+                />
                 <View style={styles.contentContainerStyle}>
                     <View style={styles.turnoverStyle}>
                         <View style={styles.turnoverContentStyle}>
-                            <View style={{alignItems: 'center', marginTop: '25%'}}>
-                                <Text style={{color: 'white'}}>Remise</Text>
-                                <Text style={{color: 'white'}}>250 000 Fcfa</Text>
-                            </View>
-                            <View style={{alignItems: 'center', marginTop: 20}}>
-                                <Text style={{color: 'white'}}>Chiffre d'affaire:</Text>
-                                <Text style={{color: 'white'}}>4 565 000 Fcfa</Text>
-                            </View>
+                            {isLoading ? 
+                                <Spinner containerStyle={{marginTop: "40%", alignItems: 'center'}} 
+                                    color="blue" />
+                                :
+                                <View>
+                                    <View style={{alignItems: 'center', marginTop: '25%'}}>
+                                        <Text style={{color: 'white'}}>Remise</Text>
+                                        <Text style={{color: 'white'}}>{discount} Fcfa</Text>
+                                    </View>
+                                    <View style={{alignItems: 'center', marginTop: 20}}>
+                                        <Text style={{color: 'white'}}>Chiffre d'affaire:</Text>
+                                        <Text style={{color: 'white'}}>{turnover} Fcfa</Text>
+                                    </View>
+                                </View>
+                            }
                         </View>
                     </View> 
                 </View>
@@ -58,7 +104,9 @@ const styles = StyleSheet.create({
         marginHorizontal: 5
     },
     dateContainerStyle: {
-        alignItems: 'center'
+        alignItems: 'center',
+        marginHorizontal: "15%",
+        marginTop: 40
     },
     turnoverStyle: {
         marginTop: "5%",
@@ -75,4 +123,11 @@ const styles = StyleSheet.create({
     }
 });
 
-export default PurchaseDiscount;
+const mapStateToProps = (state) => ({
+    profile: state.profile,
+    isLoading: state.uiLoading.isLoading,
+    turnover: state.purchases.turnover,
+    discount: state.purchases.discount
+});
+
+export default connect(mapStateToProps, { getMonthDiscountAndTurnoverByDate })(PurchaseDiscount);

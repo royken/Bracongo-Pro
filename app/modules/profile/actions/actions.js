@@ -17,8 +17,8 @@ export const getDiscountAndTurnover = (numero, encryptedPass) => dispatch => {
                 dispatch({
                     type: GET_DISCOUNT_AND_TURNOVER,
                     value: {
-                        turnover: data.remise,
-                        discount: data.chiffreAffaire
+                        turnover: data.chiffreAffaire,
+                        discount: data.remise
                     }
                 });
                 dispatch(uiStopLoading());

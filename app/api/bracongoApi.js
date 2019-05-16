@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { getToken } from '../utils/buildTruckUrl';
+import { isString, isEmpty } from 'lodash';
 
 const baseURI = "https://api.bracongo-cd.com:8443/bracongo-api";
 const baseVODACOMURI = "https://ivtrackaz.vodacom.cd/ivtwcf/IVTrSvc.svc/GetCircInfoJS/BRC";
@@ -20,9 +21,13 @@ export function signInWithApi(numero, password) {
     });
 }
 
-export function getActualMonthDiscountAndTurnover(numero, password) {
+export function getActualMonthDiscountAndTurnover(numero, password, year = null, month = null) {
+    const uri = isString(year) && !isEmpty(year) && isString(month) && !isEmpty(month) ? 
+                `${baseURI}/achats/remise/${numero}/${password}/${year}/${month}` : 
+                `${baseURI}/achats/remise/${numero}/${password}`;
+
     return new Promise((resolve, reject) => {
-        axios.get(`${baseURI}/achats/remise/${numero}/${password}`)
+        axios.get(uri)
         .then((resp) => resolve(resp.data))
         .catch((error) => reject(error));
     });

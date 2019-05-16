@@ -1,8 +1,9 @@
 import { decryptPass } from '../../sign/signHelper';
-import { getPurchases } from '../../../api/bracongoApi';
+import { getPurchases, getActualMonthDiscountAndTurnover } from '../../../api/bracongoApi';
 import { 
     GET_MONTH_PURCHASE, 
-    GET_YEAR_PURCHASE
+    GET_YEAR_PURCHASE,
+    GET_DISCOUNT_AND_TURNOVER_BY_DATE
 } from './types';
 import { isEmpty } from 'lodash';
 import { uiStartLoading, uiStopLoading } from '../../../core/actions/actions';
@@ -139,6 +140,34 @@ export const getYearPurchases = (numero, encryptedPass) => dispatch => {
         });
 
     } else { 
+        dispatch(uiStopLoading());
+    }
+
+}
+
+export const getMonthDiscountAndTurnoverByDate = (numero, encryptedPass, year, month) => dispatch => {
+
+    dispatch(uiStartLoading());
+
+    if(!isEmpty(encryptedPass)) {
+        const password = decryptPass(encryptedPass);
+        
+        getActualMonthDiscountAndTurnover(numero, password, year, month)
+        .then((data) => {
+            
+            dispatch({
+                type: GET_DISCOUNT_AND_TURNOVER_BY_DATE,
+                value: {
+                    turnover: data.chiffreAffaire,
+                    discount: data.remise
+                }
+            });
+
+            dispatch(uiStopLoading());
+
+        }).catch((error) => dispatch(uiStopLoading()));
+
+    } else {
         dispatch(uiStopLoading());
     }
 
