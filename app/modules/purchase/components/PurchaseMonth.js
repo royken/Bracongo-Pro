@@ -10,6 +10,7 @@ import { getMonthPurchases } from '../actions/actions';
 import Spinner from '../../../core/layout/Spinner';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { cancelRequest } from '../../../core/actions/actions';
 
 class PurchaseMonth extends Component {
 
@@ -25,6 +26,12 @@ class PurchaseMonth extends Component {
         const { getMonthPurchases, profile } = this.props;
 
         getMonthPurchases(profile.numero, profile.password);
+    }
+
+    componentWillUnmount() {
+        const { cancelRequest } = this.props;
+
+        cancelRequest();
     }
 
     _updateIndex = (selectedIndex) => {
@@ -144,4 +151,4 @@ const mapStateToProps = (state) => ({
     products: state.purchases.products
 });
 
-export default connect(mapStateToProps, { getMonthPurchases })(PurchaseMonth);
+export default connect(mapStateToProps, { getMonthPurchases, cancelRequest })(PurchaseMonth);
