@@ -15,4 +15,8 @@ export const uiStopLoading = () => {
     };
 }
 
+export const cancelRequest = () => dispatch => {
+    dispatch(uiStopLoading());
+}
+
 // -----------------------------------------------

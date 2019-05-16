@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import { getYearPurchases } from '../actions/actions';
 import PropTypes from 'prop-types';
 import Spinner from '../../../core/layout/Spinner';
+import { cancelRequest } from '../../../core/actions/actions';
 
 class PurchaseYear extends Component {
 
@@ -24,6 +25,12 @@ class PurchaseYear extends Component {
         const { getYearPurchases, profile } = this.props;
         
         getYearPurchases(profile.numero, profile.password);
+    }
+
+    componentWillUnmount() {
+        const { cancelRequest } = this.props;
+
+        cancelRequest();
     }
 
     _updateIndex = (selectedIndex) => {
@@ -125,4 +132,4 @@ const mapStateToProps = (state) => ({
     purchases: state.purchases.purchasesYear
 });
 
-export default connect(mapStateToProps, { getYearPurchases })(PurchaseYear);
+export default connect(mapStateToProps, { getYearPurchases, cancelRequest })(PurchaseYear);

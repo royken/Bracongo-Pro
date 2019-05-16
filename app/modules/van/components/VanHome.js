@@ -10,6 +10,7 @@ import MarkerSalePoint from './MarkerSalePoint';
 import MarkerVan from './MarkerVan';
 import IconWithText from '../../../core/layout/IconWithText';
 import { parseGeoCoord } from '../../../utils/helper';
+import { cancelRequest } from '../../../core/actions/actions';
 
 const deviceDimWidth = Dimensions.get('window').width;
 const deviceDimHeight = Dimensions.get('window').height;
@@ -42,6 +43,12 @@ class VanHome extends Component {
 
     componentDidMount() {
        this._loadVans();
+    }
+
+    componentWillUnmount() {
+        const { cancelRequest } = this.props;
+
+        cancelRequest();
     }
 
     _loadVans(isRefreshing = false) {
@@ -189,4 +196,4 @@ const mapStateToProps = (state) => ({
     vans: state.trucks.vans
 });
 
-export default connect(mapStateToProps, { getVanTrucks })(VanHome);
+export default connect(mapStateToProps, { getVanTrucks, cancelRequest })(VanHome);

@@ -7,6 +7,7 @@ import MainHeader from '../../../core/layout/MainHeader';
 import Spinner from '../../../core/layout/Spinner';
 import MYCalendar from '../../../core/layout/MYCalendar';
 import { Button } from 'react-native-elements';
+import { cancelRequest } from '../../../core/actions/actions';
 
 class PurchaseDiscount extends Component {
     constructor(props) {
@@ -21,6 +22,12 @@ class PurchaseDiscount extends Component {
         const { getMonthDiscountAndTurnoverByDate, profile } = this.props;
 
         getMonthDiscountAndTurnoverByDate(profile.numero, profile.password, null, null);
+    }
+
+    componentWillUnmount() {
+        const { cancelRequest } = this.props;
+
+        cancelRequest();
     }
 
     _getDiscountAndTurnoverByDate = (selectedMonth, selectedYear) => {
@@ -130,4 +137,4 @@ const mapStateToProps = (state) => ({
     discount: state.purchases.discount
 });
 
-export default connect(mapStateToProps, { getMonthDiscountAndTurnoverByDate })(PurchaseDiscount);
+export default connect(mapStateToProps, { getMonthDiscountAndTurnoverByDate, cancelRequest })(PurchaseDiscount);

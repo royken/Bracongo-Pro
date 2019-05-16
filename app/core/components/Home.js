@@ -7,6 +7,8 @@ import IconWithText from '../layout/IconWithText';
 import { connect } from 'react-redux';
 import { getHighLigthColor } from '../../modules/profile/profileHelper';
 import { getDiscountAndTurnover } from '../../modules/profile/actions/actions';
+import { cancelRequest } from '../../core/actions/actions';
+
 import Spinner from '../layout/Spinner';
 
 class Home extends Component {
@@ -15,6 +17,12 @@ class Home extends Component {
         const { profile, getDiscountAndTurnover } = this.props;
 
         getDiscountAndTurnover(profile.numero, profile.password);
+    }
+
+    componentWillUnmount() {
+        const { cancelRequest } = this.props;
+        console.log("Demonter");
+        cancelRequest();
     }
 
     _onGoToScreen = (screen) => {
@@ -164,4 +172,4 @@ const mapStateToProps = (state) => ({
     isLoading: state.uiLoading.isLoading
 }); 
 
-export default connect(mapStateToProps, { getDiscountAndTurnover })(Home);
+export default connect(mapStateToProps, { getDiscountAndTurnover, cancelRequest })(Home);
