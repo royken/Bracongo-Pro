@@ -53,7 +53,10 @@ export const getMonthPurchases = (numero, encryptedPass) => dispatch => {
                     }
                     
                     purchases[element.jour - 1][3] += element.montant;
-                    purchases[element.jour - 1][4].push(element.produit);
+                    purchases[element.jour - 1][4].push({
+                        name: element.produit,
+                        amount: element.quantite
+                    });
                     
                 });
 

@@ -25,7 +25,16 @@ const renderTable = ({item, index}) => {
             </View>
             <View style={styles.panelBottomStyle}>
                 <Text style={{color: '#00151C'}} numberOfLines={5}>
-                    {isArray(item[4]) ? item[4].join(" ") : ""}
+                    {
+                        isArray(item[4]) ?
+                        item[4].map((subItem, subIndex) => {
+                            return (
+                                <Text key={subIndex}>
+                                    {subItem.name} : {subItem.amount}{", "}
+                                </Text>
+                            )
+                        }) : ""
+                    }
                 </Text>
             </View>
         </View>
