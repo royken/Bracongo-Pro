@@ -30,7 +30,8 @@ const renderTable = ({item, index}) => {
                         item[4].map((subItem, subIndex) => {
                             return (
                                 <Text key={subIndex}>
-                                    {subItem.name} : {subItem.amount}{", "}
+                                    {subItem.name} : {subItem.amount}
+                                    {(item[4].length - 1) === subIndex ? "" : ", "}
                                 </Text>
                             )
                         }) : ""
