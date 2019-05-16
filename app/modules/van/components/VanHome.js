@@ -8,6 +8,7 @@ import { getVanTrucks } from '../actions/actions';
 import Spinner from '../../../core/layout/Spinner';
 import MarkerSalePoint from './MarkerSalePoint';
 import MarkerVan from './MarkerVan';
+import IconWithText from '../../../core/layout/IconWithText';
 
 const deviceDimWidth = Dimensions.get('window').width;
 const deviceDimHeight = Dimensions.get('window').height;
@@ -39,9 +40,18 @@ class VanHome extends Component {
     }
 
     componentDidMount() {
+       this._loadVans();
+    }
+
+    _loadVans(isRefreshing = false) {
         const { getVanTrucks, profile } = this.props;
         const ccode = profile.numero.slice(0, 5); 
         
+        if(isRefreshing) {
+            const { markers } = this.state;
+            this._handleFitZoom(markers);
+        }
+
         getVanTrucks(profile.uuid, ccode);
     }
 
@@ -129,6 +139,13 @@ class VanHome extends Component {
                         }
                         
                     </MapView>
+                    <IconWithText name="refresh" 
+                        titleStyle={styles.title_icon_style} 
+                        containerStyle={styles.button_reload_map_container}
+                        size={25} color="#7B7C9E"
+                        reverse reverseColor="white" type="font-awesome"
+                        onPress={() => this._loadVans(true)} 
+                    />
                     {isLoading ?
                             <Spinner containerStyle={{
                                 position: 'absolute', 
@@ -151,6 +168,17 @@ const styles = StyleSheet.create({
     },
     mapStyle: {
         flex: 1
+    },
+    title_icon_style: { 
+        fontSize: 12, 
+        fontWeight: 'bold' 
+    },
+    button_reload_map_container: {
+        position: 'absolute', 
+        top: deviceDimWidth - 85, 
+        bottom: 0, 
+        left: "1%", 
+        right: 0
     }
 });
 
