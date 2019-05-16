@@ -51,11 +51,11 @@ class Home extends Component {
                             <View>
                                 <View style={{alignItems: 'center', marginTop: '25%'}}>
                                     <Text style={{color: 'white'}}>Remise</Text>
-                                    <Text style={{color: 'white'}}>{discount} Fcfa</Text>
+                                    <Text style={{color: 'white'}}>{discount} FC</Text>
                                 </View>
                                 <View style={{alignItems: 'center', marginTop: 20}}>
                                     <Text style={{color: 'white'}}>Chiffre d'affaire:</Text>
-                                    <Text style={{color: 'white'}}>{turnover} Fcfa</Text>
+                                    <Text style={{color: 'white'}}>{turnover} FC</Text>
                                 </View>
                             </View>
                         }

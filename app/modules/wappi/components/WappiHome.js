@@ -52,7 +52,7 @@ class WappiHome extends Component {
                         type="font-awesome"
                         name="gift"
                         boxShadow={false}
-                        size={50}
+                        size={35}
                         containerStyle={{alignItems: "center", flex: 1}}
                         onPress={() => {}}
                     />
@@ -63,7 +63,7 @@ class WappiHome extends Component {
                         name="photo"
                         boxShadow={false}
                         iconStyle={{color: 'white'}}
-                        size={50}
+                        size={35}
                         containerStyle={{alignItems: "center", flex: 1}}
                         onPress={() => {}}
                     />
@@ -74,7 +74,18 @@ class WappiHome extends Component {
                         name="comments"
                         boxShadow={false}
                         iconStyle={{color: 'white'}}
-                        size={50}
+                        size={35}
+                        containerStyle={{alignItems: "center", flex: 1}}
+                        onPress={() => {}}
+                    />
+                    <IconWithText 
+                        title="Fidélité"
+                        titleStyle={{color: 'white'}}
+                        type="font-awesome"
+                        name="heart"
+                        boxShadow={false}
+                        iconStyle={{color: 'white'}}
+                        size={35}
                         containerStyle={{alignItems: "center", flex: 1}}
                         onPress={() => {}}
                     />
