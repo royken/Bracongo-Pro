@@ -49,7 +49,7 @@ class WappiHome extends Component {
             if(response.didCancel){
                 this.setState({ isLoading: false });
                 return;
-            } else if(response.error){
+            } else if(response.error){ 
                 this.setState({ isLoading: false });
                 toast("Erreur de chargement : Vérifier votre appareil photo.", "warning", 5000);
                 return;
@@ -57,7 +57,7 @@ class WappiHome extends Component {
                 updateFile(
                     response.uri, 
                     SALEPOINTSPROFILESTORAGE + "/" + response.fileName, 
-                    profile.cover ? profile.cover : "undefined"
+                    profile.cover === "undefined" ? "" : profile.cover
                 ).then(
                     (url) => {
                         updateProfile({cover: url}).then(
