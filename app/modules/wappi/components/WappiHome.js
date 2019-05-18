@@ -233,10 +233,15 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         marginBottom: "3%"
     },
-    editImageContainerStyle: { 
-        alignItems: 'flex-end', 
-        marginTop: photoHeigth - 40,
-        marginRight: 20
+    editImageContainerStyle: {  
+        marginTop: photoHeigth - 45,
+        marginLeft: "87%",
+        backgroundColor: 'black',
+        height: 40,
+        width: 40,
+        borderRadius: 20, 
+        justifyContent: 'center', 
+        alignItems: 'center'
     }
 });
 
