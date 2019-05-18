@@ -1,3 +1,15 @@
+import { getDoc, getCurrentUserId } from "../../utils/firebase";
+import { SALEPOINTS } from "../../models/paths";
+
+// Update profile
+export function updateProfile(data) {
+    if((typeof data) !== "object") {
+        throw new Error("Data must be an object !");
+    }
+
+    return getDoc(SALEPOINTS, getCurrentUserId()).update(data);
+}
+
 // Set highligth color by category
 export function getHighLigthColor(category) {
     const color = {

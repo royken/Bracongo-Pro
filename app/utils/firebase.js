@@ -5,6 +5,10 @@ export function getAuth(){
     return firebase.auth();
 }
 
+export function getCurrentUserId() {
+    return firebase.auth().currentUser.uid;
+}
+
 export function getCollection(collection) {
     return firebase.firestore().collection(collection);
 }

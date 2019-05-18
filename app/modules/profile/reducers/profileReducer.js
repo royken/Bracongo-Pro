@@ -1,4 +1,8 @@
-import { GET_DISCOUNT_AND_TURNOVER, GET_PROFILE, CLEAR_PROFILE } from "../actions/types";
+import { 
+    GET_DISCOUNT_AND_TURNOVER, 
+    GET_PROFILE, 
+    CLEAR_PROFILE
+} from "../actions/types";
 import DeviceInfo from 'react-native-device-info';
 
 const initialState = {
@@ -14,6 +18,7 @@ const initialState = {
     ventes: true,
     turnover: 0,
     discount: 0,
+    top: false,
     uuid: DeviceInfo.getUniqueID(),
     isLoaded: false
 };
@@ -33,7 +38,8 @@ export default function(state = initialState, action) {
                 longitude, 
                 numero, 
                 password, 
-                ventes 
+                ventes,
+                top 
             } = action.value;
 
             newState = {
@@ -48,9 +54,10 @@ export default function(state = initialState, action) {
                 numero: numero, 
                 password: password, 
                 ventes: ventes,
+                top: top,
                 isLoaded: true
             };
-            break;
+            break;   
              
         case GET_DISCOUNT_AND_TURNOVER:
             newState = {  

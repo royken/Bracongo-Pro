@@ -24,6 +24,7 @@ export function signInHelper(numero, password) {
                             longitude: data.longitude,
                             categorie: data.categorie,
                             ventes: data.ventes,
+                            top: false,
                             password: encryptPass(password)
                         };
                         
