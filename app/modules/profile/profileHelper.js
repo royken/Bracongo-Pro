@@ -1,4 +1,4 @@
-import { getDoc, getCurrentUserId } from "../../utils/firebase";
+import { getCurrentUserId, update } from "../../utils/firebase";
 import { SALEPOINTS } from "../../models/paths";
 
 // Update profile
@@ -7,7 +7,7 @@ export function updateProfile(data) {
         throw new Error("Data must be an object !");
     }
 
-    return getDoc(SALEPOINTS, getCurrentUserId()).update(data);
+    return update({collection: SALEPOINTS, doc: getCurrentUserId()}, data);
 }
 
 // Set highligth color by category

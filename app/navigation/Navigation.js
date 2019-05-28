@@ -13,6 +13,9 @@ import PurchaseDiscount from '../modules/purchase/components/PurchaseDiscount';
 import MessageHome from '../modules/message/components/MessageHome';
 import VanHome from '../modules/van/components/VanHome';
 import WappiHome from '../modules/wappi/components/WappiHome';
+import WappiPromo from '../modules/wappi/components/WappiPromo';
+import WappiPromoDetails from '../modules/wappi/components/WappiPromoDetails';
+import WappiPromoComments from '../modules/wappi/components/WappiPromoComments';
 
 const PurchaseStack = createStackNavigator(
     {
@@ -69,6 +72,15 @@ const WappiStack = createStackNavigator(
     {
         WappiHome: {
             screen: WappiHome
+        },
+        WappiPromo: {
+            screen: WappiPromo
+        },
+        WappiPromoDetails: {
+            screen: WappiPromoDetails
+        },
+        WappiPromoComments: {
+            screen: WappiPromoComments
         }
     },
     {

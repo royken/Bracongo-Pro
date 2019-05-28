@@ -1,7 +1,8 @@
 import { 
     GET_DISCOUNT_AND_TURNOVER, 
     GET_PROFILE, 
-    CLEAR_PROFILE
+    CLEAR_PROFILE,
+    UNSET_PROFILE_LISTENER
 } from "../actions/types";
 import DeviceInfo from 'react-native-device-info';
 
@@ -20,6 +21,7 @@ const initialState = {
     discount: 0,
     top: false,
     uuid: DeviceInfo.getUniqueID(),
+    unsubscribe: null,
     isLoaded: false
 };
 
@@ -39,7 +41,8 @@ export default function(state = initialState, action) {
                 numero, 
                 password, 
                 ventes,
-                top 
+                top,
+                unsubscribe 
             } = action.value;
 
             newState = {
@@ -55,6 +58,7 @@ export default function(state = initialState, action) {
                 password: password, 
                 ventes: ventes,
                 top: top,
+                unsubscribe: unsubscribe,
                 isLoaded: true
             };
             break;   
@@ -73,7 +77,14 @@ export default function(state = initialState, action) {
                 ...initialState
             }
             break;
-
+        
+        case UNSET_PROFILE_LISTENER:
+            newState = {
+                ...state,
+                unsubscribe: null
+            }
+            break;
+                
         default:
             newState = state;    
             break; 

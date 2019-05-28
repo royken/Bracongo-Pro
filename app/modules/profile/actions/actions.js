@@ -1,13 +1,12 @@
 import { decryptPass } from "../../sign/signHelper";
-import { GET_DISCOUNT_AND_TURNOVER, GET_PROFILE } from "./types";
+import { GET_DISCOUNT_AND_TURNOVER, GET_PROFILE, UNSET_PROFILE_LISTENER } from "./types";
 import { getActualMonthDiscountAndTurnover } from "../../../api/bracongoApi";
 import { isEmpty } from 'lodash';
-import { uiStartLoading, uiStopLoading, setSubscriber } from '../../../core/actions/actions';
+import { uiStartLoading, uiStopLoading } from '../../../core/actions/actions';
 import { getDoc } from "../../../utils/firebase";
 import { SALEPOINTS } from "../../../models/paths";
-import { PROFILE_KEY } from "../../../core/actions/types";
 
-export const getProfile = () => (dispatch, getState) => {
+export const setProfileListener = () => (dispatch, getState) => {
     
     const uid = getState().profile.id;
 
@@ -17,13 +16,24 @@ export const getProfile = () => (dispatch, getState) => {
 
             dispatch({
                 type: GET_PROFILE,
-                value: {...user, id: resp.id}
+                value: {...user, unsubscribe: unsubscribe, id: resp.id}
             });
 
-            dispatch(setSubscriber(unsubscribe, PROFILE_KEY));
         },
         (error) => {}
     );
+}
+
+export const unsetProfileListener = () => (dispatch, getState) => {
+    const unsubscribe = getState().profile.unsubscribe;
+
+    if(unsubscribe) {
+        unsubscribe();
+        
+        dispatch({
+            type: UNSET_PROFILE_LISTENER
+        });
+    }
 }
 
 export const getDiscountAndTurnover = (numero, encryptedPass) => (dispatch) => {

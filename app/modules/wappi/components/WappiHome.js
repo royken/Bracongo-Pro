@@ -5,9 +5,7 @@ import MainHeader from '../../../core/layout/MainHeader';
 import { Text, Icon } from 'react-native-elements';
 import IconWithText from '../../../core/layout/IconWithText';
 import { connect } from 'react-redux';
-import { getProfile } from '../../profile/actions/actions';
-import { unsetSubscriber } from '../../../core/actions/actions'
-import { PROFILE_KEY } from '../../../core/actions/types';
+import { setProfileListener, unsetProfileListener } from '../../profile/actions/actions';
 import ImagePicker from 'react-native-image-picker';
 import { IMAGEPICKEROPTIONS, CONNEXION_PROBLEM_MSG } from '../../../core/constants';
 import { toast } from '../../../utils/toast';
@@ -30,15 +28,15 @@ class WappiHome extends Component {
     };
 
     componentDidMount() {
-        const { getProfile } = this.props;
+        const { setProfileListener } = this.props;
 
-        getProfile();
+        setProfileListener();
     }
 
     componentWillUnmount() {
-        const { unsetSubscriber } = this.props;
+        const { unsetProfileListener } = this.props;
 
-        unsetSubscriber(PROFILE_KEY);
+        unsetProfileListener();
     }
 
     _uploadCover() {
@@ -109,6 +107,12 @@ class WappiHome extends Component {
                 toast(CONNEXION_PROBLEM_MSG, "danger", 5000);
             }
         );
+    }
+
+    _onGoToScreen(screen) {
+        const { navigation } = this.props;
+
+        navigation.navigate(screen);
     }
 
     render() {
@@ -184,7 +188,7 @@ class WappiHome extends Component {
                             boxShadow={false}
                             size={35}
                             containerStyle={{alignItems: "center", flex: 1}}
-                            onPress={() => {}}
+                            onPress={() => this._onGoToScreen("WappiPromo")}
                         />
                         <IconWithText 
                             title="Photos"
@@ -249,4 +253,4 @@ const mapStateToProps = (state) => ({
     profile: state.profile
 });
 
-export default connect(mapStateToProps, { getProfile, unsetSubscriber })(WappiHome);
+export default connect(mapStateToProps, { setProfileListener, unsetProfileListener })(WappiHome);
