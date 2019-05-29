@@ -1,18 +1,21 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Dimensions } from 'react-native';
+import { StyleSheet, View, ScrollView, Dimensions } from 'react-native';
 import { Text, Image, Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 import Share from 'react-native-share';
+import ImagePicker from 'react-native-image-picker';
 import { setListener, unsetListener, getStatus } from '../../../core/actions/actions';
-import { createQuery, update } from '../../../utils/firebase';
-import { PROMOTIONS } from '../../../models/paths';
+import { createQuery, update, updateFile } from '../../../utils/firebase';
+import { PROMOTIONS, PROMOTIONSTORAGE } from '../../../models/paths';
 import Spinner from '../../../core/layout/Spinner';
 import MainView from '../../../core/layout/MainView';
 import MainHeader from '../../../core/layout/MainHeader';
 import moment from 'moment';
 import ConfirmModal from '../../../core/layout/ConfirmModal';
 import { toast } from '../../../utils/toast';
-import { CONNEXION_PROBLEM_MSG } from '../../../core/constants';
+import { CONNEXION_PROBLEM_MSG, IMAGEPICKEROPTIONS } from '../../../core/constants';
+import WappiPromoCommentFormEdit from './WappiPromoCommentFormEdit';
+import { getTimeFromStringDate } from '../../../utils/helper';
 
 const deviceWidth = Dimensions.get('window').width;
 const imageHeight = Math.floor(deviceWidth / 2); 
@@ -24,7 +27,10 @@ class WappiPromoDetails extends Component {
 
         this.state = {
             isConfirmModalVisible: false,
-            isConfirmProcessing: false
+            isConfirmProcessing: false,
+            isUploading: false,
+            isFormVisible: false,
+            isSubmitting: false
         };
 
         this.query = null;
@@ -76,6 +82,71 @@ class WappiPromoDetails extends Component {
         this.setState({ isConfirmModalVisible: false, isConfirmProcessing: false });
     }
 
+    _hideFormPromo = () => {
+        this.setState({ isFormVisible: false, isSubmitting: false });
+    }
+
+    _openFormPromo() {
+        this.setState({ isFormVisible: true });
+    }
+
+    _handleSubmitEdit = (title, dateBegin, dateEnd, comment,) => {
+        this.setState({ isSubmitting: true });
+        const { navigation } = this.props;
+        const { promoId } = navigation.state.params;
+
+        update(
+            createQuery({collection: PROMOTIONS, doc: promoId}), 
+            {
+                title: title,
+                description: comment,
+                beginDate: getTimeFromStringDate(dateBegin, "DD-MM-YYYY HH:mm"),
+                endDate: getTimeFromStringDate(dateEnd, "DD-MM-YYYY HH:mm")
+            }
+        ).then(() => {
+            this._hideFormPromo();
+            toast("Votre promotion a été éditée avec succès.", "success", 5000);
+        })
+        .catch((error) => {
+            this.setState({ isSubmitting: false });
+            toast(CONNEXION_PROBLEM_MSG, "danger", 5000);
+        });
+    }
+
+    _updateCover() {
+        this.setState({ isUploading: true });
+        
+        ImagePicker.showImagePicker(IMAGEPICKEROPTIONS, (response) => {
+            if(response.didCancel){
+                this.setState({ isUploading: false });
+            } else if(response.error){
+                this.setState({ isUploading: false });
+                toast("Erreur de chargement : vérifier votre appareil photo.", "warning", 5000);
+            } else {
+                const { navigation, promotion } = this.props;
+                const { image } = promotion.data;
+                const { promoId } = navigation.state.params;
+
+                updateFile(response.uri, PROMOTIONSTORAGE + response.fileName, image)
+                .then((url) => {
+                    update(createQuery({collection: PROMOTIONS, doc: promoId}), {
+                        image: url
+                    }).then(() => {
+                        this.setState({ isUploading: false });
+                        toast("Cette photo a été éditée avec succès.", "success", 5000);
+                    })
+                    .catch((error) => {
+                        this.setState({ isUploading: false });
+                        toast(CONNEXION_PROBLEM_MSG, "danger", 7000)
+                    });
+                }).catch((error) => {
+                    this.setState({ isUploading: false });
+                    toast(CONNEXION_PROBLEM_MSG, "danger", 7000)
+                });
+            }
+        });
+    }
+
     _deletePromo = () => {
         this.setState({ isConfirmProcessing: false });
         const { navigation } = this.props;
@@ -119,7 +190,13 @@ class WappiPromoDetails extends Component {
                 title, image, 
                 commentsCount, likesCount 
             } = promotion.data;
-            const { isConfirmModalVisible, isConfirmProcessing } = this.state;
+            const { 
+                isConfirmModalVisible, 
+                isConfirmProcessing, 
+                isUploading,
+                isSubmitting,
+                isFormVisible 
+            } = this.state;
 
             return (
                 <ScrollView style={{marginTop: 10}}>
@@ -128,20 +205,52 @@ class WappiPromoDetails extends Component {
                         onError={() => {}}
                         style={{height: imageHeight, width: deviceWidth, backgroundColor: 'grey'}}
                     />
+                    {!visible && 
+                        <Icon 
+                            type="font-awesome"
+                            name="camera"
+                            iconStyle={{color: "#7B7C9E"}}
+                            containerStyle={styles.editCoverContainer}
+                            onPress={() => this._updateCover()}
+                        />
+                    }
+                    {!visible && isUploading &&
+                        <Spinner 
+                            color="blue" 
+                            containerStyle={styles.uploadSpinnerContainer} 
+                        />
+                    }
                     <View style={{marginHorizontal: 10, marginTop: 10}}>
                         {!visible &&
                             <View style={{flexDirection: 'row', marginTop: 10, justifyContent: 'space-between'}}>
                                 <Text style={{color: 'red'}}>En attente d'approbation</Text>
-                                <Icon type="font-awesome" name="trash"
-                                    iconStyle={{color: 'red'}} 
-                                    onPress={() => this._showFormConfirm()}
-                                />
+                                <View style={{flexDirection: 'row'}}>
+                                    <Icon type="font-awesome" name="pencil"
+                                        iconStyle={{color: '#7B7C9E'}} 
+                                        onPress={() => this._openFormPromo()}
+                                        containerStyle={{marginRight: 20}}
+                                    />
+                                    <Icon type="font-awesome" name="trash"
+                                        iconStyle={{color: 'red'}} 
+                                        onPress={() => this._showFormConfirm()}
+                                    />
+                                </View>
                                 <ConfirmModal 
                                     title="Voulez-vous vraiment effectuer cette suppression ?"
                                     isVisible={isConfirmModalVisible}
                                     isLoading={isConfirmProcessing}
                                     hideForm={this._hideFormConfirm}
                                     handleConfirm={this._deletePromo}
+                                />
+                                <WappiPromoCommentFormEdit
+                                    isVisible={isFormVisible}
+                                    handleSubmit={this._handleSubmitEdit}
+                                    hideForm={this._hideFormPromo}
+                                    isLoading={isSubmitting}
+                                    defaultTitle={title}
+                                    defaultBeginDate={moment(new Date(beginDate)).format("DD-MM-Y HH:mm")}
+                                    defaultEndDate={moment(new Date(endDate)).format("DD-MM-Y HH:mm")}
+                                    defaultDescription={description}
                                 />
                             </View>
                         }
@@ -212,6 +321,29 @@ class WappiPromoDetails extends Component {
         );
     }
 }
+
+const styles = StyleSheet.create({
+    editCoverContainer: {
+        position: 'absolute',
+        top: "40%",
+        bottom: 0,
+        left: "86%",
+        right: 0,
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 50,
+        width: 50,
+        backgroundColor: 'white',
+        borderRadius: 25
+    },
+    uploadSpinnerContainer: {
+        position: 'absolute',
+        top: "20%",
+        bottom: 0,
+        left: "1%",
+        right: 0,
+    }
+});
 
 const mapStateToProps = (state) => ({
     numero: state.profile.numero,

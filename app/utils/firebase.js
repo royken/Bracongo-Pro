@@ -69,9 +69,13 @@ export function updateFile(newUri, storagePath, oldUrl) {
     return new Promise((resolve, reject) => {
         uploadFile(newUri, storagePath).then(
             (url) => {
-                deleteFile(oldUrl).then(
-                    () => {resolve(url);}
-                ).catch((error) => {resolve(url);}); 
+                if(isString(oldUrl) && !isEmpty(oldUrl)) {
+                    deleteFile(oldUrl).then(
+                        () => {resolve(url);}
+                    ).catch((error) => {resolve(url);}); 
+                } else {
+                    resolve(url);
+                }
             }
         ).catch((error) => reject(error))
     });

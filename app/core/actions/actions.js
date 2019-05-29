@@ -46,45 +46,43 @@ export const setListener = (query) => dispatch => {
         }
     });
 
-    return new Promise(resolve => setTimeout(resolve, 1000)).then(() => {
-        const unsubscribe = onSnapshot(
-            (querySnapShot) => {
-                let data;
+    const unsubscribe = onSnapshot(
+        (querySnapShot) => {
+            let data;
 
-                if(query.doc) {
+            if(query.doc) {
 
-                    data = {...querySnapShot.data(), id: querySnapShot.id};
+                data = {...querySnapShot.data(), id: querySnapShot.id};
 
-                } else {
+            } else {
 
-                    data = [];    
-                    querySnapShot.docs.forEach((snap) => {
-                        const doc = snap.data();             
-                        data.push({ ...doc, id: snap.id });
-                    });
+                data = [];    
+                querySnapShot.docs.forEach((snap) => {
+                    const doc = snap.data();             
+                    data.push({ ...doc, id: snap.id });
+                });
 
+            }
+
+            dispatch({
+                type: FIRESTORE_LISTENER_SET,
+                value: {
+                    key: query.storeAs,
+                    data: data,
+                    unsubscribe: unsubscribe
                 }
-
-                dispatch({
-                    type: FIRESTORE_LISTENER_SET,
-                    value: {
-                        key: query.storeAs,
-                        data: data,
-                        unsubscribe: unsubscribe
-                    }
-                });
-            },
-            (error) => {
-                dispatch({ 
-                    type: FIRESTORE_LISTENER_ERROR,
-                    value: {
-                        key: query.storeAs
-                    }
-                });
-            },
-            query
-        );
-    });
+            });
+        },
+        (error) => {
+            dispatch({ 
+                type: FIRESTORE_LISTENER_ERROR,
+                value: {
+                    key: query.storeAs
+                }
+            });
+        },
+        query
+    );
 }
 
 export const unsetListener = (query) => (dispatch, getState) => {
@@ -142,37 +140,35 @@ export const setPaginationListener = (query) => (dispatch, getState) => {
 
     query.startAt = getState().firestorePaginator.pageKey;
 
-    return new Promise(resolve => setTimeout(resolve, 1000)).then(() => {
-        const unsubscribe = paginate(
-            (querySnapShot) => {
-                let data = [];    
-                querySnapShot.docs.forEach((snap) => {
-                    const doc = snap.data();             
-                    data.push({ ...doc, id: snap.id });
-                });
+    const unsubscribe = paginate(
+        (querySnapShot) => {
+            let data = [];    
+            querySnapShot.docs.forEach((snap) => {
+                const doc = snap.data();             
+                data.push({ ...doc, id: snap.id });
+            });
 
-                const paginationField = isArray(query.orderBy) ? query.orderBy[0][0] : "";
-                dispatch({
-                    type: FIRESTORE_PAGINATOR_SET,
-                    value: {
-                        key: query.storeAs,
-                        data: data,
-                        unsubscribe: unsubscribe, 
-                        paginationField: paginationField
-                    }
-                });
-            },
-            (error) => { 
-                dispatch({ 
-                    type: FIRESTORE_PAGINATOR_ERROR,
-                    value: {
-                        key: query.storeAs
-                    }
-                });
-            },
-            query
-        );
-    }); 
+            const paginationField = isArray(query.orderBy) ? query.orderBy[0][0] : "";
+            dispatch({
+                type: FIRESTORE_PAGINATOR_SET,
+                value: {
+                    key: query.storeAs,
+                    data: data,
+                    unsubscribe: unsubscribe, 
+                    paginationField: paginationField
+                }
+            });
+        },
+        (error) => { 
+            dispatch({ 
+                type: FIRESTORE_PAGINATOR_ERROR,
+                value: {
+                    key: query.storeAs
+                }
+            });
+        },
+        query
+    ); 
 }
 
 export function getStatus(data) {
