@@ -128,12 +128,16 @@ function set(state, action) {
 function unset(state, action) {
     const key = action.value.key;
     
-    return {
-        ...state,
-        [key]: {
-            ...state[key],
-            unsubscribes: [],
-            isEmpty: state[key].data.length === 0
-        }
-    };
+    if(state.hasOwnProperty(key)) {
+        return {
+            ...state,
+            [key]: {
+                ...state[key],
+                unsubscribes: [],
+                isEmpty: state[key].data.length === 0
+            }
+        };  
+    } else {
+        return state;
+    }
 }

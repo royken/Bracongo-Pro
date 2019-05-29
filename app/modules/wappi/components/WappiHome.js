@@ -199,7 +199,7 @@ class WappiHome extends Component {
                             iconStyle={{color: 'white'}}
                             size={35}
                             containerStyle={{alignItems: "center", flex: 1}}
-                            onPress={() => {}}
+                            onPress={() => this._onGoToScreen("WappiPhoto")}
                         />
                         <IconWithText 
                             title="Avis"

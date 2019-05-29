@@ -183,7 +183,7 @@ class WappiPromo extends Component {
                     hideForm={this._hideFormPromo}
                     isLoading={isSubmitting}
                 />
-                {this._loadPromotions(promotions, setPaginationListener)}   
+                {this._loadPromotions(promotions)}   
             </MainView>    
         );
     }
