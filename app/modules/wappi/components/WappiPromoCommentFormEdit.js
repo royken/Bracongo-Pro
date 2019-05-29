@@ -17,16 +17,22 @@ const initialState = {
 };
 
 class WappiPromoCommentFormEdit extends Component {
-    state = {
-        ...initialState
-    };
+    constructor(props) {
+        super(props);
 
+        this.state = {
+            ...initialState
+        };
+    }
+    
     componentWillReceiveProps(nextProps) {
-        const { dateBegin, dateEnd } = this.state;
-        const { defaultBeginDate, defaultEndDate } = nextProps;
+        const { title, comment, dateBegin, dateEnd } = this.state;
+        const { defaultTitle, defaultDescription, defaultBeginDate, defaultEndDate } = nextProps;
 
-        if(dateBegin.length === 0 && dateEnd.length === 0) {
+        if(dateBegin.length === 0 && dateEnd.length === 0 && title === '' && comment === '') {
             this.setState({ 
+                title: defaultTitle,
+                comment: defaultDescription,
                 dateBegin: defaultBeginDate,
                 dateEnd: defaultEndDate
             });
@@ -56,9 +62,10 @@ class WappiPromoCommentFormEdit extends Component {
     }
 
     _isInputValid() {
-        const { titleError, commentError, dateBegin, dateEnd } = this.state;
+        const { title, titleError, comment, commentError, dateBegin, dateEnd } = this.state;
 
-        if(titleError !== "" || commentError !== "" || 
+        if(title === '' && titleError !== "" || 
+            comment === '' || commentError !== "" || 
             dateBegin === "" || dateEnd === ""
         ) {
             return false;
@@ -76,6 +83,7 @@ class WappiPromoCommentFormEdit extends Component {
             defaultTitle,
             defaultDescription
         } = this.props;
+
         const { 
             dateBegin, 
             dateEnd, 
@@ -84,6 +92,7 @@ class WappiPromoCommentFormEdit extends Component {
             comment, 
             commentError
         } = this.state;
+
         const dateCompare = moment(dateBegin, "DD-MM-YYY HH:mm") > moment(dateEnd, "DD-MM-YYY HH:mm");
 
         return (
