@@ -4,6 +4,8 @@ export const SALEPOINTSPROFILESTORAGE = "salepointsProfileStorage";
 export const SALEPOINTSPHOTOSSTORAGE = "salepointsPhotosStorage";
 export const SALEPOINTSPHOTOS = "photos";
 
+export const LOYALTIES = "loyalties"
+
 export const PROMOTIONS = "promotionSalepoints";
 export const PROMOTION_COMMENTS = "comments";
 export const PROMOTIONSTORAGE = "promotionstorage";

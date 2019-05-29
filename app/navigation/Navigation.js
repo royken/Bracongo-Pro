@@ -17,6 +17,7 @@ import WappiPromo from '../modules/wappi/components/WappiPromo';
 import WappiPromoDetails from '../modules/wappi/components/WappiPromoDetails';
 import WappiPromoComments from '../modules/wappi/components/WappiPromoComments';
 import WappiPhoto from '../modules/wappi/components/WappiPhoto';
+import WappiLoyalty from '../modules/wappi/components/WappiLoyalty';
 
 const PurchaseStack = createStackNavigator(
     {
@@ -85,6 +86,9 @@ const WappiStack = createStackNavigator(
         },
         WappiPhoto: {
             screen: WappiPhoto
+        },
+        WappiLoyalty: {
+            screen: WappiLoyalty
         }
     },
     {
