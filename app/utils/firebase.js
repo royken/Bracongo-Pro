@@ -155,7 +155,7 @@ export function paginate(callBackSuccess, callBackError, query) {
         limit: query.limit ? query.limit : PAGINATION_ITEM_PER_PAGE
     };
 
-    return parseQuery(context).onSnapshot(callBackSuccess, callBackError);
+    return onSnapshot(callBackSuccess, callBackError, context);
 }
 
 export function runTransaction(callBackPromise) {

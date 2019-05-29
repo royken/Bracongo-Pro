@@ -129,7 +129,8 @@ class WappiPhoto extends Component {
 
     _deletePhoto = () => {
         const { photoIdToDelete } = this.state;
-
+        this.setState({ isConfirmProcessing: true });
+        
         if(photoIdToDelete) {
             const { id } = this.props;
             const collection = SALEPOINTS + "/" + id + "/" + SALEPOINTSPHOTOS
@@ -137,11 +138,11 @@ class WappiPhoto extends Component {
             update(createQuery({collection: collection, doc: photoIdToDelete}), {
                 deleted: true
             }).then(() => {
-                this.setState({ isUploading: false });
+                this._hideFormConfirm();
                 toast("Cette photo a été supprimée avec succès.", "success", 5000);
             })
             .catch((error) => {
-                this.setState({ isUploading: false });
+                this.setState({ isConfirmProcessing: false });
                 toast(CONNEXION_PROBLEM_MSG, "danger", 7000)
             });
         }
