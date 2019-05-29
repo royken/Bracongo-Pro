@@ -212,7 +212,7 @@ class WappiPhoto extends Component {
 
     render() {
         const { navigation, photos } = this.props;
-        const { isConfirmModalVisible, isConfirmProcessing } = this.state;
+        const { isUploading, isConfirmModalVisible, isConfirmProcessing } = this.state;
 
         return (
             <MainView containerStyle={{paddingBottom: 10}}
@@ -223,13 +223,20 @@ class WappiPhoto extends Component {
                     navigation={navigation}
                     containerStyle={{marginTop: '7%'}}
                 />
-                <Icon 
-                    type="font-awesome"
-                    name="plus"
-                    iconStyle={{color: '#7B7C9E'}}
-                    containerStyle={styles.addButtonContainer}
-                    onPress={() => this._uploadPhoto()}
-                />
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    {isUploading &&
+                        <Spinner color="blue" 
+                            containerStyle={{alignItems: 'center', marginLeft: "47%"}}
+                        />
+                    }
+                    <Icon 
+                        type="font-awesome"
+                        name="plus"
+                        iconStyle={{color: '#7B7C9E'}}
+                        containerStyle={isUploading ? { ...styles.addButtonContainer, marginLeft: "30%" } : { ...styles.addButtonContainer, marginLeft: "85%" }}
+                        onPress={() => this._uploadPhoto()}
+                    />
+                </View>
                 <ConfirmModal 
                     title="Voulez-vous vraiment effectuer cette suppression ?"
                     isVisible={isConfirmModalVisible}
@@ -251,8 +258,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: 'white',
-        marginTop: 10,
-        marginLeft: "85%"
+        marginTop: 10
     },
     imageContainerStyle: {
         borderRadius: 5,
