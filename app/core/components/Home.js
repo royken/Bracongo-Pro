@@ -89,7 +89,7 @@ class Home extends Component {
                                 titleStyle={{color: 'white'}}
                                 imageStyle={{width: 70, height: 70}}
                                 imageUrl={require('../../assets/images/van.png')}
-                                containerStyle={{alignItems: "center", marginTop: 15}}
+                                containerStyle={{alignItems: "center", marginTop: profile.yaka === true ? 15 : 0}}
                                 onPress={() => this._onGoToScreen('VanHome')}
                             />
                         </View>
