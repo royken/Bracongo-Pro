@@ -2,7 +2,8 @@ import {
     GET_DISCOUNT_AND_TURNOVER, 
     GET_PROFILE, 
     CLEAR_PROFILE,
-    UNSET_PROFILE_LISTENER
+    UNSET_PROFILE_LISTENER,
+    SET_PLAYERID
 } from "../actions/types";
 import DeviceInfo from 'react-native-device-info';
 
@@ -20,7 +21,9 @@ const initialState = {
     turnover: 0,
     discount: 0,
     top: false,
+    yaka: false,
     uuid: DeviceInfo.getUniqueID(),
+    playerId: null,
     unsubscribe: null,
     isLoaded: false
 };
@@ -42,6 +45,7 @@ export default function(state = initialState, action) {
                 password, 
                 ventes,
                 top,
+                yaka,
                 unsubscribe 
             } = action.value;
 
@@ -58,6 +62,7 @@ export default function(state = initialState, action) {
                 password: password, 
                 ventes: ventes,
                 top: top,
+                yaka: yaka,
                 unsubscribe: unsubscribe,
                 isLoaded: true
             };
@@ -70,7 +75,14 @@ export default function(state = initialState, action) {
                 discount: action.value.discount
             };
             break;
-        
+
+        case SET_PLAYERID:
+            newState = { 
+                ...state,
+                playerId: action.value
+            };
+            break;
+
         case CLEAR_PROFILE:    
             newState = {
                 ...state,

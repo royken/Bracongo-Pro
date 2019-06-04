@@ -6,6 +6,8 @@ import { Input, Icon, Button } from 'react-native-elements';
 import validateField from '../../../utils/validator';
 import { signIn, signOut } from '../actions/actions';
 import { connect } from 'react-redux';
+import { SALEPOINTSPLAYERIDS } from '../../../models/paths';
+import { getDoc } from '../../../utils/firebase';
 
 class SignIn extends Component {
 
@@ -23,6 +25,7 @@ class SignIn extends Component {
             numero: "",
             password: ""
         };
+        
     }
 
     componentDidMount() {
@@ -31,9 +34,16 @@ class SignIn extends Component {
     }
 
     componentDidUpdate() {
-        const { navigation, isLoaded, willSale } = this.props;
+        const { navigation, isLoaded, willSale, numero, playerId } = this.props;
         
         if(isLoaded) {
+            
+            if(playerId) {
+                getDoc(SALEPOINTSPLAYERIDS, numero)
+                .set({ playerId: playerId })
+                .catch((error) => {});
+            }
+
             if(willSale) {
                 navigation.navigate("Home");
             } else {
@@ -174,6 +184,8 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => ({
     isLoading: state.uiLoading.isLoading,
     isLoaded: state.profile.isLoaded,
+    numero: state.profile.numero,
+    playerId: state.profile.playerId,
     willSale: state.profile.ventes
 });
 

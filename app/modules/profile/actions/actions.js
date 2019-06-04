@@ -1,5 +1,5 @@
 import { decryptPass } from "../../sign/signHelper";
-import { GET_DISCOUNT_AND_TURNOVER, GET_PROFILE, UNSET_PROFILE_LISTENER } from "./types";
+import { GET_DISCOUNT_AND_TURNOVER, GET_PROFILE, UNSET_PROFILE_LISTENER, SET_PLAYERID } from "./types";
 import { getActualMonthDiscountAndTurnover } from "../../../api/bracongoApi";
 import { isEmpty } from 'lodash';
 import { uiStartLoading, uiStopLoading } from '../../../core/actions/actions';
@@ -22,6 +22,13 @@ export const setProfileListener = () => (dispatch, getState) => {
         },
         (error) => {}
     );
+}
+
+export const setPlayerId = (playerId) => (dispatch) => {
+    dispatch({
+        type: SET_PLAYERID,
+        value: playerId
+    });
 }
 
 export const unsetProfileListener = () => (dispatch, getState) => {

@@ -4,6 +4,7 @@ import {
     createSwitchNavigator,
     createAppContainer
 } from 'react-navigation';
+import OneSignal from 'react-native-onesignal';
 import SignIn from '../modules/sign/components/SignIn';
 import Home from '../core/components/Home';
 import PurchaseHome from '../modules/purchase/components/PurchaseHome';
@@ -19,6 +20,8 @@ import WappiPromoComments from '../modules/wappi/components/WappiPromoComments';
 import WappiPhoto from '../modules/wappi/components/WappiPhoto';
 import WappiLoyalty from '../modules/wappi/components/WappiLoyalty';
 import WappiNote from '../modules/wappi/components/WappiNote';
+import { connect } from 'react-redux';
+import { setPlayerId } from '../modules/profile/actions/actions';
 
 const PurchaseStack = createStackNavigator(
     {
@@ -143,6 +146,27 @@ const createMainNavigator = () => {
 
 class Navigation extends React.Component {
 
+    constructor(props) {
+        super(props);
+
+        OneSignal.addEventListener('ids', this.onIds);
+        
+    }
+
+    componentDidMount() {
+        OneSignal.configure();
+    }
+
+    onIds = (device) => { 
+        const { setPlayerId } = this.props;
+
+        setPlayerId(device.userId);
+    }
+
+    componentWillUnmount() {
+        OneSignal.removeEventListener('ids', this.onIds);
+    }
+
     render() {
         const Layout = createAppContainer(createMainNavigator());
 
@@ -152,4 +176,4 @@ class Navigation extends React.Component {
     }
 }
 
-export default Navigation;
+export default connect(null, { setPlayerId })(Navigation);

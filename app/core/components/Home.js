@@ -21,7 +21,7 @@ class Home extends Component {
 
     componentWillUnmount() {
         const { cancelRequest } = this.props;
-        console.log("Demonter");
+        
         cancelRequest();
     }
 
@@ -72,15 +72,17 @@ class Home extends Component {
                 <View style={styles.menuStyle}>
                     <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
                         <View>
-                            <IconWithText 
-                                withImage={true}
-                                title="W'Appi"
-                                titleStyle={{color: 'white'}}
-                                imageStyle={{width: 70, height: 70}}
-                                imageUrl={require('../../assets/images/wappi.png')}
-                                containerStyle={{alignItems: "center"}}
-                                onPress={() => this._onGoToScreen('WappiHome')}
-                            />
+                            {profile.yaka === true &&
+                                <IconWithText 
+                                    withImage={true}
+                                    title="Yaka"
+                                    titleStyle={{color: 'white'}}
+                                    imageStyle={{width: 70, height: 70}}
+                                    imageUrl={require('../../assets/images/wappi.png')}
+                                    containerStyle={{alignItems: "center"}}
+                                    onPress={() => this._onGoToScreen('WappiHome')}
+                                />
+                            }
                             <IconWithText 
                                 withImage={true}
                                 title={"camion".toUpperCase()}

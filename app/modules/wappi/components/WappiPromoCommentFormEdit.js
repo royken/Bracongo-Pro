@@ -6,6 +6,7 @@ import { isEmpty } from 'lodash';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import validateField from '../../../utils/validator';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const initialState = {
     dateBegin: '',
@@ -100,7 +101,7 @@ class WappiPromoCommentFormEdit extends Component {
                 this.setState({ ...initialState }); hideForm(); 
             }}
                 overlayBackgroundColor="#7B7C9E" height="70%">
-                <View>
+                <KeyboardAwareScrollView>
                     <View style={{alignItems: 'center', marginTop: 10}}>
                         <Text h4 style={{color: 'white'}}>
                         {"nouveau événement".toUpperCase()}
@@ -176,7 +177,7 @@ class WappiPromoCommentFormEdit extends Component {
                         loading={isLoading}
                         loadingProps={{color: 'blue'}}
                     />
-                </View>
+                </KeyboardAwareScrollView>
             </Overlay>
         );
     }

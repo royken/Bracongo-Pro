@@ -1,5 +1,6 @@
 // For Profile salepoint module
 export const SALEPOINTS = "salepoints";
+export const SALEPOINTSPLAYERIDS = "salepointsPlayerIds";
 export const SALEPOINTSPROFILESTORAGE = "salepointsProfileStorage";
 export const SALEPOINTSPHOTOSSTORAGE = "salepointsPhotosStorage";
 export const SALEPOINTSPHOTOS = "photos";

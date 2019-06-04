@@ -8,6 +8,7 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import validateField from '../../../utils/validator';
 import { toast } from '../../../utils/toast';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { IMAGEPICKEROPTIONS } from '../../../core/constants';
 
 const initialState = {
@@ -100,7 +101,7 @@ class WappiPromoCommentForm extends Component {
                 this.setState({ ...initialState }); hideForm(); 
             }}
                 overlayBackgroundColor="#7B7C9E" height="77%">
-                <View>
+                <KeyboardAwareScrollView>
                     <View style={{alignItems: 'center', marginTop: 10}}>
                         <Text h4 style={{color: 'white'}}>
                         {"nouveau événement".toUpperCase()}
@@ -188,7 +189,7 @@ class WappiPromoCommentForm extends Component {
                         loading={isLoading}
                         loadingProps={{color: 'blue'}}
                     />
-                </View>
+                </KeyboardAwareScrollView>
             </Overlay>
         );
     }

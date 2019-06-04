@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Overlay, Text, Input, Button } from 'react-native-elements';
 import PropTypes from 'prop-types';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const PostModal = (props) => {
     const { 
@@ -21,7 +22,7 @@ const PostModal = (props) => {
         <Overlay isVisible={isVisible} onBackdropPress={() => hideForm()}
             overlayBackgroundColor="white" height={height}
         >
-            <View>
+            <KeyboardAwareScrollView>
                 <View style={styles.titleContainerstyle}>
                     <Text h4 style={{color: '#7B7C9E'}}>{title.toUpperCase()}</Text>
                 </View>
@@ -50,7 +51,7 @@ const PostModal = (props) => {
                     loading={isSubmitting}
                     loadingProps={{color: 'blue'}}
                 />
-            </View>
+            </KeyboardAwareScrollView>
         </Overlay>
     );
 }
