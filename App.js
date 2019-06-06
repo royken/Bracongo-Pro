@@ -3,6 +3,7 @@ import { Provider } from 'react-redux';
 import Navigation from './app/navigation/Navigation';
 import store from './app/store/store';
 import OneSignal from 'react-native-onesignal';
+import SplashScreen from 'react-native-splash-screen'
 import { 
     ONESIGNAL_APPID_PRO, COMMENTSALEPOINTTYPE, 
     QRCODETYPE, COMMENTPROMOTYPE 
@@ -16,6 +17,10 @@ export default class App extends Component {
 
         OneSignal.init(ONESIGNAL_APPID_PRO, {kOSSettingsKeyAutoPrompt : true});
         OneSignal.addEventListener('opened', this.onOpened);
+    }
+
+    componentDidMount() {
+        SplashScreen.hide();
     }
 
     componentWillUnmount() {

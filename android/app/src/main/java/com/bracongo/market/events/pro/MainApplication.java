@@ -4,6 +4,7 @@ package com.bracongo.market.events.pro;
 import android.support.multidex.MultiDexApplication;
 
 import com.facebook.react.ReactApplication;
+import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.geektime.rnonesignalandroid.ReactNativeOneSignalPackage;
 import cl.json.RNSharePackage;
@@ -38,6 +39,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new SplashScreenReactPackage(),
             new RNFetchBlobPackage(),
             new ReactNativeOneSignalPackage(),
             new RNSharePackage(),
