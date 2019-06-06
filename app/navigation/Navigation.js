@@ -23,6 +23,10 @@ import WappiLoyalty from '../modules/wappi/components/WappiLoyalty';
 import WappiNote from '../modules/wappi/components/WappiNote';
 import { connect } from 'react-redux';
 import { setPlayerId } from '../modules/profile/actions/actions';
+import { getActiveRouteName } from '../utils/navigationHelper';
+import { getCurrentUserId, getDoc } from '../utils/firebase';
+import { logAnalytic } from '../api/bracongoApi';
+import { SALEPOINTS } from '../models/paths';
 
 const PurchaseStack = createStackNavigator(
     {
@@ -189,7 +193,24 @@ class Navigation extends React.Component {
         const Layout = createAppContainer(createMainNavigator());
 
         return (
-            <Layout />
+            <Layout 
+                onNavigationStateChange={(prevState, currentState, action) => {
+                    const currentScreen = getActiveRouteName(currentState);
+                    const prevScreen = getActiveRouteName(prevState);
+                    const currentUserUid = getCurrentUserId();
+
+                    if(currentUserUid && prevScreen !== currentScreen) {
+                        getDoc(SALEPOINTS, currentUserUid).get()
+                        .then((doc) => {
+                            const data = doc.data();
+                            if(data) {
+                                logAnalytic(data.numero, currentScreen).catch((error) => {});
+                            }
+                        })
+                        .catch((error) => {});
+                    }
+                }}
+            />
         );
     }
 }

@@ -12,7 +12,13 @@ export function getAuth(){
 }
 
 export function getCurrentUserId() {
-    return firebase.auth().currentUser.uid;
+    const user = firebase.auth().currentUser;
+    
+    if(user) {
+        return user.uid;
+    }
+
+    return null;
 }
 
 export function getCollection(collection) {

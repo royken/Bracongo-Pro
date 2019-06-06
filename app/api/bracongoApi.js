@@ -92,6 +92,16 @@ export function addComplaint(complaint) {
     });
 }
 
+export function logAnalytic(numero, page) {
+    const uri = `${baseURI}/logs/add`;
+
+    return new Promise((resolve, reject) => {
+        axios.post(uri, { client: numero, page: page })
+        .then((resp) => resolve(true))
+        .catch((error) => reject(error));
+    });
+}
+
 export function getTrucks(deviceId, ccode) {
     const currentDate = (new Date()).getTime().toString();
     const token = getToken(deviceId, ccode, currentDate);
