@@ -121,6 +121,7 @@ class Home extends Component {
                                 imageStyle={{width: 70, height: 70}}
                                 imageUrl={require('../../assets/images/complaint.png')}
                                 containerStyle={{alignItems: "center"}}
+                                onPress={() => this._onGoToScreen("ComplaintHome")}
                             />
                             <IconWithText 
                                 withImage={true}

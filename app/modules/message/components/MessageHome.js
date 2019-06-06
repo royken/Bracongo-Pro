@@ -1,38 +1,35 @@
 import React, { Component } from 'react'
-import { View, FlatList } from 'react-native';
+import { View, FlatList, Text } from 'react-native';
+import { connect } from 'react-redux';
 import MainView from '../../../core/layout/MainView';
 import MainHeader from '../../../core/layout/MainHeader';
 import MessageItem from './MessageItem';
-
-const messages = [
-    {
-        id: 1,
-        content: "coolcoolcoolcoolcoolcoolcoolcoolcoolcoolcoolcoolcoolcoolcoolcoolcoolcool" + 
-        "coolcoolcoolcoolcoolcoolcoolcoolcoolcoolcoolcoolcoolcoolcoolcoolcoolcoolcoolcoolcool",
-        url: null,
-        date: "Mai 01, 17:59"
-    },
-    {
-        id: 2,
-        content: "coolcoolcoolcoolcoolcoolcoolcoolcoolcoolcoolcoolcoolcoolcoolcoolcoolcool" + 
-        "coolcoolcoolcoolcoolcoolcoolcoolcoolcoolcoolcoolcoolcoolcoolcoolcoolcoolcoolcoolcool",
-        url: require('../../../assets/images/background_line_bottom.png'),
-        date: "Mai 01, 17:59"
-    }
-];
+import { listMessages } from '../actions/actions';
+import { cancelRequest } from '../../../core/actions/actions';
+import { isEmpty } from 'lodash';
+import Spinner from '../../../core/layout/Spinner';
 
 class MessageHome extends Component {
 
+    componentDidMount() {
+        const { listMessages, numero } = this.props;
+        listMessages(numero);
+    }
+
+    componentWillUnmount() {
+        const { cancelRequest } = this.props;
+
+        cancelRequest();
+    }
+
     _renderItem = ({item}) => (
         <MessageItem 
-            date={item.date}
-            content={item.content}
-            url={item.url}
+            message={item}
         />
     )
 
     render() {
-        const { navigation } = this.props;
+        const { navigation, isLoading, messages, numero, page, pageable, listMessages } = this.props;
 
         return (
             <MainView 
@@ -43,15 +40,39 @@ class MessageHome extends Component {
                     navigation={navigation}
                     containerStyle={{marginTop: '7%'}}
                 />
-                <FlatList 
-                    contentContainerStyle={{marginTop: 20}}
-                    data={messages}
-                    keyExtractor={(item, index) => item.id.toString()}
-                    renderItem={this._renderItem}
-                />
+                {isLoading ?
+                    <Spinner containerStyle={{marginTop: 150, alignItems: 'center'}} 
+                        color="blue" /> 
+                    :
+                    isEmpty(messages) ? 
+                    <View style={{alignItems: 'center', marginTop: 150}}>
+                        <Text style={{color: 'white'}}>Aucun message trouvé.</Text>
+                    </View>
+                    :
+                    <FlatList 
+                        contentContainerStyle={{marginTop: 20}}
+                        data={messages}
+                        keyExtractor={(item, index) => item.id.toString()}
+                        renderItem={this._renderItem}
+                        onEndReachedThreshold={0.5}
+                        onEndReached={() => {
+                            if(pageable) {
+                                listMessages(numero, page + 1);
+                            }
+                        }}
+                    />
+                }
             </MainView>
         );
     }
 }
 
-export default MessageHome;
+const mapStateToProps = (state) => ({
+    numero: state.profile.numero,
+    isLoading: state.uiLoading.isLoading,
+    messages: state.messages.messages,
+    page: state.messages.page,
+    pageable: state.messages.pageable
+});
+
+export default connect(mapStateToProps, { listMessages, cancelRequest })(MessageHome);

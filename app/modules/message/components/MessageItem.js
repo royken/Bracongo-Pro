@@ -2,19 +2,20 @@ import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import PropTypes from 'prop-types';
 import { Image } from 'react-native-elements';
+import moment from 'moment';
 
 const MessageItem = (props) => {
-    const { content, url, date } = props;
+    const { contenu, lienImage, dateMessage, hasImage } = props.message;
 
     return (
         <View style={styles.containerStyle}>
             <Text style={{color: 'white'}}>Bracongo</Text>
             <View style={styles.contentStyle}>
-                <Text style={{color: 'white'}}>{content}</Text>
-                {url !== null ?
+                <Text style={{color: 'white'}}>{contenu}</Text>
+                {hasImage === true ?
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: 10}}>
                         <Image 
-                            source={url}
+                            source={{uri: lienImage}}
                             onError={() => {}}
                             style={{
                                 backgroundColor: 'grey', 
@@ -22,11 +23,15 @@ const MessageItem = (props) => {
                             }}
                         />
                         <View style={{justifyContent: 'flex-end', alignItems: 'flex-end'}}>
-                            <Text style={{color: 'white'}}>{date}</Text>
+                            <Text style={{color: 'white'}}>
+                            {moment(dateMessage).format("DD-MM-YY HH:mm")}
+                            </Text>
                         </View>
                     </View> :
                     <View style={{flexDirection: 'row', justifyContent: 'flex-end', marginTop: 10}}>
-                        <Text style={{color: 'white'}}>{date}</Text> 
+                        <Text style={{color: 'white'}}>
+                        {moment(dateMessage).format("DD-MM-YY HH:mm")}
+                        </Text> 
                     </View>  
                 } 
             </View>
@@ -34,15 +39,8 @@ const MessageItem = (props) => {
     );
 }
 
-
-MessageItem.defaultProps = {
-    url: null
-};
-
 MessageItem.propTypes = {
-    content: PropTypes.string.isRequired,
-    url: PropTypes.any,
-    date: PropTypes.any
+    message: PropTypes.object.isRequired
 };
 
 const styles = StyleSheet.create({

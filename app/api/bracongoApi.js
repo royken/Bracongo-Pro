@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { getToken } from '../utils/buildTruckUrl';
 import { isNull } from 'lodash';
+import { MAX_PER_PAGE_PAGINATION } from './constants';
 
 const baseURI = "https://api.bracongo-cd.com:8443/bracongo-api";
 const baseVODACOMURI = "https://ivtrackaz.vodacom.cd/ivtwcf/IVTrSvc.svc/GetCircInfoJS/BRC";
@@ -59,6 +60,36 @@ export function getPurchases(numero, password, isMonth) {
 
     }       
     
+}
+
+export function getMessages(numero, page = 0) {
+    const uri = `${baseURI}/messages/client/${numero}/${page}/${MAX_PER_PAGE_PAGINATION}`;
+
+    return new Promise((resolve, reject) => {
+        axios.get(uri)
+        .then((resp) => resolve(resp.data))
+        .catch((error) => reject(error));
+    });
+}
+
+export function getComplaints(numero, page = 0) {
+    const uri = `${baseURI}/plaintes/client/${numero}/${page}/${MAX_PER_PAGE_PAGINATION}`;
+
+    return new Promise((resolve, reject) => {
+        axios.get(uri)
+        .then((resp) => resolve(resp.data))
+        .catch((error) => reject(error));
+    });
+}
+
+export function addComplaint(complaint) {
+    const uri = `${baseURI}/plaintes/add`;
+
+    return new Promise((resolve, reject) => {
+        axios.post(uri, complaint)
+        .then((resp) => resolve(resp.data))
+        .catch((error) => reject(error));
+    });
 }
 
 export function getTrucks(deviceId, ccode) {

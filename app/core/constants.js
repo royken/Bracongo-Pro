@@ -16,4 +16,4 @@ export const IMAGEPICKEROPTIONS = {
     takePhotoButtonTitle: 'CAMERA',
     chooseFromLibraryButtonTitle: 'GALERIE',
     cancelButtonTitle: 'ANNULER'
-};
+}; 

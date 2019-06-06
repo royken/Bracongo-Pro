@@ -12,6 +12,7 @@ import PurchaseMonth from '../modules/purchase/components/PurchaseMonth';
 import PurchaseYear from '../modules/purchase/components/PurchaseYear';
 import PurchaseDiscount from '../modules/purchase/components/PurchaseDiscount';
 import MessageHome from '../modules/message/components/MessageHome';
+import ComplaintHome from '../modules/complaint/components/ComplaintHome';
 import VanHome from '../modules/van/components/VanHome';
 import WappiHome from '../modules/wappi/components/WappiHome';
 import WappiPromo from '../modules/wappi/components/WappiPromo';
@@ -54,6 +55,20 @@ const MessageStack = createStackNavigator(
     },
     {
         initialRouteName: 'MessageHome',
+        defaultNavigationOptions: {
+            header: null
+        }
+    }
+);
+
+const ComplaintStack = createStackNavigator(
+    {
+        ComplaintHome: {
+            screen: ComplaintHome
+        }
+    },
+    {
+        initialRouteName: 'ComplaintHome',
         defaultNavigationOptions: {
             header: null
         }
@@ -116,6 +131,9 @@ const MainStackNavigator = createStackNavigator(
         },
         MessageStack: {
             screen: MessageStack
+        },
+        ComplaintStack: {
+            screen: ComplaintStack
         },
         VanStack: {
             screen: VanStack
