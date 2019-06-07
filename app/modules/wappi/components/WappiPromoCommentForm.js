@@ -104,7 +104,7 @@ class WappiPromoCommentForm extends Component {
                 <KeyboardAwareScrollView>
                     <View style={{alignItems: 'center', marginTop: 10}}>
                         <Text h4 style={{color: 'white'}}>
-                        {"nouveau événement".toUpperCase()}
+                        {"nouvel évènement".toUpperCase()}
                         </Text>
                     </View>
                     <Input 
