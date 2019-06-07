@@ -151,8 +151,8 @@ android {
 }
 
 dependencies {
+    implementation project(':rn-fetch-blob')
     implementation project(':react-native-splash-screen')
-    implementation project(':react-native-fetch-blob')
     implementation project(':react-native-onesignal')
     implementation project(':react-native-share')
     implementation project(':react-native-device-info')
