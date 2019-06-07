@@ -2,7 +2,6 @@ import axios from 'axios';
 import { getToken } from '../utils/buildTruckUrl';
 import { isNull } from 'lodash';
 import { MAX_PER_PAGE_PAGINATION } from './constants';
-
 const baseURI = "https://api.bracongo-cd.com:8443/bracongo-api";
 const baseVODACOMURI = "https://ivtrackaz.vodacom.cd/ivtwcf/IVTrSvc.svc/GetCircInfoJS/BRC";
 
@@ -13,7 +12,7 @@ export function signInWithApi(numero, password) {
             (resp) => {
                 const data = resp.data;
                 if(data.status === true) {
-                    resolve(data.clientDto);
+                   resolve(data.clientDto);
                 } else {
                     reject({code: 'auth/invalid-credential'});
                 }   
