@@ -3,11 +3,12 @@ package com.bracongo.market.events.pro;
 /* import android.app.Application; */
 import android.support.multidex.MultiDexApplication;
 
-import com.facebook.react.ReactApplication;
-import org.devio.rn.splashscreen.SplashScreenReactPackage;
-import com.RNFetchBlob.RNFetchBlobPackage;
-import com.geektime.rnonesignalandroid.ReactNativeOneSignalPackage;
 import cl.json.RNSharePackage;
+import cl.json.ShareApplication;
+import com.facebook.react.ReactApplication;
+import com.RNFetchBlob.RNFetchBlobPackage;
+import org.devio.rn.splashscreen.SplashScreenReactPackage;
+import com.geektime.rnonesignalandroid.ReactNativeOneSignalPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.agontuk.RNFusedLocation.RNFusedLocationPackage;
 import io.invertase.firebase.RNFirebasePackage;
@@ -39,8 +40,8 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new SplashScreenReactPackage(),
             new RNFetchBlobPackage(),
+            new SplashScreenReactPackage(),
             new ReactNativeOneSignalPackage(),
             new RNSharePackage(),
             new RNDeviceInfo(),

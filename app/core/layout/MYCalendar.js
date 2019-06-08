@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, FlatList, TouchableOpacity } from 'react-native';
 import { Overlay, Icon, Text } from 'react-native-elements';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import PropTypes from 'prop-types';
 
 const currentYear = (new Date()).getFullYear();
@@ -113,7 +114,7 @@ class MYCalendar extends Component {
         return (
             <Overlay isVisible={isVisible} 
                 onBackdropPress={() => { this.setState({...this.currentState}); hide();}} 
-                overlayBackgroundColor="white" height="77%"
+                overlayBackgroundColor="white" height={hp('77%')}
             >
                 <View>
                     <View style={{ 
@@ -220,7 +221,7 @@ const styles = StyleSheet.create({
         marginVertical: 10
     },
     monthsContainerStyle: {
-        marginLeft: "12%",
+        marginLeft: wp('12%'),
         marginVertical: 10
     }
 });

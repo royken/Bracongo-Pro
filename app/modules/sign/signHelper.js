@@ -12,38 +12,39 @@ export function signInHelper(numero, password) {
                 const passwordHash = getPasswordHash(password);
                 const email = "" + numero + "@bracongopro.cd"; 
                 
+                const salepoint = {
+                    numero: numero, 
+                    raisonSociale: data.raisonSociale,
+                    cover: 'undefined', 
+                    description: '',
+                    latitude: data.latitude,
+                    longitude: data.longitude,
+                    categorie: data.categorie,
+                    ventes: data.ventes,
+                    yaka: data.yaka,
+                    top: false,
+                    password: encryptPass(password)
+                };
+                
                 signUpWithFB(email, passwordHash).then(
                     (resp) => { 
                         const id = resp.user.uid;
-                        const salepoint = {
-                            numero: numero, 
-                            raisonSociale: data.raisonSociale,
-                            cover: 'undefined', 
-                            description: '',
-                            latitude: data.latitude,
-                            longitude: data.longitude,
-                            categorie: data.categorie,
-                            ventes: data.ventes,
-                            yaka: data.yaka,
-                            top: false,
-                            password: encryptPass(password)
-                        };
                         
                         getDoc(SALEPOINTS, id)
                         .set(salepoint)
                         .then(() => resolve({id: id, ...salepoint}))
-                        .catch((error) => reject(error)) 
+                        .catch((error) => reject(error));
                     }
                 ).catch((error) => {
                     if(error.code === "auth/email-already-in-use") {
                         signInWithFB(email, passwordHash).then(
                             (data) => {
                                 const id = data.user.uid;
-                                getDoc(SALEPOINTS, id).get().then(
-                                    (resp) => {
-                                        resolve({id: id, ...resp.data()});
-                                    }
-                                ).catch((error) => reject(error));
+                                
+                                getDoc(SALEPOINTS, id)
+                                .set(salepoint)
+                                .then(() => resolve({id: id, ...salepoint}))
+                                .catch((error) => reject(error));
                             }
                         ).catch((error) => reject(error));
                     } else {

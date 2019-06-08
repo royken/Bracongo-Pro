@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Dimensions } from 'react-native';
 import { Text, Image, Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
-import Share from 'react-native-share';
 import ImagePicker from 'react-native-image-picker';
 import { setListener, unsetListener, getStatus } from '../../../core/actions/actions';
 import { createQuery, update, updateFile } from '../../../utils/firebase';
@@ -15,7 +14,7 @@ import ConfirmModal from '../../../core/layout/ConfirmModal';
 import { toast } from '../../../utils/toast';
 import { CONNEXION_PROBLEM_MSG, IMAGEPICKEROPTIONS } from '../../../core/constants';
 import WappiPromoCommentFormEdit from './WappiPromoCommentFormEdit';
-import { getTimeFromStringDate } from '../../../utils/helper';
+import { getTimeFromStringDate, shareToSN } from '../../../utils/helper';
 
 const deviceWidth = Dimensions.get('window').width;
 const imageHeight = Math.floor(deviceWidth / 2); 
@@ -60,12 +59,12 @@ class WappiPromoDetails extends Component {
         const { raisonSociale, cover } = this.props;
 
         const options = {
-            urls: [promo.image, cover],
+            url: promo.image,
             title: "Promotion point de vente " + raisonSociale,
             message: promo.description
         };
 
-        Share.open(options).catch((error) => {});
+        shareToSN(options).catch((error) => {});
     }
 
     _displayComments(promoId, promoTitle) {

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, FlatList } from 'react-native';
 import { Icon, Text } from 'react-native-elements';
-import Share from 'react-native-share';
 import { connect } from 'react-redux';
 import { createQuery, uploadFile, add } from '../../../utils/firebase';
 import { setPaginationListener, unsetPaginatorListener, getStatus } from '../../../core/actions/actions';
@@ -13,7 +12,7 @@ import WappiPromoItem from './WappiPromoItem';
 import WappiPromoCommentForm from './WappiPromoCommentForm';
 import { toast } from '../../../utils/toast';
 import { CONNEXION_PROBLEM_MSG } from '../../../core/constants';
-import { getTimeFromStringDate, getCurrentDate } from '../../../utils/helper';
+import { getTimeFromStringDate, getCurrentDate, shareToSN } from '../../../utils/helper';
 
 class WappiPromo extends Component {
     
@@ -58,12 +57,12 @@ class WappiPromo extends Component {
         const { raisonSociale, cover } = this.props;
 
         const options = {
-            urls: [promo.image, cover],
+            url: promo.image,
             title: "Promotion point de vente " + raisonSociale,
             message: promo.description
         };
 
-        Share.open(options).catch((error) => {});
+        shareToSN(options).catch((error) => {});
     }
 
     _renderItem = ({item, index}) => {
