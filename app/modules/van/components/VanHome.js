@@ -55,12 +55,14 @@ class VanHome extends Component {
         const { getVanTrucks, profile } = this.props;
         const ccode = profile.numero.slice(0, 5); 
         
-        if(isRefreshing) {
-            const { markers } = this.state;
-            this._handleFitZoom(markers);
+        if(isRefreshing === true) { 
+            this.setState({ markers: [] }, () => {
+                getVanTrucks(profile.uuid, ccode);
+            });
+        } else {
+            getVanTrucks(profile.uuid, ccode);
         }
 
-        getVanTrucks(profile.uuid, ccode);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -87,6 +89,8 @@ class VanHome extends Component {
                 markers: markers,
                 latitude: profile.latitude ? parseGeoCoord(profile.latitude) : this.state.latitude,
                 longitude: profile.longitude ? parseGeoCoord(profile.longitude) : this.state.longitude,
+            }, () => {
+                this._handleFitZoom(markers);
             });
              
         }
@@ -118,7 +122,6 @@ class VanHome extends Component {
 
     render() {
         const { navigation, isLoading, vans, profile } = this.props;
-        const { markers } = this.state;
 
         return (
             <MainView 
@@ -136,7 +139,6 @@ class VanHome extends Component {
                         region={this._getMapRegion()}
                         style={styles.mapStyle} 
                         zoomControlEnabled={true}
-                        onLayout={(event) => this._handleFitZoom(markers)}
                     >
                         {profile.latitude && profile.longitude &&
                             <MarkerSalePoint profile={profile} />
