@@ -6,6 +6,7 @@ import { Text, Icon } from 'react-native-elements';
 import IconWithText from '../../../core/layout/IconWithText';
 import { connect } from 'react-redux';
 import { setProfileListener, unsetProfileListener } from '../../profile/actions/actions';
+import { signOut } from '../../sign/actions/actions';
 import ImagePicker from 'react-native-image-picker';
 import { IMAGEPICKEROPTIONS, CONNEXION_PROBLEM_MSG } from '../../../core/constants';
 import { toast } from '../../../utils/toast';
@@ -14,6 +15,7 @@ import { SALEPOINTSPROFILESTORAGE } from '../../../models/paths';
 import { updateProfile } from '../../profile/profileHelper';
 import Spinner from '../../../core/layout/Spinner';
 import PostModal from '../../../core/layout/PostModal';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const deviceWidth = Dimensions.get('window').width;
 const photoHeigth = Math.floor(deviceWidth / 2);
@@ -116,8 +118,8 @@ class WappiHome extends Component {
     }
 
     render() {
-        const { navigation, profile } = this.props;
-        const { cover, description } = profile;
+        const { navigation, profile, signOut } = this.props;
+        const { cover, description, ventes } = profile;
         const { isLoading, isSubmitting, isVisible } = this.state;
 
         return (
@@ -225,6 +227,17 @@ class WappiHome extends Component {
                         />
                     </View>
                 </View>
+                {!ventes &&
+                    <View style={styles.logoutStyle}>
+                        <Icon 
+                            type="font-awesome" 
+                            name="sign-out"
+                            iconStyle={{color: "#7B7C9E"}}
+                            containerStyle={styles.logoutIconStyle}
+                            onPress={() => { signOut().then(() => navigation.navigate("SignIn")); }} 
+                        />
+                    </View>
+                }
             </MainView>
         );
     }
@@ -246,6 +259,21 @@ const styles = StyleSheet.create({
         borderRadius: 20, 
         justifyContent: 'center', 
         alignItems: 'center'
+    },
+    logoutStyle: {
+        position: "absolute",
+        top: hp("4%"),
+        bottom: 0,
+        left: wp("87%"),
+        right: 0
+    },
+    logoutIconStyle: {
+        height: 40,
+        width: 40,
+        borderRadius: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: "white"
     }
 });
 
@@ -253,4 +281,4 @@ const mapStateToProps = (state) => ({
     profile: state.profile
 });
 
-export default connect(mapStateToProps, { setProfileListener, unsetProfileListener })(WappiHome);
+export default connect(mapStateToProps, { setProfileListener, unsetProfileListener, signOut })(WappiHome);

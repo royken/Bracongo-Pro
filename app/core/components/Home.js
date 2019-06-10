@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Text } from 'react-native-elements';
+import { Text, Icon } from 'react-native-elements';
 import MainView from '../layout/MainView';
 import Logo from '../../core/layout/Logo';
 import IconWithText from '../layout/IconWithText';
@@ -8,6 +8,8 @@ import { connect } from 'react-redux';
 import { getHighLigthColor } from '../../modules/profile/profileHelper';
 import { getDiscountAndTurnover } from '../../modules/profile/actions/actions';
 import { cancelRequest } from '../../core/actions/actions';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { signOut } from '../../modules/sign/actions/actions';
 
 import Spinner from '../layout/Spinner';
 
@@ -32,7 +34,7 @@ class Home extends Component {
     }
 
     render() {
-        const { profile, isLoading,  } = this.props;
+        const { profile, isLoading, signOut, navigation } = this.props;
         const { turnover, discount, categorie } = profile;
         const catColor = getHighLigthColor(categorie);
 
@@ -134,6 +136,15 @@ class Home extends Component {
                         </View>
                     </View>
                 </View>
+                <View style={styles.logoutStyle}>
+                    <Icon 
+                        type="font-awesome" 
+                        name="sign-out"
+                        iconStyle={{color: "#7B7C9E"}}
+                        containerStyle={styles.logoutIconStyle}
+                        onPress={() => { signOut().then(() => navigation.navigate("SignIn")); }} 
+                    />
+                </View>
             </MainView>
         );
     }
@@ -167,6 +178,21 @@ const styles = StyleSheet.create({
         flexDirection: 'row', 
         justifyContent: 'center',
         marginTop: 10
+    },
+    logoutStyle: {
+        position: "absolute",
+        top: hp("2%"),
+        bottom: 0,
+        left: wp("2%"),
+        right: 0
+    },
+    logoutIconStyle: {
+        height: 40,
+        width: 40,
+        borderRadius: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: "white"
     }
 });
 
@@ -175,4 +201,4 @@ const mapStateToProps = (state) => ({
     isLoading: state.uiLoading.isLoading
 }); 
 
-export default connect(mapStateToProps, { getDiscountAndTurnover, cancelRequest })(Home);
+export default connect(mapStateToProps, { getDiscountAndTurnover, cancelRequest, signOut })(Home);
