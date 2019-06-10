@@ -18,7 +18,7 @@ const deviceDimHeight = Dimensions.get('window').height;
 const mapHeight = deviceDimWidth - 80;
 const spinnerTop = Math.floor(mapHeight / 2);
 
-const LATITUDE_DELTA = 0.05;
+const LATITUDE_DELTA = 0.01;
 const LONGITUDE_DELTA = LATITUDE_DELTA * (deviceDimWidth / deviceDimHeight);
 
 const initialLocation = {
