@@ -15,5 +15,6 @@ export const IMAGEPICKEROPTIONS = {
     title: 'Télécharger une photo',
     takePhotoButtonTitle: 'CAMERA',
     chooseFromLibraryButtonTitle: 'GALERIE',
-    cancelButtonTitle: 'ANNULER'
+    cancelButtonTitle: 'ANNULER',
+    maxWidth: 800, maxHeight: 600
 }; 
