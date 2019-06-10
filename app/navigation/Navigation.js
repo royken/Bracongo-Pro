@@ -204,6 +204,7 @@ class Navigation extends React.Component {
                         .then((doc) => {
                             const data = doc.data();
                             if(data) {
+                                console.log("SENDING DATA");
                                 logAnalytic(data.numero, currentScreen).catch((error) => {});
                             }
                         })
