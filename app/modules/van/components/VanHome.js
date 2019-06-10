@@ -11,13 +11,14 @@ import MarkerVan from './MarkerVan';
 import IconWithText from '../../../core/layout/IconWithText';
 import { parseGeoCoord } from '../../../utils/helper';
 import { cancelRequest } from '../../../core/actions/actions';
+import { isArray } from 'lodash';
 
 const deviceDimWidth = Dimensions.get('window').width;
 const deviceDimHeight = Dimensions.get('window').height;
 const mapHeight = deviceDimWidth - 80;
 const spinnerTop = Math.floor(mapHeight / 2);
 
-const LATITUDE_DELTA = 0.09;
+const LATITUDE_DELTA = 0.05;
 const LONGITUDE_DELTA = LATITUDE_DELTA * (deviceDimWidth / deviceDimHeight);
 
 const initialLocation = {
@@ -66,17 +67,10 @@ class VanHome extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const { profile, vans } = nextProps;
+        const { vans } = nextProps;
 
         if(this.state.markers.length === 0) {
             const markers = [];
-
-            if(profile.latitude !== null && profile.longitude !== null) {
-                markers.push({ 
-                    latitude: parseGeoCoord(profile.latitude),
-                    longitude: parseGeoCoord(profile.longitude)
-                });
-            }
 
             vans.map((van) => {
                 markers.push({ 
@@ -85,14 +79,13 @@ class VanHome extends Component {
                 });
             });
 
-            this.setState({
-                markers: markers,
-                latitude: profile.latitude ? parseGeoCoord(profile.latitude) : this.state.latitude,
-                longitude: profile.longitude ? parseGeoCoord(profile.longitude) : this.state.longitude,
-            }, () => {
-                this._handleFitZoom(markers);
-            });
-             
+            if(isArray(vans) && vans.length > 0) {
+                this.setState({
+                    markers: markers,
+                    latitude: parseGeoCoord(vans[0].lat),
+                    longitude: parseGeoCoord(vans[0].lng),
+                });
+            }
         }
     }
 
@@ -122,6 +115,7 @@ class VanHome extends Component {
 
     render() {
         const { navigation, isLoading, vans, profile } = this.props;
+        const { markers } = this.state;
 
         return (
             <MainView 
@@ -139,6 +133,7 @@ class VanHome extends Component {
                         region={this._getMapRegion()}
                         style={styles.mapStyle} 
                         zoomControlEnabled={true}
+                        onLayout={() => this._handleFitZoom(markers)}
                     >
                         {profile.latitude && profile.longitude &&
                             <MarkerSalePoint profile={profile} />
