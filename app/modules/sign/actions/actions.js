@@ -29,15 +29,21 @@ export const signIn = (numero, password) => dispatch => {
 }
 
 export const signOut = () => dispatch => {
-    signOutWithFB()
-    .then(() => {  
-        dispatch({
-            type: CLEAR_PROFILE
-        });
-    })
-    .catch((error) => {
-        dispatch({
-            type: CLEAR_PROFILE
+    return new Promise((resolve, reject) => {
+        signOutWithFB()
+        .then(() => {  
+            dispatch({
+                type: CLEAR_PROFILE
+            });
+
+            resolve(true);
+        })
+        .catch((error) => {
+            dispatch({
+                type: CLEAR_PROFILE
+            });
+
+            resolve(false);
         });
     });
 }
