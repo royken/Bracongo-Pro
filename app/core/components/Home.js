@@ -140,7 +140,7 @@ class Home extends Component {
                     <Icon 
                         type="font-awesome" 
                         name="sign-out"
-                        iconStyle={{color: "#7B7C9E"}}
+                        iconStyle={{color: "white"}}
                         containerStyle={styles.logoutIconStyle}
                         onPress={() => { signOut().then(() => navigation.navigate("SignIn")); }} 
                     />
@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: "white"
+        backgroundColor: "transparent"
     }
 });
 
