@@ -13,6 +13,7 @@ export function signInHelper(numero, password) {
                 const email = "" + numero + "@bracongopro.cd"; 
                 
                 const salepoint = {
+		    id: "",
                     numero: numero, 
                     raisonSociale: data.raisonSociale,
                     cover: 'undefined', 
@@ -29,7 +30,8 @@ export function signInHelper(numero, password) {
                 signUpWithFB(email, passwordHash).then(
                     (resp) => { 
                         const id = resp.user.uid;
-                        
+                        salepoint.id = id;
+
                         getDoc(SALEPOINTS, id)
                         .set(salepoint)
                         .then(() => resolve({id: id, ...salepoint}))
@@ -40,7 +42,8 @@ export function signInHelper(numero, password) {
                         signInWithFB(email, passwordHash).then(
                             (data) => {
                                 const id = data.user.uid;
-                                
+                                salepoint.id = id;
+
                                 getDoc(SALEPOINTS, id)
                                 .set(salepoint)
                                 .then(() => resolve({id: id, ...salepoint}))
