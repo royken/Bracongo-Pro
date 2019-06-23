@@ -6,6 +6,7 @@ import { onSnapshot, createQuery } from '../../../utils/firebase';
 import { USERS } from '../../../models/paths';
 import { isEmpty } from 'lodash';
 import moment from 'moment';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 class WappiLoyaltyItem extends PureComponent {
     _isMounted = false;
@@ -76,7 +77,7 @@ WappiLoyaltyItem.propTypes = {
 
 const styles = StyleSheet.create({
     mainContainer: {
-        height: 80,
+        height: hp("12%"),
         width: "100%",
         backgroundColor: 'white',
         paddingHorizontal: 10,

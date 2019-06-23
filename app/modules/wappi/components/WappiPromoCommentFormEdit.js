@@ -7,6 +7,7 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import validateField from '../../../utils/validator';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 
 const initialState = {
     dateBegin: '',
@@ -100,7 +101,7 @@ class WappiPromoCommentFormEdit extends Component {
             <Overlay isVisible={isVisible} onBackdropPress={() => { 
                 this.setState({ ...initialState }); hideForm(); 
             }}
-                overlayBackgroundColor="#7B7C9E" height="70%">
+                overlayBackgroundColor="#7B7C9E" height="70%" width={wp("84%")}>
                 <KeyboardAwareScrollView>
                     <View style={{alignItems: 'center', marginTop: 10}}>
                         <Text h4 style={{color: 'white'}}>

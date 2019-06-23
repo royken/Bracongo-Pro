@@ -5,6 +5,7 @@ import { Icon, Image, Text } from 'react-native-elements';
 import PropTypes from 'prop-types';
 import { getActiveRouteName } from '../../utils/navigationHelper';
 import { connect } from 'react-redux';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 class MainHeader extends Component {
     
@@ -53,15 +54,15 @@ class MainHeader extends Component {
                     <Image 
                         source={uri}
                         onError={() => {}}
-                        style={{borderRadius: 35, width: 70, height: 70}}
+                        style={{borderRadius: wp("3%"), width: wp("15%"), height: hp("9%")}}
                     />
                     {showTitle &&
                         <View style={{
                             marginTop: '3%', 
                             backgroundColor: '#7B7C9E',
                             borderRadius: 25,
-                            height: 50,
-                            width: "80%",
+                            height: hp("7%"),
+                            width: wp("80%"),
                             justifyContent: 'center',
                             alignItems: 'center'
                         }}>

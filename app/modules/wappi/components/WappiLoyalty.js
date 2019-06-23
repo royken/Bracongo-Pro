@@ -9,6 +9,7 @@ import Spinner from '../../../core/layout/Spinner';
 import { LOYALTIES } from '../../../models/paths';
 import WappiLoyaltyItem from './WappiLoyaltyItem';
 import { createQuery, onSnapshot } from '../../../utils/firebase';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 class WappiLoyalty extends Component {
 
@@ -140,9 +141,9 @@ class WappiLoyalty extends Component {
 const styles = StyleSheet.create({
     scoreContainer: {
         backgroundColor: 'white',
-        width: 150,
-        height: 150,
-        borderRadius: 75,
+        width: wp("34%"),
+        height: hp("20%"),
+        borderRadius: wp("17%"),
         alignItems: 'center',
         justifyContent: 'center'     
     }

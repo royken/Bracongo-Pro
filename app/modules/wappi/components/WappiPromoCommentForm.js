@@ -10,6 +10,7 @@ import validateField from '../../../utils/validator';
 import { toast } from '../../../utils/toast';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { IMAGEPICKEROPTIONS } from '../../../core/constants';
+import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 
 const initialState = {
     dateBegin: '',
@@ -100,7 +101,7 @@ class WappiPromoCommentForm extends Component {
             <Overlay isVisible={isVisible} onBackdropPress={() => { 
                 this.setState({ ...initialState }); hideForm(); 
             }}
-                overlayBackgroundColor="#7B7C9E" height="77%">
+                overlayBackgroundColor="#7B7C9E" height={"77%"} width={wp("84%")}>
                 <KeyboardAwareScrollView>
                     <View style={{alignItems: 'center', marginTop: 10}}>
                         <Text h4 style={{color: 'white'}}>

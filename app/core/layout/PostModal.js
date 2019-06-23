@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { Overlay, Text, Input, Button } from 'react-native-elements';
 import PropTypes from 'prop-types';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 
 const PostModal = (props) => {
     const { 
@@ -20,7 +21,7 @@ const PostModal = (props) => {
 
     return (
         <Overlay isVisible={isVisible} onBackdropPress={() => hideForm()}
-            overlayBackgroundColor="white" height={height}
+            overlayBackgroundColor="white" height={height} width={wp("84%")}
         >
             <KeyboardAwareScrollView>
                 <View style={styles.titleContainerstyle}>
@@ -60,7 +61,7 @@ PostModal.defaultProps = {
     initialInputValue: "",
     isSubmitting: false,
     inputError: "",
-    height: "50%",
+    height: "47%",
     isVisible: false,
     isValid: true
 }

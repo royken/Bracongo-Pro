@@ -114,7 +114,7 @@ class MYCalendar extends Component {
         return (
             <Overlay isVisible={isVisible} 
                 onBackdropPress={() => { this.setState({...this.currentState}); hide();}} 
-                overlayBackgroundColor="white" height={hp('77%')}
+                overlayBackgroundColor="white" height={hp("77%")} width={wp("84%")}
             >
                 <View>
                     <View style={{ 

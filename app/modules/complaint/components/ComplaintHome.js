@@ -11,6 +11,7 @@ import { listComplaints, newComplaint } from '../actions/actions';
 import { cancelRequest } from '../../../core/actions/actions';
 import Spinner from '../../../core/layout/Spinner';
 import validateField from '../../../utils/validator';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 const TYPE = [
     "MATERIEL", "PRODUIT HORS NORME", "REMISE", "DISTRIBUTION", "NUMERO DE COMPTE", "CONCURRENCE", 
@@ -154,7 +155,7 @@ class ComplaintHome extends Component {
                 <Overlay 
                     isVisible={formVisible}
                     onBackdropPress={() => this._hideFormComplaint()} 
-                    overlayBackgroundColor="white" height="55%" 
+                    overlayBackgroundColor="white" height="55%" width={wp("84%")}
                 >
                     <KeyboardAwareScrollView>
                         <View style={{ marginTop: 10, alignItems: 'center' }}>

@@ -8,6 +8,7 @@ import Spinner from '../../../core/layout/Spinner';
 import MYCalendar from '../../../core/layout/MYCalendar';
 import { Button } from 'react-native-elements';
 import { cancelRequest } from '../../../core/actions/actions';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 class PurchaseDiscount extends Component {
     constructor(props) {
@@ -123,9 +124,9 @@ const styles = StyleSheet.create({
     turnoverContentStyle: {
         borderColor: 'white', 
         borderWidth: 3,
-        width: 220,
-        height: 220,
-        borderRadius: 110,
+        width: wp("50%"), 
+        height: hp("30%"), 
+        borderRadius: wp("25%"),
         alignItems: 'center'
     }
 });

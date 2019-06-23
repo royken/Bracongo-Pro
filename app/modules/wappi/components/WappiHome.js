@@ -157,7 +157,7 @@ class WappiHome extends Component {
                     />
                 </ImageBackground>
                 <View style={{flex: 1, justifyContent: 'space-between'}}>
-                    <View style={{marginTop: "10%", marginHorizontal: 20}}>
+                    <View style={{marginTop: hp("4%"), marginHorizontal: 20}}>
                         <Text style={{color: 'white'}} numberOfLines={7}>
                             Description: <Text style={{color: 'white'}}>
                                 {description ? description : ""}
@@ -254,8 +254,8 @@ const styles = StyleSheet.create({
         marginTop: photoHeigth - 45,
         marginLeft: "87%",
         backgroundColor: 'black',
-        height: 40,
-        width: 40,
+        height: hp("5%"),
+        width: wp("8%"),
         borderRadius: 20, 
         justifyContent: 'center', 
         alignItems: 'center'
