@@ -2,6 +2,8 @@ import React from 'react';
 import { StyleSheet, View, Dimensions } from 'react-native';
 import PropTypes from 'prop-types';
 import { LineChart } from 'react-native-chart-kit';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import PurchaseChartLegend from './PurchaseChartLegend';
 
 const deviceWidth = Dimensions.get('window').width;
 
@@ -32,9 +34,11 @@ const PurchaseYearChart = (props) => {
 
     return (
         <View style={styles.containerStyle}>
-             <LineChart 
+            <PurchaseChartLegend />
+            <LineChart 
                 data={{
                     labels: mois,
+                    legend: ['BI', 'BG', 'PET'],
                     datasets: [
                         {
                             data: bi,
@@ -54,7 +58,7 @@ const PurchaseYearChart = (props) => {
                     ]
                 }}
                 width={deviceWidth} 
-                height={220}
+                height={hp("40%")}
                 chartConfig={{
                     backgroundColor: '#7B7C9E',
                     backgroundGradientFrom: '#7B7C9E',
