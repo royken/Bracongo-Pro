@@ -1,7 +1,8 @@
 import { 
     GET_MONTH_PURCHASE, 
     GET_YEAR_PURCHASE,
-    GET_DISCOUNT_AND_TURNOVER_BY_DATE
+    GET_DISCOUNT_AND_TURNOVER_BY_DATE,
+    GET_ANNUAL_DISCOUNTS
 } from "../actions/types";
 
 const initialState = {
@@ -10,6 +11,7 @@ const initialState = {
     products: [],
     turnover: 0,
     discount: 0,
+    discounts: []
 };
 
 export default function(state = initialState, action) {
@@ -38,7 +40,14 @@ export default function(state = initialState, action) {
                 discount: action.value.discount
             };
             break;
-
+        
+        case GET_ANNUAL_DISCOUNTS:
+            newState = {
+                ...state,
+                discounts: action.value
+            };
+            break;    
+            
         default:
             newState = state;
             break;

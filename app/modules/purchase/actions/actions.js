@@ -3,7 +3,8 @@ import { getPurchases, getActualMonthDiscountAndTurnover } from '../../../api/br
 import { 
     GET_MONTH_PURCHASE, 
     GET_YEAR_PURCHASE,
-    GET_DISCOUNT_AND_TURNOVER_BY_DATE
+    GET_DISCOUNT_AND_TURNOVER_BY_DATE,
+    GET_ANNUAL_DISCOUNTS
 } from './types';
 import { isEmpty } from 'lodash';
 import { uiStartLoading, uiStopLoading } from '../../../core/actions/actions';
@@ -155,14 +156,14 @@ export const getYearPurchases = (numero, encryptedPass) => (dispatch, getState) 
 
 }
 
-export const getMonthDiscountAndTurnoverByDate = (numero, encryptedPass, year, month) => (dispatch, getState) => {
+export const getMonthDiscountAndTurnoverByDate = (numero, encryptedPass, year = null, month = null, withList = true) => (dispatch, getState) => {
 
     dispatch(uiStartLoading());
 
     if(!isEmpty(encryptedPass)) {
         const password = decryptPass(encryptedPass);
         
-        getActualMonthDiscountAndTurnover(numero, password, year, month)
+        getActualMonthDiscountAndTurnover(numero, password, year, month, withList)
         .then((data) => {
             const isLoading = getState().uiLoading.isLoading;
             
@@ -170,10 +171,17 @@ export const getMonthDiscountAndTurnoverByDate = (numero, encryptedPass, year, m
                 dispatch({
                     type: GET_DISCOUNT_AND_TURNOVER_BY_DATE,
                     value: {
-                        turnover: data.chiffreAffaire,
-                        discount: data.remise
+                        turnover: data.data1.chiffreAffaire,
+                        discount: data.data1.remise
                     }
                 });
+
+                if(data.data2 !== null) {
+                    dispatch({
+                        type: GET_ANNUAL_DISCOUNTS,
+                        value: data.data2
+                    });
+                }
 
                 dispatch(uiStopLoading());
             }
