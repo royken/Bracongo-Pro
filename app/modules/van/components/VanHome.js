@@ -142,7 +142,6 @@ class VanHome extends Component {
                                 <MarkerVan key={index.toString()} van={van} />
                             ))
                         }
-                        
                     </MapView>
                     <IconWithText name="refresh" 
                         titleStyle={styles.title_icon_style} 
