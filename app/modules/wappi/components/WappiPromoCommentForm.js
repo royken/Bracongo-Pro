@@ -100,7 +100,7 @@ class WappiPromoCommentForm extends Component {
         return (
             <Overlay isVisible={isVisible} onBackdropPress={() => { 
                 this.setState({ ...initialState }); hideForm(); 
-            }}
+            }}  onShow={() => { this.setState({ ...initialState }); }}
                 overlayBackgroundColor="#7B7C9E" height={"77%"} width={wp("84%")}>
                 <KeyboardAwareScrollView>
                     <View style={{alignItems: 'center', marginTop: 10}}>

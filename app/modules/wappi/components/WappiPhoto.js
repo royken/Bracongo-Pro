@@ -10,8 +10,7 @@ import Spinner from '../../../core/layout/Spinner';
 import { SALEPOINTS, SALEPOINTSPHOTOS, SALEPOINTSPHOTOSSTORAGE } from '../../../models/paths';
 import { IMAGEPICKEROPTIONS, CONNEXION_PROBLEM_MSG } from '../../../core/constants';
 import { toast } from '../../../utils/toast';
-import { updateFile, uploadFile, add, update, createQuery } from '../../../utils/firebase';
-import { getCurrentDate } from '../../../utils/helper';
+import { updateFile, uploadFile, add, update, createQuery, remove } from '../../../utils/firebase';
 import ConfirmModal from '../../../core/layout/ConfirmModal';
 
 const deviceWidth = Dimensions.get('window').width;
@@ -68,8 +67,6 @@ class WappiPhoto extends Component {
                 .then((url) => {
                     add(createQuery({collection: SALEPOINTS + "/" + id + "/" + SALEPOINTSPHOTOS}), {
                         url: url,
-                        createdAt: getCurrentDate(),
-                        deleted: false
                     }).then(() => {
                         this.setState({ isUploading: false });
                         toast("Cette photo a été éditée avec succès.", "success", 5000);
@@ -135,9 +132,7 @@ class WappiPhoto extends Component {
             const { id } = this.props;
             const collection = SALEPOINTS + "/" + id + "/" + SALEPOINTSPHOTOS
 
-            update(createQuery({collection: collection, doc: photoIdToDelete}), {
-                deleted: true
-            }).then(() => {
+            remove(createQuery({collection: collection, doc: photoIdToDelete})).then(() => {
                 this._hideFormConfirm();
                 toast("Cette photo a été supprimée avec succès.", "success", 5000);
             })

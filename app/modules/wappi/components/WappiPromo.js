@@ -137,9 +137,7 @@ class WappiPromo extends Component {
                     image: url,
                     likesCount: 0,
                     commentsCount: 0,
-                    visible: false,
-                    deleted: false,
-                    createdAt: getCurrentDate()
+                    visible: false
                 }
             ).then(() => {
                 this._hideFormPromo();

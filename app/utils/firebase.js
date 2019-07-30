@@ -1,5 +1,23 @@
 import firebase from 'react-native-firebase';
 import { isArray, isString, isEmpty } from 'lodash';
+import { getCurrentDate } from './helper';
+
+const baseField = {
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    deleted: 'deleted'
+};
+
+function generateID() {
+    // Alphanumeric characters
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let autoId = '';
+    for (let i = 0; i < 20; i++) {
+        autoId += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    
+    return autoId;
+} 
 
 function firestore() {
     return firebase.firestore();
@@ -117,8 +135,18 @@ export function add(query, data) {
     if((typeof query) !== "object" || (typeof data) !== "object") {
         throw new Error("Parameters must be an object !");
     }
+    query.doc = generateID()
 
-    return getCollection(query.collection).add(data);
+    return set(
+        query, 
+        {   
+            id: query.doc, 
+            [baseField.createdAt]: getCurrentDate(),
+            [baseField.updatedAt]: getCurrentDate(),
+            [baseField.deleted]: false, 
+            ...data
+        }
+    );
 }
 
 export function get(query) {
@@ -173,7 +201,12 @@ export function update(query, data) {
         throw new Error("Parameters must be an object !");
     }
 
-    return getDoc(query.collection, query.doc).update(data);
+    return getDoc(query.collection, query.doc)
+            .update({[baseField.updatedAt]: getCurrentDate(), ...data});
+}
+
+export function remove(query) {
+    return update(query, { [baseField.updatedAt]: getCurrentDate(), [baseField.deleted]: true });
 }
 
 function parseQuery(query) {
