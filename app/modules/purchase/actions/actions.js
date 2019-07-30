@@ -48,6 +48,8 @@ export const getMonthPurchases = (numero, encryptedPass) => (dispatch, getState)
                                 break;
 
                             case "PET":
+                                    purchases[element.jour - 1][2] += element.quantite;
+                                break;
                             case "PEG":
                                 purchases[element.jour - 1][2] += element.quantite;
                                 break;
