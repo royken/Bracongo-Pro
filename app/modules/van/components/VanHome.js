@@ -11,7 +11,8 @@ import MarkerVan from './MarkerVan';
 import IconWithText from '../../../core/layout/IconWithText';
 import { parseGeoCoord } from '../../../utils/helper';
 import { cancelRequest } from '../../../core/actions/actions';
-import { isArray } from 'lodash';
+import { isArray, isEmpty } from 'lodash';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const deviceDimWidth = Dimensions.get('window').width;
 const deviceDimHeight = Dimensions.get('window').height;
@@ -133,14 +134,17 @@ class VanHome extends Component {
                         region={this._getMapRegion()}
                         style={styles.mapStyle} 
                         zoomControlEnabled={true}
+                        loadingBackgroundColor="grey"
+                        loadingEnabled
+                        loadingIndicatorColor="blue"
                         onLayout={() => this._handleFitZoom(markers)}
                     >
-                        {(profile.latitude && profile.longitude) !== false &&
-                            <MarkerSalePoint profile={profile} />
-                        }
                         {vans.map((van, index) => (
                                 <MarkerVan key={index.toString()} van={van} />
                             ))
+                        }
+                        {(!isEmpty(profile.latitude) && !isEmpty(profile.longitude)) === true &&
+                            <MarkerSalePoint profile={profile} />
                         }
                     </MapView>
                     <IconWithText name="refresh" 
@@ -179,9 +183,9 @@ const styles = StyleSheet.create({
     },
     button_reload_map_container: {
         position: 'absolute', 
-        top: deviceDimWidth - 85, 
+        top: hp("50%"), 
         bottom: 0, 
-        left: "1%", 
+        left: wp("1%"), 
         right: 0
     }
 });

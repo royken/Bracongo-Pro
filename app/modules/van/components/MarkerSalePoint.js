@@ -1,18 +1,24 @@
 import React from 'react';
 import { StyleSheet, Image } from 'react-native';
 import { Marker } from 'react-native-maps';
-import { isEmpty } from 'lodash';
+import { isEmpty, isFinite } from 'lodash';
 import PropTypes from 'prop-types';
 import { parseGeoCoord } from '../../../utils/helper';
 
 const MarkerSalePoint = (props) => {
     const { latitude, longitude, cover, raisonSociale } = props.profile;
     const coverUrl = isEmpty(cover) ? "undefined" : cover;
+    const lat = parseGeoCoord(latitude);
+    const lng = parseGeoCoord(longitude);
+
+    if(!isFinite(lat) || !isFinite(lng)) {
+        return null;
+    }
 
     return (
         <Marker coordinate={{
-                latitude: parseGeoCoord(latitude), 
-                longitude: parseGeoCoord(longitude)
+                latitude: lat, 
+                longitude: lng
             }}
             title={raisonSociale ? raisonSociale : ""}
         >
