@@ -121,7 +121,7 @@ class VanHome extends Component {
             <MainView 
                 backgroundImageUri={require('../../../assets/images/background_no_line.png')}>
                 <MainHeader 
-                    title="position de mon camion vendeur"
+                    title="Position de mon camion vendeur"
                     uri={require('../../../assets/images/van.png')}
                     navigation={navigation}
                     containerStyle={{marginTop: '7%'}}
@@ -135,7 +135,7 @@ class VanHome extends Component {
                         zoomControlEnabled={true}
                         onLayout={() => this._handleFitZoom(markers)}
                     >
-                        {profile.latitude && profile.longitude &&
+                        {(profile.latitude && profile.longitude) !== false &&
                             <MarkerSalePoint profile={profile} />
                         }
                         {vans.map((van, index) => (
@@ -147,7 +147,7 @@ class VanHome extends Component {
                     <IconWithText name="refresh" 
                         titleStyle={styles.title_icon_style} 
                         containerStyle={styles.button_reload_map_container}
-                        size={25} color="#7B7C9E"
+                        size={25} color="#3d3d47"
                         reverse reverseColor="white" type="font-awesome"
                         onPress={() => this._loadVans(true)} 
                     />
@@ -157,7 +157,7 @@ class VanHome extends Component {
                                 top: spinnerTop,
                                 left: '50%'
                             }} 
-                            color="blue" /> : null
+                            color="black" /> : null
                     }
                 </View>
             </MainView>
