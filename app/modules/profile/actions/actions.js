@@ -50,14 +50,14 @@ export const getDiscountAndTurnover = (numero, encryptedPass) => (dispatch) => {
     if(!isEmpty(encryptedPass)) {
         const password = decryptPass(encryptedPass);
         
-        getActualMonthDiscountAndTurnover(numero, password)
+        getActualMonthDiscountAndTurnover(numero, password, null, null, false)
         .then((data) => {
             
             dispatch({
                 type: GET_DISCOUNT_AND_TURNOVER,
                 value: {
-                    turnover: data.chiffreAffaire,
-                    discount: data.remise
+                    turnover: data.data1.chiffreAffaire,
+                    discount: data.data1.remise
                 }
             });
 

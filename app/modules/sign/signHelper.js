@@ -13,7 +13,7 @@ export function signInHelper(numero, password) {
                 const email = "" + numero + "@bracongopro.cd"; 
                 
                 const salepoint = {
-		    id: "",
+		            id: "",
                     numero: numero, 
                     raisonSociale: data.raisonSociale,
                     cover: 'undefined', 
