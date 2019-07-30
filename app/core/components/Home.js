@@ -61,11 +61,13 @@ class Home extends Component {
                             <View>
                                 <View style={{alignItems: 'center', marginTop: '25%'}}>
                                     <Text style={{color: 'white'}}>Remise</Text>
-                                    <Text style={{color: 'white'}}>{discount} FC</Text>
+                                    <Text style={{color: 'white'}}>
+                                        {discount ? discount : 0} FC</Text>
                                 </View>
                                 <View style={{alignItems: 'center', marginTop: 20}}>
                                     <Text style={{color: 'white'}}>Chiffre d'affaire:</Text>
-                                    <Text style={{color: 'white'}}>{turnover} FC</Text>
+                                    <Text style={{color: 'white'}}>
+                                        {turnover ? turnover : 0} FC</Text>
                                 </View>
                             </View>
                         }
