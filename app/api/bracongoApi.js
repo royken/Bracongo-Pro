@@ -21,14 +21,26 @@ export function signInWithApi(numero, password) {
     });
 }
 
-export function getActualMonthDiscountAndTurnover(numero, password, year = null, month = null) {
-    const uri = !isNull(year) && !isNull(month)  ? 
+export function getActualMonthDiscountAndTurnover(numero, password, year = null, month = null, withList = true) {
+    const uriAmount = !isNull(year) && !isNull(month)  ? 
                 `${baseURI}/achats/remise/${numero}/${password}/${year}/${month}` : 
                 `${baseURI}/achats/remise/${numero}/${password}`;
     
+    if(withList === true) {
+        const uriList = `${baseURI}/achats/remise/histo/${numero}/${password}`;
+        return new Promise((resolve, reject) => {
+            axios.all([
+                axios.get(uriAmount),
+                axios.get(uriList)
+            ]).then(axios.spread((resp1, resp2) => {
+                resolve({data1: resp1.data, data2: resp2.data});
+            })).catch((error) => reject(error));
+        });
+    }
+
     return new Promise((resolve, reject) => {
-        axios.get(uri)
-        .then((resp) => resolve(resp.data))
+        axios.get(uriAmount)
+        .then((resp) => resolve({data1: resp.data, data2: null}))
         .catch((error) => reject(error));
     });
 }

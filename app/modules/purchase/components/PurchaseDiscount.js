@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, ScrollView, Text } from 'react-native';
 import { connect } from 'react-redux';
 import MainView from '../../../core/layout/MainView';
 import { getMonthDiscountAndTurnoverByDate } from '../actions/actions';
@@ -9,6 +9,7 @@ import MYCalendar from '../../../core/layout/MYCalendar';
 import { Button } from 'react-native-elements';
 import { cancelRequest } from '../../../core/actions/actions';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import PurchaseDiscountTable from './PurchaseDiscountTable';
 
 class PurchaseDiscount extends Component {
     constructor(props) {
@@ -22,7 +23,7 @@ class PurchaseDiscount extends Component {
     componentDidMount() {
         const { getMonthDiscountAndTurnoverByDate, profile } = this.props;
 
-        getMonthDiscountAndTurnoverByDate(profile.numero, profile.password, null, null);
+        getMonthDiscountAndTurnoverByDate(profile.numero, profile.password);
     }
 
     componentWillUnmount() {
@@ -38,7 +39,8 @@ class PurchaseDiscount extends Component {
             profile.numero, 
             profile.password, 
             selectedYear, 
-            selectedMonth
+            selectedMonth,
+            false
         );
     
     }
@@ -52,7 +54,7 @@ class PurchaseDiscount extends Component {
     }
 
     render() {
-        const { navigation, isLoading, turnover, discount } = this.props;
+        const { navigation, isLoading, turnover, discount, discounts } = this.props;
         const { showCalendar } = this.state;
 
         return (
@@ -81,7 +83,7 @@ class PurchaseDiscount extends Component {
                     isVisible={showCalendar} 
                     confirm={this._getDiscountAndTurnoverByDate} 
                 />
-                <View style={styles.contentContainerStyle}>
+                <ScrollView style={styles.contentContainerStyle}>
                     <View style={styles.turnoverStyle}>
                         <View style={styles.turnoverContentStyle}>
                             {isLoading ? 
@@ -101,7 +103,8 @@ class PurchaseDiscount extends Component {
                             }
                         </View>
                     </View> 
-                </View>
+                    <PurchaseDiscountTable discounts={discounts} />
+                </ScrollView>
             </MainView>
         );
     }
@@ -135,7 +138,8 @@ const mapStateToProps = (state) => ({
     profile: state.profile,
     isLoading: state.uiLoading.isLoading,
     turnover: state.purchases.turnover,
-    discount: state.purchases.discount
+    discount: state.purchases.discount,
+    discounts: state.purchases.discounts
 });
 
 export default connect(mapStateToProps, { getMonthDiscountAndTurnoverByDate, cancelRequest })(PurchaseDiscount);
