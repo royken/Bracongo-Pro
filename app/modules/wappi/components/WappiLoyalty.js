@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         width: wp("34%"),
         height: hp("20%"),
-        borderRadius: wp("17%"),
+        borderRadius: Math.floor(((wp("34%") + hp("20%"))) / 2),
         alignItems: 'center',
         justifyContent: 'center'     
     }
