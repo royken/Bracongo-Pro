@@ -81,7 +81,7 @@ class Home extends Component {
                                     withImage={true}
                                     title="Yaka"
                                     titleStyle={{color: 'white'}}
-                                    imageStyle={{width: wp("15%"), height: hp("9%")}}
+                                    imageStyle={styles.iconMenu}
                                     imageUrl={require('../../assets/images/wappi.png')}
                                     containerStyle={{alignItems: "center"}}
                                     onPress={() => this._onGoToScreen('WappiHome')}
@@ -91,7 +91,7 @@ class Home extends Component {
                                 withImage={true}
                                 title={"camion".toUpperCase()}
                                 titleStyle={{color: 'white'}}
-                                imageStyle={{width: wp("15%"), height: hp("9%")}}
+                                imageStyle={styles.iconMenu}
                                 imageUrl={require('../../assets/images/van.png')}
                                 containerStyle={{alignItems: "center", marginTop: profile.yaka === true ? 15 : 0}}
                                 onPress={() => this._onGoToScreen('VanHome')}
@@ -102,7 +102,7 @@ class Home extends Component {
                                 withImage={true}
                                 title={"achat".toUpperCase()}
                                 titleStyle={{color: 'white'}}
-                                imageStyle={{width: wp("15%"), height: hp("9%")}}
+                                imageStyle={styles.iconMenu}
                                 imageUrl={require('../../assets/images/purchase.png')}
                                 containerStyle={{alignItems: "center"}}
                                 onPress={() => this._onGoToScreen("PurchaseHome")}
@@ -111,7 +111,7 @@ class Home extends Component {
                                 withImage={true}
                                 title={"message".toUpperCase()}
                                 titleStyle={{color: 'white'}}
-                                imageStyle={{width: wp("15%"), height: hp("9%")}}
+                                imageStyle={styles.iconMenu}
                                 imageUrl={require('../../assets/images/message.png')}
                                 containerStyle={{alignItems: "center", marginTop: 15}}
                                 onPress={() => this._onGoToScreen("MessageHome")}
@@ -122,7 +122,7 @@ class Home extends Component {
                                 withImage={true}
                                 title={"plainte".toUpperCase()}
                                 titleStyle={{color: 'white'}}
-                                imageStyle={{width: wp("15%"), height: hp("9%")}}
+                                imageStyle={styles.iconMenu}
                                 imageUrl={require('../../assets/images/complaint.png')}
                                 containerStyle={{alignItems: "center"}}
                                 onPress={() => this._onGoToScreen("ComplaintHome")}
@@ -131,7 +131,7 @@ class Home extends Component {
                                 withImage={true}
                                 title={"commande".toUpperCase()}
                                 titleStyle={{color: 'white', fontSize: 13}}
-                                imageStyle={{width: wp("15%"), height: hp("9%")}}
+                                imageStyle={styles.iconMenu}
                                 imageUrl={require('../../assets/images/special_order.png')}
                                 containerStyle={{alignItems: "center", marginTop: 15}}
                             />
@@ -195,6 +195,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: "transparent"
+    },
+    iconMenu: {
+        width: wp("15%"), 
+        height: hp("9%"),
+        borderRadius: Math.floor(((wp("15%") + hp("9%"))) / 2)
     }
 });
 
