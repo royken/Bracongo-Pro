@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
         borderWidth: 3,
         width: wp("50%"), 
         height: hp("30%"), 
-        borderRadius: wp("25%"), 
+        borderRadius: Math.floor(((wp("50%") + hp("30%"))) / 2), 
         alignItems: 'center'
     },
     menuStyle: {

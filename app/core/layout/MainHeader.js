@@ -54,7 +54,11 @@ class MainHeader extends Component {
                     <Image 
                         source={uri}
                         onError={() => {}}
-                        style={{borderRadius: wp("3%"), width: wp("15%"), height: hp("9%")}}
+                        style={{
+                            borderRadius: Math.floor(((wp("15%") + hp("9%"))) / 2), 
+                            width: wp("15%"), 
+                            height: hp("9%")
+                        }}
                     />
                     {showTitle &&
                         <View style={{
