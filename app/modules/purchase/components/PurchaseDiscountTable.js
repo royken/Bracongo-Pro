@@ -59,7 +59,7 @@ const PurchaseDiscountTable = (props) => {
                     renderItem={renderTable}
                     data={discounts}
                 /> :
-                <View style={{marginTop: 50}}>
+                <View style={{marginTop: "3%"}}>
                     <Text style={styles.textStyle}>Aucun résultat trouvé.</Text>
                 </View>
             }      

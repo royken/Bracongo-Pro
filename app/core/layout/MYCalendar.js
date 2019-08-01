@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, FlatList, TouchableOpacity } from 'react-native';
 import { Overlay, Icon, Text } from 'react-native-elements';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import PropTypes from 'prop-types';
 
@@ -116,7 +117,7 @@ class MYCalendar extends Component {
                 onBackdropPress={() => { this.setState({...this.currentState}); hide();}} 
                 overlayBackgroundColor="white" height={hp("77%")} width={wp("84%")}
             >
-                <View>
+                <KeyboardAwareScrollView>
                     <View style={{ 
                         justifyContent: 'center', 
                         alignItems: 'center', 
@@ -171,7 +172,7 @@ class MYCalendar extends Component {
                             </Text>
                         </TouchableOpacity>
                     </View>
-                </View>
+                </KeyboardAwareScrollView>
             </Overlay>
         );
     }
