@@ -11,6 +11,8 @@ import { cancelRequest } from '../../../core/actions/actions';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import PurchaseDiscountTable from './PurchaseDiscountTable';
 
+const dimTurnoverContent = wp("30%") + hp("10%");
+
 class PurchaseDiscount extends Component {
     constructor(props) {
         super(props);
@@ -127,9 +129,9 @@ const styles = StyleSheet.create({
     turnoverContentStyle: {
         borderColor: 'white', 
         borderWidth: 3,
-        width: wp("50%"), 
-        height: hp("30%"), 
-        borderRadius: Math.floor(((wp("50%") + hp("30%"))) / 2),
+        width: dimTurnoverContent, 
+        height: dimTurnoverContent, 
+        borderRadius: Math.floor(dimTurnoverContent / 2),
         alignItems: 'center'
     }
 });

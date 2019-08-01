@@ -7,6 +7,8 @@ import { getActiveRouteName } from '../../utils/navigationHelper';
 import { connect } from 'react-redux';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
+const dimIconHeader = wp("9%") + hp("5%");
+
 class MainHeader extends Component {
     
     _isMainScreens = (currentScreen) => {
@@ -55,9 +57,9 @@ class MainHeader extends Component {
                         source={uri}
                         onError={() => {}}
                         style={{
-                            borderRadius: Math.floor(((wp("15%") + hp("9%"))) / 2), 
-                            width: wp("15%"), 
-                            height: hp("9%")
+                            borderRadius: Math.floor(dimIconHeader / 2), 
+                            width: dimIconHeader, 
+                            height: dimIconHeader
                         }}
                     />
                     {showTitle &&

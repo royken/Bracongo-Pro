@@ -13,6 +13,9 @@ import { signOut } from '../../modules/sign/actions/actions';
 
 import Spinner from '../layout/Spinner';
 
+const dimIconMenu = wp("9%") + hp("5%");
+const dimTurnoverContent = wp("30%") + hp("10%");
+
 class Home extends Component {
 
     componentDidMount() {
@@ -166,9 +169,9 @@ const styles = StyleSheet.create({
     turnoverContentStyle: {
         borderColor: 'white', 
         borderWidth: 3,
-        width: wp("50%"), 
-        height: hp("30%"), 
-        borderRadius: Math.floor(((wp("50%") + hp("30%"))) / 2), 
+        width: dimTurnoverContent, 
+        height: dimTurnoverContent, 
+        borderRadius: Math.floor(dimTurnoverContent / 2), 
         alignItems: 'center'
     },
     menuStyle: {
@@ -197,9 +200,9 @@ const styles = StyleSheet.create({
         backgroundColor: "transparent"
     },
     iconMenu: {
-        width: wp("15%"), 
-        height: hp("9%"),
-        borderRadius: Math.floor(((wp("15%") + hp("9%"))) / 2)
+        width: dimIconMenu, 
+        height: dimIconMenu,
+        borderRadius: Math.floor(dimIconMenu / 2)
     }
 });
 

@@ -11,6 +11,8 @@ import WappiLoyaltyItem from './WappiLoyaltyItem';
 import { createQuery, onSnapshot } from '../../../utils/firebase';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
+const dimLoyaltyContent = wp("15%") + hp("10%");
+
 class WappiLoyalty extends Component {
 
     constructor(props) {
@@ -89,7 +91,7 @@ class WappiLoyalty extends Component {
             );
         } else if(isEmpty) {
             return (
-                <View style={{alignItems: 'center', marginTop: "50%"}}>
+                <View style={{alignItems: 'center', marginTop: "30%"}}>
                     <Text style={{color: 'white'}}>Aucune fidélité trouvée</Text>
                 </View>
             );
@@ -141,9 +143,9 @@ class WappiLoyalty extends Component {
 const styles = StyleSheet.create({
     scoreContainer: {
         backgroundColor: 'white',
-        width: wp("34%"),
-        height: hp("20%"),
-        borderRadius: Math.floor(((wp("34%") + hp("20%"))) / 2),
+        width: dimLoyaltyContent, 
+        height: dimLoyaltyContent, 
+        borderRadius: Math.floor(dimLoyaltyContent / 2),
         alignItems: 'center',
         justifyContent: 'center'     
     }
