@@ -15,6 +15,7 @@ import Spinner from '../layout/Spinner';
 
 const dimIconMenu = wp("9%") + hp("5%");
 const dimTurnoverContent = wp("30%") + hp("10%");
+const dimLogo = hp("5%") + wp("7%");
 
 class Home extends Component {
 
@@ -46,7 +47,7 @@ class Home extends Component {
                 backgroundImageUri={require('../../assets/images/background_line_bottom.png')}>
                 <View style={styles.headerStyle} >
                     <View style={{alignItems: 'center'}}>
-                        <Logo imageHeight={hp("8%")} imageWidth={wp("13%")} />
+                        <Logo imageHeight={dimLogo} imageWidth={dimLogo} />
                     </View>
                     <View style={styles.metalsStyle}>
                         <Text style={{color: catColor.bronze}}>{"bronze - ".toUpperCase()}</Text>
