@@ -69,7 +69,7 @@ class Home extends Component {
                                         {discount ? discount : 0} FC</Text>
                                 </View>
                                 <View style={{alignItems: 'center', marginTop: "7%"}}>
-                                    <Text style={{color: 'white'}}>Chiffre d'affaire:</Text>
+                                    <Text style={{color: 'white'}}>Chiffre d'affaire</Text>
                                     <Text style={{color: 'white'}}>
                                         {turnover ? turnover : 0} FC</Text>
                                 </View>

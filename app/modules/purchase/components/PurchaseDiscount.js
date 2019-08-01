@@ -98,7 +98,7 @@ class PurchaseDiscount extends Component {
                                         <Text style={{color: 'white'}}>{discount} FC</Text>
                                     </View>
                                     <View style={{alignItems: 'center', marginTop: "7%"}}>
-                                        <Text style={{color: 'white'}}>Chiffre d'affaire:</Text>
+                                        <Text style={{color: 'white'}}>Chiffre d'affaire</Text>
                                         <Text style={{color: 'white'}}>{turnover} FC</Text>
                                     </View>
                                 </View>
