@@ -89,15 +89,15 @@ class PurchaseDiscount extends Component {
                     <View style={styles.turnoverStyle}>
                         <View style={styles.turnoverContentStyle}>
                             {isLoading ? 
-                                <Spinner containerStyle={{marginTop: "40%", alignItems: 'center'}} 
+                                <Spinner containerStyle={{alignItems: 'center'}} 
                                     color="blue" />
                                 :
                                 <View>
-                                    <View style={{alignItems: 'center', marginTop: '25%'}}>
+                                    <View style={{alignItems: 'center'}}>
                                         <Text style={{color: 'white'}}>Remise</Text>
                                         <Text style={{color: 'white'}}>{discount} FC</Text>
                                     </View>
-                                    <View style={{alignItems: 'center', marginTop: 20}}>
+                                    <View style={{alignItems: 'center', marginTop: "7%"}}>
                                         <Text style={{color: 'white'}}>Chiffre d'affaire:</Text>
                                         <Text style={{color: 'white'}}>{turnover} FC</Text>
                                     </View>
@@ -132,7 +132,8 @@ const styles = StyleSheet.create({
         width: dimTurnoverContent, 
         height: dimTurnoverContent, 
         borderRadius: Math.floor(dimTurnoverContent / 2),
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent: 'center'
     }
 });
 
