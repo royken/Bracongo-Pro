@@ -2,14 +2,16 @@ import React from 'react';
 import { View } from 'react-native';
 import { Overlay, Text, Button } from 'react-native-elements';
 import PropTypes from 'prop-types';
+import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const ConfirmModal = (props) => {
     const { data, isVisible, isLoading, hideForm, title, handleConfirm } = props;
 
     return (
         <Overlay isVisible={isVisible} onBackdropPress={() => hideForm()}
-            overlayBackgroundColor="#7B7C9E" height="25%">
-            <View>
+            overlayBackgroundColor="#7B7C9E" height="30%" width={wp("84%")}>
+            <KeyboardAwareScrollView>
                 <View style={{alignItems: 'center', marginBottom: 15}}>
                     <Text h4 h4Style={{fontSize: 18}} style={{color: 'white'}}>{title}</Text>
                 </View>
@@ -21,7 +23,7 @@ const ConfirmModal = (props) => {
                     loading={isLoading}
                     loadingProps={{color: 'blue'}}
                 />
-            </View>
+            </KeyboardAwareScrollView>
         </Overlay>
     );
 }

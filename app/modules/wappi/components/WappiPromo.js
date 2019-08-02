@@ -12,7 +12,7 @@ import WappiPromoItem from './WappiPromoItem';
 import WappiPromoCommentForm from './WappiPromoCommentForm';
 import { toast } from '../../../utils/toast';
 import { CONNEXION_PROBLEM_MSG } from '../../../core/constants';
-import { getTimeFromStringDate, getCurrentDate, shareToSN } from '../../../utils/helper';
+import { getTimeFromStringDate, shareToSN } from '../../../utils/helper';
 
 class WappiPromo extends Component {
     
@@ -28,12 +28,12 @@ class WappiPromo extends Component {
     }
 
     componentDidMount() {
-        const { setPaginationListener, numero } = this.props;
+        const { setPaginationListener, id } = this.props;
 
         this.query = createQuery({
             collection: PROMOTIONS,
             orderBy: [['createdAt', 'DESC']],
-            where: [['numero', '==', numero], ['deleted', "==", false]],
+            where: [['salepointId', '==', id], ['deleted', "==", false]],
             storeAs: 'promotions'
         });
         
@@ -124,12 +124,12 @@ class WappiPromo extends Component {
 
         uploadFile(photoUri, PROMOTIONSTORAGE + photoName)
         .then((url) => {
-            const { numero } = this.props;
+            const { id } = this.props;
 
             add(
                 createQuery({collection: PROMOTIONS}), 
                 {
-                    numero: numero,
+                    salepointId: id,
                     title: title,
                     description: comment,
                     beginDate: getTimeFromStringDate(dateBegin, "DD-MM-YYYY HH:mm"),
@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
-    numero: state.profile.numero,
+    id: state.profile.id,
     raisonSociale: state.profile.raisonSociale,
     cover: state.profile.cover,
     promotions: state.firestorePaginator.promotions

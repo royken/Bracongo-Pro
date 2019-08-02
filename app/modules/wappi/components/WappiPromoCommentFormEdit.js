@@ -101,7 +101,7 @@ class WappiPromoCommentFormEdit extends Component {
             <Overlay isVisible={isVisible} onBackdropPress={() => { 
                 this.setState({ ...initialState }); hideForm(); 
             }}
-                overlayBackgroundColor="#7B7C9E" height="70%" width={wp("84%")}>
+                overlayBackgroundColor="#7B7C9E" height="77%" width={wp("84%")}>
                 <KeyboardAwareScrollView>
                     <View style={{alignItems: 'center', marginTop: 10}}>
                         <Text h4 style={{color: 'white'}}>
@@ -121,7 +121,7 @@ class WappiPromoCommentFormEdit extends Component {
                         errorStyle={{color: '#f8d7da', marginHorizontal: 10}}
                         errorMessage={titleError}
                     />
-                    <View style={{flexDirection: 'row', marginVertical: 15, justifyContent: 'space-between'}}>
+                    <View style={{marginVertical: 15, alignItems: 'center'}}>
                         <DatePicker
                             date={dateBegin}
                             onDateChange={(date) => this._handleDatePickedBegin(date)}
@@ -136,7 +136,8 @@ class WappiPromoCommentFormEdit extends Component {
                                 marginTop: 0, 
                                 padding: 5,
                                 borderColor: "white"
-                            }}}   
+                            }}}
+                            style={{ width: wp("61%") }}   
                         />
                         <DatePicker
                             date={dateCompare === true ? dateBegin : dateEnd}
@@ -149,10 +150,11 @@ class WappiPromoCommentFormEdit extends Component {
                             mode="datetime"
                             format="DD-MM-YYYY HH:mm" 
                             customStyles={{dateInput: {
-                                marginTop: 0, 
+                                marginTop: 5, 
                                 padding: 5,
                                 borderColor: "white"
-                            }}}   
+                            }}}
+                            style={{ width: wp("61%") }}   
                         />
                     </View>
                     <Input multiline

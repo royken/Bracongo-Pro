@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import MainView from '../../../core/layout/MainView';
 import MainHeader from '../../../core/layout/MainHeader';
 import { createQuery } from '../../../utils/firebase';
-import { PROMOTIONS, PROMOTION_COMMENTS } from '../../../models/paths';
+import { PROMOTION_COMMENTS } from '../../../models/paths';
 import { setPaginationListener, unsetPaginatorListener, getStatus } from '../../../core/actions/actions';
 import Spinner from '../../../core/layout/Spinner';
 import CommentsItem from '../../../core/components/CommentsItem';
@@ -21,8 +21,12 @@ class WappiPromoComments extends Component {
         const { navigation, setPaginationListener } = this.props;
         const { promoId } = navigation.state.params;
 
-        const collection = PROMOTIONS + "/" + promoId + "/" + PROMOTION_COMMENTS;
-        this.query = createQuery({collection: collection, storeAs: "promoComments"});
+        this.query = createQuery({
+            collection: PROMOTION_COMMENTS, 
+            orderBy: [['createdAt', 'DESC']],
+            where: [["promoId", "==", promoId], ['deleted', "==", false]],
+            storeAs: "promoComments"
+        });
 
         setPaginationListener(this.query);
     }
@@ -105,7 +109,7 @@ class WappiPromoComments extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    comments: state.firestoreListener.promoComments
+    comments: state.firestorePaginator.promoComments
 });
 
 export default connect(

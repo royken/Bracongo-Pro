@@ -134,7 +134,7 @@ class WappiPromoCommentForm extends Component {
                             </Text>
                         }   
                     </View>
-                    <View style={{flexDirection: 'row', marginVertical: 5, justifyContent: 'space-between'}}>
+                    <View style={{marginVertical: 5, alignItems: 'center'}}>
                         <DatePicker
                             date={dateBegin}
                             onDateChange={(date) => this._handleDatePickedBegin(date)}
@@ -150,6 +150,7 @@ class WappiPromoCommentForm extends Component {
                                 padding: 5,
                                 borderColor: "white"
                             }}}   
+                            style={{ width: wp("61%") }}
                         />
                         <DatePicker
                             date={dateCompare === true ? dateBegin : dateEnd}
@@ -162,10 +163,11 @@ class WappiPromoCommentForm extends Component {
                             mode="datetime"
                             format="DD-MM-YYYY HH:mm" 
                             customStyles={{dateInput: {
-                                marginTop: 0, 
+                                marginTop: 5, 
                                 padding: 5,
                                 borderColor: "white"
-                            }}}   
+                            }}}
+                            style={{ width: wp("61%") }}   
                         />
                     </View>
                     <Input multiline

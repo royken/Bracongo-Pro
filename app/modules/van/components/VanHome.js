@@ -171,7 +171,7 @@ class VanHome extends Component {
 const styles = StyleSheet.create({
     mapContainer: {
         flex: 1,
-        marginTop: "10%",
+        marginTop: hp("5%"),
         paddingBottom: 5
     },
     mapStyle: {

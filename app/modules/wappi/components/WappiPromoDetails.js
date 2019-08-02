@@ -15,6 +15,7 @@ import { toast } from '../../../utils/toast';
 import { CONNEXION_PROBLEM_MSG, IMAGEPICKEROPTIONS } from '../../../core/constants';
 import WappiPromoCommentFormEdit from './WappiPromoCommentFormEdit';
 import { getTimeFromStringDate, shareToSN } from '../../../utils/helper';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const deviceWidth = Dimensions.get('window').width;
 const imageHeight = Math.floor(deviceWidth / 2); 
@@ -258,13 +259,13 @@ class WappiPromoDetails extends Component {
                                 {title.toUpperCase()}
                             </Text>
                         </View>
-                        <View style={{marginTop: 10, flexDirection: 'row'}}>
+                        <View style={{marginTop: 10}}>
                             <View>
                                 <Text style={{color: 'white'}}>
                                     Debut : {moment(new Date(beginDate)).format("DD-MM-Y HH:mm")}
                                 </Text>
                             </View>
-                            <View style={{marginLeft: 20}}>
+                            <View style={{marginTop: 5}}>
                                 <Text style={{color: 'white'}}>
                                     Fin : {moment(new Date(endDate)).format("DD-MM-Y HH:mm")}
                                 </Text>
@@ -324,9 +325,9 @@ class WappiPromoDetails extends Component {
 const styles = StyleSheet.create({
     editCoverContainer: {
         position: 'absolute',
-        top: "40%",
+        top: hp("20%"),
         bottom: 0,
-        left: "86%",
+        left: wp("82%"),
         right: 0,
         alignItems: 'center',
         justifyContent: 'center',

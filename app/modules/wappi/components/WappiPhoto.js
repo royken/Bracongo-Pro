@@ -12,6 +12,7 @@ import { IMAGEPICKEROPTIONS, CONNEXION_PROBLEM_MSG } from '../../../core/constan
 import { toast } from '../../../utils/toast';
 import { updateFile, uploadFile, add, update, createQuery, remove } from '../../../utils/firebase';
 import ConfirmModal from '../../../core/layout/ConfirmModal';
+import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 
 const deviceWidth = Dimensions.get('window').width;
 const imageWidth = Math.floor(deviceWidth / 3) - 40
@@ -35,9 +36,9 @@ class WappiPhoto extends Component {
         const { setPaginationListener, id } = this.props;
 
         this.query = createQuery({
-            collection: SALEPOINTS + "/" + id + "/" + SALEPOINTSPHOTOS,
+            collection: SALEPOINTSPHOTOS,
             orderBy: [['createdAt', 'DESC']],
-            where: [['deleted', "==", false]],
+            where: [['salepointId', "==", id], ['deleted', "==", false]],
             storeAs: 'photos'
         });
         
@@ -65,7 +66,8 @@ class WappiPhoto extends Component {
 
                 uploadFile(response.uri, SALEPOINTSPHOTOSSTORAGE + response.fileName)
                 .then((url) => {
-                    add(createQuery({collection: SALEPOINTS + "/" + id + "/" + SALEPOINTSPHOTOS}), {
+                    add(createQuery({collection: SALEPOINTSPHOTOS}), {
+                        salepointId: id,
                         url: url,
                     }).then(() => {
                         this.setState({ isUploading: false });
@@ -93,12 +95,9 @@ class WappiPhoto extends Component {
                 this.setState({ isUploading: false });
                 toast("Erreur de chargement : vérifier votre appareil photo.", "warning", 5000);
             } else {
-                const { id } = this.props;
-
                 updateFile(response.uri, SALEPOINTSPHOTOSSTORAGE + response.fileName, oldUrl)
-                .then((url) => {
-                    const collection = SALEPOINTS + "/" + id + "/" + SALEPOINTSPHOTOS
-                    update(createQuery({collection: collection, doc: photoId}), {
+                .then((url) => { 
+                    update(createQuery({collection: SALEPOINTSPHOTOS, doc: photoId}), {
                         url: url
                     }).then(() => {
                         this.setState({ isUploading: false });
@@ -128,11 +127,8 @@ class WappiPhoto extends Component {
         const { photoIdToDelete } = this.state;
         this.setState({ isConfirmProcessing: true });
         
-        if(photoIdToDelete) {
-            const { id } = this.props;
-            const collection = SALEPOINTS + "/" + id + "/" + SALEPOINTSPHOTOS
-
-            remove(createQuery({collection: collection, doc: photoIdToDelete})).then(() => {
+        if(photoIdToDelete) { 
+            remove(createQuery({collection: SALEPOINTSPHOTOS, doc: photoIdToDelete})).then(() => {
                 this._hideFormConfirm();
                 toast("Cette photo a été supprimée avec succès.", "success", 5000);
             })
@@ -229,7 +225,7 @@ class WappiPhoto extends Component {
                         type="font-awesome"
                         name="plus"
                         iconStyle={{color: '#7B7C9E'}}
-                        containerStyle={isUploading ? { ...styles.addButtonContainer, marginLeft: "30%" } : { ...styles.addButtonContainer, marginLeft: "85%" }}
+                        containerStyle={isUploading ? { ...styles.addButtonContainer, marginLeft: wp("27%") } : { ...styles.addButtonContainer, marginLeft: wp("85%") }}
                         onPress={() => this._uploadPhoto()}
                     />
                 </View>
