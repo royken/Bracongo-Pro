@@ -70,7 +70,7 @@ class PurchaseMonth extends Component {
             <View>
                 <Icon type="font-awesome" name="info-circle" iconStyle={{color: color}} />
                 <Text style={{color: color}}>
-                Détails par produit
+                Produits
                 </Text>
             </View>
         );
