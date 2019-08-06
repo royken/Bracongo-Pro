@@ -80,12 +80,14 @@ class OrderHome extends Component {
     }
 
     _renderItem = ({item, index}) => {
+        const { initList } = this.state;
         return (
             <OrderItem 
                 product={item}
                 kin={this.props.kin}
                 increase={this._increase}
                 decrease={this._decrease}
+                init={initList}
             />
         );
     }
@@ -118,7 +120,6 @@ class OrderHome extends Component {
 
     _loadProducts(products) {
         const { isLoaded, isError, isEmpty } = getStatus(products);
-        const { initList } = this.state;
 
         if(!isLoaded) {
             return (
@@ -148,7 +149,6 @@ class OrderHome extends Component {
                     contentContainerStyle={styles.listContent}
                     keyExtractor={(item, index) => item.id}
                     data={data}
-                    extraData={initList}
                     ItemSeparatorComponent={() => (<View style={{height: 10}}></View>)}
                     ListHeaderComponent={this._renderHeader}
                     renderItem={this._renderItem}

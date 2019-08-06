@@ -6,8 +6,20 @@ import PropTypes from 'prop-types';
 
 class OrderItem extends PureComponent {
     state = {
-        amount: 0
+        amount: 0,
+        isUpdated: false
     };
+
+    static getDerivedStateFromProps(props, state) {
+        if(props.init !== state.isUpdated) {
+            return {
+                amount: 0,
+                isUpdated: props.init
+            };
+        }
+
+        return null;
+    }
 
     render() {
         const { product, kin, increase, decrease } = this.props;
