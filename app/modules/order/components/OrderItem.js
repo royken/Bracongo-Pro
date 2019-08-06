@@ -37,7 +37,7 @@ class OrderItem extends PureComponent {
                 <View style={{justifyContent: 'center', alignItems: "center"}}>
                     <Text style={{fontWeight: 'bold', color: 'white'}}>{nom}</Text>
                     <Text style={{fontWeight: 'bold', color: 'white'}}>
-                        {unitPrice + " x " + amount} 
+                        {unitPrice + " FC x " + amount} 
                     </Text>
                 </View>
                 <View style={{justifyContent: 'space-between'}}>
