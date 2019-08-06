@@ -39,14 +39,14 @@ export const initCart = () => dispatch => {
     });
 }
 
-export const postCart = (numero, cart) => dispatch => {
+export const postCart = (numero, cart) => (dispatch, getState) => {
     dispatch(uiStartLoading());
 
     return new Promise((resolve, reject) => {
         const items = Object.keys(cart).map(function(key) {
             return cart[key];
         });
-
+        
         processOrder(numero, items)
         .then(() => {
             const isLoading = getState().uiLoading.isLoading;
@@ -58,7 +58,7 @@ export const postCart = (numero, cart) => dispatch => {
         .catch((error) => {
             dispatch(uiStopLoading());
             toast("Problème de connexion", "danger", 5000);
-            reject();
+            reject(error);
         });
     });
 }

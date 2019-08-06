@@ -112,7 +112,7 @@ class OrderHome extends Component {
                 this.setState({ initList: !this.state.initList, isConfirmModalVisible: false });
                 toast("Votre commande a été enregistrée avec succès.", "success", 5000);
             }
-        ).catch(() => {});
+        ).catch((error) => {});
 
     }
 
