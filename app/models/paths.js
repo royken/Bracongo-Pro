@@ -16,3 +16,5 @@ export const PROMOTIONSTORAGE = "promotionstorage";
 
 export const USERS = "users";
 
+export const PRODUCTPRICES = "ProductPrices";
+

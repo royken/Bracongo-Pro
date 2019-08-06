@@ -15,7 +15,9 @@ class MainHeader extends Component {
         if(currentScreen === 'PurchaseHome' ||
             currentScreen === 'MessageHome' ||
             currentScreen === 'VanHome' ||
-            currentScreen === 'WappiHome'
+            currentScreen === 'WappiHome' ||
+            currentScreen === 'ComplaintHome' ||
+            currentScreen === 'OrderHome'
         ) {
             return true;
         } else {

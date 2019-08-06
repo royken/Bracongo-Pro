@@ -22,6 +22,7 @@ const initialState = {
     discount: 0,
     top: false,
     yaka: false,
+    kin: false,
     uuid: DeviceInfo.getUniqueID(),
     playerId: null,
     unsubscribe: null,
@@ -46,6 +47,7 @@ export default function(state = initialState, action) {
                 ventes,
                 top,
                 yaka,
+                kin,
                 unsubscribe 
             } = action.value;
 
@@ -63,6 +65,7 @@ export default function(state = initialState, action) {
                 ventes: ventes,
                 top: top,
                 yaka: yaka,
+                kin: kin,
                 unsubscribe: unsubscribe,
                 isLoaded: true
             };

@@ -113,14 +113,14 @@ export const unsetPaginatorListener = (query) => (dispatch, getState) => {
         unsubscribes.forEach((unsubscribe) => {
             unsubscribe();
         });
-
-        dispatch({
-            type: FIRESTORE_PAGINATOR_UNSET,
-            value: {
-                key: key
-            }
-        });
     }
+
+    dispatch({
+        type: FIRESTORE_PAGINATOR_UNSET,
+        value: {
+            key: key
+        }
+    });
 }
 
 
@@ -128,17 +128,26 @@ export const unsetPaginatorListener = (query) => (dispatch, getState) => {
 // Firestore pagination listener
 export const setPaginationListener = (query) => (dispatch, getState) => {
 
-    const page = getState().firestorePaginator.page;
-    if(page === 1){
+    const key = query.storeAs;
+    const state = getState().firestorePaginator;
+    let page = 1, pageKey = null, willPaginate = false;
+
+    if(state.hasOwnProperty(key)) {
+        page = state[key].page; 
+        pageKey = state[key].pageKey;
+        willPaginate = state[key].willPaginate;
+    }
+    
+    if(page === 1 && willPaginate === false){
         dispatch({
             type: FIRESTORE_PAGINATOR_INIT,
             value: {
-                key: query.storeAs
+                key: key
             }
         });
     } 
 
-    query.startAt = getState().firestorePaginator.pageKey;
+    query.startAfter = pageKey;
 
     const unsubscribe = paginate(
         (querySnapShot) => {
@@ -148,7 +157,7 @@ export const setPaginationListener = (query) => (dispatch, getState) => {
                 data.push({ ...doc, id: snap.id });
             });
 
-            const paginationField = isArray(query.orderBy) ? query.orderBy[0][0] : "";
+            const paginationField = isArray(query.orderBy) ? query.orderBy[0][0] : "id";
             dispatch({
                 type: FIRESTORE_PAGINATOR_SET,
                 value: {

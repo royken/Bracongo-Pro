@@ -8,6 +8,7 @@ import firestoreListenerReducer from '../core/reducers/firestoreListenerReducer'
 import firestorePaginatorReducer from '../core/reducers/firestorePaginatorReducer';
 import messageReducer from '../modules/message/reducers/messageReducer';
 import complaintReducer from '../modules/complaint/reducers/complaintReducer';
+import orderReducer from '../modules/order/reducers/orderReducer';
 
 const rootReducer = combineReducers({
     uiLoading: uiLoadingReducer,
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
     purchases: purchasesReducer,
     messages: messageReducer,
     complaints: complaintReducer,
+    orders: orderReducer,
     trucks: trucksReducer
 }); 
 

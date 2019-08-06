@@ -5,7 +5,7 @@ import {
     FIRESTORE_PAGINATOR_ERROR 
 } from "../actions/types";
 import { PAGINATION_ITEM_PER_PAGE } from "../../utils/firebase";
-import { isArray, isEmpty } from 'lodash';
+import { isEmpty } from 'lodash';
 
 const initialState = {};
 
@@ -82,10 +82,10 @@ function set(state, action) {
 
     if(state.hasOwnProperty(key)) {
         const { data, unsubscribe, paginationField } = action.value;
-        const dataLength = state[key].data.length + data.length;
-        const pageNumber = dataLength === 0 ? 1 :
-                            Math.ceil(dataLength / PAGINATION_ITEM_PER_PAGE);
-        const willPaginate = dataLength >= pageNumber * PAGINATION_ITEM_PER_PAGE
+        const dataLength = data.length;
+        const totalDataLength = state[key].data.length + dataLength;
+        const pageNumber = dataLength === 0 ? state[key].page : Math.ceil(totalDataLength / PAGINATION_ITEM_PER_PAGE);
+        const willPaginate = dataLength === PAGINATION_ITEM_PER_PAGE
 
         return {
             ...state,
@@ -93,30 +93,26 @@ function set(state, action) {
                 ...state[key],
                 page: pageNumber,
                 willPaginate: willPaginate,
-                data: pageNumber === 1 ? [].concat(data) : state[key].data.concat(data),                
-                pageKey: isArray(data) && data.length > 0 ? data[data.length - 1][paginationField] : null,
-                unsubscribes: isArray(state[key].unsubscribes) ? 
-                    [ ...state[key].unsubscribes, unsubscribe] : [].push(unsubscribe),
+                data: state[key].data.concat(data),                
+                pageKey: dataLength > 0 ? data[dataLength - 1][paginationField] : state[key].pageKey,
+                unsubscribes: state[key].unsubscribes.concat(unsubscribe),
                 isLoaded: true,
                 isError: false,
-                isEmpty: isEmpty(state[key].data) && isEmpty(data)
+                isEmpty: totalDataLength === 0
             }
         };
     } else {
         const { data, unsubscribe, paginationField } = action.value;
         const dataLength = data.length;
-        const pageNumber = dataLength === 0 ? 1 :
-                            Math.ceil(dataLength / PAGINATION_ITEM_PER_PAGE);
-        const willPaginate = dataLength >= pageNumber * PAGINATION_ITEM_PER_PAGE
+        const willPaginate = dataLength === PAGINATION_ITEM_PER_PAGE;
 
         return {
             ...state,
             [key]: {
-                page: pageNumber,
                 willPaginate: willPaginate,
                 data: [].concat(data),                
-                pageKey: isArray(data) && data.length > 0 ? data[data.length - 1][paginationField] : null,
-                unsubscribes: [].push(unsubscribe), 
+                pageKey: dataLength > 0 ? data[dataLength - 1][paginationField] : null,
+                unsubscribes: [].concat(unsubscribe), 
                 isLoaded: true,
                 isError: false,
                 isEmpty: dataLength === 0
@@ -133,8 +129,7 @@ function unset(state, action) {
             ...state,
             [key]: {
                 ...state[key],
-                unsubscribes: [],
-                isEmpty: state[key].data.length === 0
+                ...init
             }
         };  
     } else {

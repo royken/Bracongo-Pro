@@ -138,6 +138,7 @@ class Home extends Component {
                                 imageStyle={styles.iconMenu}
                                 imageUrl={require('../../assets/images/special_order.png')}
                                 containerStyle={{alignItems: "center", marginTop: 15}}
+                                onPress={() => this._onGoToScreen("OrderHome")}
                             />
                         </View>
                     </View>

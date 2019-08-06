@@ -31,7 +31,6 @@ export function getCurrentDate() {
 }
 
 
-
 /*********************************/
 /****    React native share   ***/
 /*******************************/

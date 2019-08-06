@@ -21,6 +21,7 @@ import WappiPromoComments from '../modules/wappi/components/WappiPromoComments';
 import WappiPhoto from '../modules/wappi/components/WappiPhoto';
 import WappiLoyalty from '../modules/wappi/components/WappiLoyalty';
 import WappiNote from '../modules/wappi/components/WappiNote';
+import OrderHome from '../modules/order/components/OrderHome';
 import { connect } from 'react-redux';
 import { setPlayerId } from '../modules/profile/actions/actions';
 import { getActiveRouteName } from '../utils/navigationHelper';
@@ -125,6 +126,20 @@ const WappiStack = createStackNavigator(
     }
 );
 
+const OrderStack = createStackNavigator(
+    {
+        OrderHome: {
+            screen: OrderHome
+        }
+    },
+    {
+        initialRouteName: 'OrderHome',
+        defaultNavigationOptions: {
+            header: null
+        }
+    }
+);
+
 const MainStackNavigator = createStackNavigator(
     {
         Home: {
@@ -144,6 +159,9 @@ const MainStackNavigator = createStackNavigator(
         },
         WappiStack: {
             screen: WappiStack
+        },
+        OrderStack: {
+            screen: OrderStack
         }
     },
     {
@@ -204,7 +222,7 @@ class Navigation extends React.Component {
                         .then((doc) => {
                             const data = doc.data();
                             if(data) {
-                                console.log("SENDING DATA");
+                                // console.log("SENDING DATA");
                                 logAnalytic(data.numero, currentScreen).catch((error) => {});
                             }
                         })

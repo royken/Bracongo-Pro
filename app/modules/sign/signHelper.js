@@ -24,6 +24,7 @@ export function signInHelper(numero, password) {
                     ventes: data.ventes,
                     yaka: data.yaka,
                     top: false,
+                    kin: data.kin,
                     password: encryptPass(password)
                 };
                 

@@ -123,3 +123,13 @@ export function getTrucks(deviceId, ccode) {
         .catch((error) => reject(error));
     });
 }
+
+export function processOrder(numero, products) {
+    const uri = `${baseURI}/commandes`;
+
+    return new Promise((resolve, reject) => {
+        axios.post(uri, { client: numero, items: products })
+        .then((resp) => resolve(resp.data))
+        .catch((error) => reject(error));
+    });
+}
