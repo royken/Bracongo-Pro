@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 5,
         borderColor: 'white',
-        minHeight: 100
+        height: 120
     }
 });
 

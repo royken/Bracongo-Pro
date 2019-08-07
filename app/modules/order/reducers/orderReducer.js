@@ -18,23 +18,31 @@ export default function (state = initialState, action) {
     switch (action.type) {
         case UPDATE_CART:
             const { total, amount, code, name, quantity } = action.value;
-            newState = {
-                ...state,
-                cart: {
-                    ...state.cart,
-                    [code]: {
-                        ...state.cart[code],
-                        nomProduit: name,
-                        quantite: quantity,
-                        codeProduit: code
+
+            if(total <= 0) {
+                newState = {
+                    ...state,
+                    ...init
+                };
+            } else {
+                newState = {
+                    ...state,
+                    cart: {
+                        ...state.cart,
+                        [code]: {
+                            ...state.cart[code],
+                            nomProduit: name,
+                            quantite: quantity,
+                            codeProduit: code
+                        }
+                    },
+                    details: {
+                        ...state.details,
+                        total: total,
+                        amount: amount
                     }
-                },
-                details: {
-                    ...state.details,
-                    total: total,
-                    amount: amount
-                }
-            };
+                };
+            }
             break;
 
         case INIT_CART:

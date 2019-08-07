@@ -213,9 +213,9 @@ class ComplaintHome extends Component {
 
 const styles = StyleSheet.create({
     addButtonContainer: {
-        height: 50,
-        width: 50,
-        borderRadius: 25,
+        height: 40,
+        width: 40,
+        borderRadius: 20,
         backgroundColor: "white",
         justifyContent: 'center'
     },
