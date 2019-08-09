@@ -62,12 +62,13 @@ class WappiPhoto extends Component {
                 this.setState({ isUploading: false });
                 toast("Erreur de chargement : vérifier votre appareil photo.", "warning", 5000);
             } else {
-                const { id } = this.props;
+                const { id, numero } = this.props;
 
                 uploadFile(response.uri, SALEPOINTSPHOTOSSTORAGE + response.fileName)
                 .then((url) => {
                     add(createQuery({collection: SALEPOINTSPHOTOS}), {
                         salepointId: id,
+                        numero: numero,
                         url: url,
                     }).then(() => {
                         this.setState({ isUploading: false });
@@ -272,6 +273,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
     id: state.profile.id,
+    numero: state.profile.numero,
     photos: state.firestorePaginator.photos
 });
 

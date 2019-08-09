@@ -124,12 +124,13 @@ class WappiPromo extends Component {
 
         uploadFile(photoUri, PROMOTIONSTORAGE + photoName)
         .then((url) => {
-            const { id } = this.props;
+            const { id, numero } = this.props;
 
             add(
                 createQuery({collection: PROMOTIONS}), 
                 {
                     salepointId: id,
+                    numero: numero,
                     title: title,
                     description: comment,
                     beginDate: getTimeFromStringDate(dateBegin, "DD-MM-YYYY HH:mm"),
@@ -201,6 +202,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
     id: state.profile.id,
+    numero: state.profile.numero,
     raisonSociale: state.profile.raisonSociale,
     cover: state.profile.cover,
     promotions: state.firestorePaginator.promotions
