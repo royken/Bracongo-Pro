@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import validateField from '../../../utils/validator';
 import { toast } from '../../../utils/toast';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { IMAGEPICKEROPTIONS } from '../../../core/constants';
+import { IMAGEPICKEROPTIONS } from '../../core/constants';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 
 const initialState = {
@@ -71,7 +71,7 @@ class WappiPromoCommentForm extends Component {
                 this.setState({ photoUri: null, photoName: null, isImageLoaded: false});
             } else if(response.error){
                 this.setState({ photoUri: null, photoName: null, isImageLoaded: false});
-                toast("Erreur de chargement : vérifier votre appareil photo.", "warning", 5000);
+                toast.warning("Erreur de chargement : vérifier votre appareil photo.");
             } else {
                 this.setState({ 
                     photoUri: response.uri, 

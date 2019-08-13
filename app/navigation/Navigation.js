@@ -5,29 +5,31 @@ import {
     createAppContainer
 } from 'react-navigation';
 import OneSignal from 'react-native-onesignal';
-import SignIn from '../modules/sign/components/SignIn';
-import Home from '../core/components/Home';
-import PurchaseHome from '../modules/purchase/components/PurchaseHome';
-import PurchaseMonth from '../modules/purchase/components/PurchaseMonth';
-import PurchaseYear from '../modules/purchase/components/PurchaseYear';
-import PurchaseDiscount from '../modules/purchase/components/PurchaseDiscount';
-import MessageHome from '../modules/message/components/MessageHome';
-import ComplaintHome from '../modules/complaint/components/ComplaintHome';
-import VanHome from '../modules/van/components/VanHome';
-import WappiHome from '../modules/wappi/components/WappiHome';
-import WappiPromo from '../modules/wappi/components/WappiPromo';
-import WappiPromoDetails from '../modules/wappi/components/WappiPromoDetails';
-import WappiPromoComments from '../modules/wappi/components/WappiPromoComments';
-import WappiPhoto from '../modules/wappi/components/WappiPhoto';
-import WappiLoyalty from '../modules/wappi/components/WappiLoyalty';
-import WappiNote from '../modules/wappi/components/WappiNote';
-import OrderHome from '../modules/order/components/OrderHome';
 import { connect } from 'react-redux';
-import { setPlayerId } from '../modules/profile/actions/actions';
-import { getActiveRouteName } from '../utils/navigationHelper';
-import { getCurrentUserId, getDoc } from '../utils/firebase';
+
+import { setPlayerId } from '../store/actions';
+import { getActiveRouteName } from '../utils/navigation';
+import { getCurrentUserId, get } from '../utils/firebase';
 import { logAnalytic } from '../api/bracongoApi';
 import { SALEPOINTS } from '../models/paths';
+
+import SignIn from '../modules/sign/screens/SignIn';
+import Home from '../modules/core/screens/Home';
+import PurchaseHome from '../modules/purchase/screens/PurchaseHome';
+import PurchaseMonth from '../modules/purchase/screens/PurchaseMonth';
+import PurchaseYear from '../modules/purchase/screens/PurchaseYear';
+import PurchaseDiscount from '../modules/purchase/screens/PurchaseDiscount';
+import MessageHome from '../modules/message/screens/MessageHome';
+import ComplaintHome from '../modules/complaint/screens/ComplaintHome';
+import VanHome from '../modules/van/screens/VanHome';
+import WappiHome from '../modules/wappi/screens/WappiHome';
+import WappiPromo from '../modules/wappi/screens/WappiPromo';
+import WappiPromoDetails from '../modules/wappi/screens/WappiPromoDetails';
+import WappiPromoComments from '../modules/wappi/screens/WappiPromoComments';
+import WappiPhoto from '../modules/wappi/screens/WappiPhoto';
+import WappiLoyalty from '../modules/wappi/screens/WappiLoyalty';
+import WappiNote from '../modules/wappi/screens/WappiNote';
+import OrderHome from '../modules/order/screens/OrderHome';
 
 const PurchaseStack = createStackNavigator(
     {
@@ -190,7 +192,6 @@ class Navigation extends React.Component {
         super(props);
 
         OneSignal.addEventListener('ids', this.onIds);
-        
     }
 
     componentDidMount() {
@@ -216,13 +217,13 @@ class Navigation extends React.Component {
                     const currentScreen = getActiveRouteName(currentState);
                     const prevScreen = getActiveRouteName(prevState);
                     const currentUserUid = getCurrentUserId();
+                    const query = {collection: SALEPOINTS, doc: currentUserUid};
 
                     if(currentUserUid && prevScreen !== currentScreen) {
-                        getDoc(SALEPOINTS, currentUserUid).get()
+                        get(query)
                         .then((doc) => {
                             const data = doc.data();
                             if(data) {
-                                // console.log("SENDING DATA");
                                 logAnalytic(data.numero, currentScreen).catch((error) => {});
                             }
                         })

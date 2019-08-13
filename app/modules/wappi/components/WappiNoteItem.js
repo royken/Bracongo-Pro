@@ -1,11 +1,11 @@
 import React, { PureComponent } from 'react';
 import { StyleSheet, View, Dimensions } from 'react-native';
 import { ListItem, Image, Text, Icon } from 'react-native-elements';
-import StarsVote from '../../../core/layout/StarsVote';
+import StarsVote from '../../core/layout/StarsVote';
 import { isString, isEmpty, isFinite } from 'lodash';
 import moment from 'moment';
 import { USERS, NOTESALEPOINTS } from '../../../models/paths';
-import { createQuery, onSnapshot } from '../../../utils/firebase';
+import { onSnapshot } from '../../../utils/firebase';
 import PropTypes from 'prop-types';
 
 const deviceDimWidth = Dimensions.get('window').width;
@@ -30,7 +30,7 @@ class WappiNoteItem extends PureComponent {
     componentDidMount() {
         this._isMounted = true;
         const { typeId, uid } = this.props.post;
-        const query = createQuery({collection: USERS, doc: uid});
+        const query = {collection: USERS, doc: uid};
 
         this.unsubscribe = onSnapshot(
             (querySnapShot) => {
@@ -46,11 +46,11 @@ class WappiNoteItem extends PureComponent {
             query
         );
          
-        const queryUserNote = createQuery({
+        const queryUserNote = {
             collection: NOTESALEPOINTS, 
             where: [["uid", "==", uid], ['numero', "==", typeId]],
             limit: 1
-        });
+        };
         this.unsubscribeUserNote = onSnapshot(
             (querySnapShot) => {
                 querySnapShot.docs.forEach((snap) => {

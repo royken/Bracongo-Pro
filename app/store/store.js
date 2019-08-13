@@ -1,14 +1,14 @@
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
 import thunk from 'redux-thunk';
-import profileReducer  from '../modules/profile/reducers/profileReducer';
-import purchasesReducer from '../modules/purchase/reducers/purchasesReducer';
-import uiLoadingReducer from '../core/reducers/uiLoadingReducer';
-import trucksReducer from '../modules/van/reducers/trucksReducer';
-import firestoreListenerReducer from '../core/reducers/firestoreListenerReducer';
-import firestorePaginatorReducer from '../core/reducers/firestorePaginatorReducer';
-import messageReducer from '../modules/message/reducers/messageReducer';
-import complaintReducer from '../modules/complaint/reducers/complaintReducer';
-import orderReducer from '../modules/order/reducers/orderReducer';
+import uiLoadingReducer from './reducers/uiLoadingReducer';
+import firestoreListenerReducer from './reducers/firestoreListenerReducer';
+import firestorePaginatorReducer from './reducers/firestorePaginatorReducer';
+import profileReducer from './reducers/profileReducer';
+import messagesReducer from './reducers/messagesReducer';
+import complaintsReducer from './reducers/complaintsReducer';
+import ordersReducer from './reducers/ordersReducer';
+import trucksReducer from './reducers/trucksReducer';
+import purchasesReducer from './reducers/purchasesReducer';
 
 const rootReducer = combineReducers({
     uiLoading: uiLoadingReducer,
@@ -16,9 +16,9 @@ const rootReducer = combineReducers({
     firestorePaginator: firestorePaginatorReducer,
     profile: profileReducer,
     purchases: purchasesReducer,
-    messages: messageReducer,
-    complaints: complaintReducer,
-    orders: orderReducer,
+    messages: messagesReducer,
+    complaints: complaintsReducer,
+    orders: ordersReducer,
     trucks: trucksReducer
 }); 
 

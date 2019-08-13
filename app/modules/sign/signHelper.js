@@ -1,8 +1,7 @@
-import CryptoJS from 'crypto-js';
 import { signInWithApi } from "../../api/bracongoApi";
-import { signUpWithFB, signInWithFB, getDoc } from "../../utils/firebase";
+import { signIn, signUp, set } from "../../utils/firebase";
 import { SALEPOINTS } from "../../models/paths";
-import { SECRET_CRYPTOJS_KEY } from '../../core/constants';
+import { getPasswordHash, encryptPass } from "../../utils/cryptoPass";
 
 export function signInHelper(numero, password) {
 
@@ -28,25 +27,25 @@ export function signInHelper(numero, password) {
                     password: encryptPass(password)
                 };
                 
-                signUpWithFB(email, passwordHash).then(
+                signUp(email, passwordHash).then(
                     (resp) => { 
                         const id = resp.user.uid;
                         salepoint.id = id;
 
-                        getDoc(SALEPOINTS, id)
-                        .set(salepoint)
+                        const query = {collection: SALEPOINTS, doc: id}
+                        set(query, salepoint)
                         .then(() => resolve({id: id, ...salepoint}))
                         .catch((error) => reject(error));
                     }
                 ).catch((error) => {
                     if(error.code === "auth/email-already-in-use") {
-                        signInWithFB(email, passwordHash).then(
+                        signIn(email, passwordHash).then(
                             (data) => {
                                 const id = data.user.uid;
                                 salepoint.id = id;
 
-                                getDoc(SALEPOINTS, id)
-                                .set(salepoint)
+                                const query = {collection: SALEPOINTS, doc: id}
+                                set(query, salepoint)
                                 .then(() => resolve({id: id, ...salepoint}))
                                 .catch((error) => reject(error));
                             }
@@ -58,29 +57,4 @@ export function signInHelper(numero, password) {
             }
         ).catch((error) => reject(error));
     });
-}
-
-export function encryptPass(password) {
-    const wordArray = CryptoJS.enc.Utf8.parse(password + "-" + SECRET_CRYPTOJS_KEY);
-    return CryptoJS.enc.Hex.stringify(wordArray);
-}
-
-export function decryptPass(encrypted) {
-    
-    const parsedWordArray = CryptoJS.enc.Hex.parse(encrypted);
-    const parsedStr = parsedWordArray.toString(CryptoJS.enc.Utf8);
-    
-    return parsedStr.split("-")[0];
-}
-
-function getPasswordHash(numero) {
-
-    let numeroStr = (new String(numero)).valueOf();
-    let hash = 0;
-
-    for (i = 0; i < numeroStr.length; i++) {
-        hash = hash * 34 + parseInt(numeroStr[i]);
-    }
-
-    return CryptoJS.SHA256((new String(hash)).valueOf()).toString();
 }

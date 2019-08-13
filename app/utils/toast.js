@@ -1,6 +1,6 @@
 import Toast from 'react-native-root-toast';
 
-export function toast(message, type, duration = 500, position = "bottom"){
+function triggerToast(message, type, duration, position){
 
     let msgType
     switch(type){
@@ -50,3 +50,21 @@ export function toast(message, type, duration = 500, position = "bottom"){
     });
 
 }
+
+export const toast = {
+    success: function(message, duration = 5000, position = "bottom") {
+        triggerToast(message, "success", duration, position);
+    },
+    info: function(message, duration = 5000, position = "bottom") {
+        triggerToast(message, "info", duration, position);
+    },
+    warning: function(message, duration = 5000, position = "bottom") {
+        triggerToast(message, "warning", duration, position);
+    },
+    danger: function(message, duration = 5000, position = "bottom") {
+        triggerToast(message, "danger", duration, position);
+    },
+    primary: function(message, duration = 5000, position = "bottom") {
+        triggerToast(message, "primary", duration, position);
+    }
+};

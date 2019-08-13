@@ -7,7 +7,7 @@ import SplashScreen from 'react-native-splash-screen'
 import { 
     ONESIGNAL_APPID_PRO, COMMENTSALEPOINTTYPE, 
     QRCODETYPE, COMMENTPROMOTYPE 
-} from './app/core/constants';
+} from './app/modules/core/constants';
 import { toast } from './app/utils/toast';
 
 export default class App extends Component {
@@ -33,15 +33,15 @@ export default class App extends Component {
         if(openResult.notification.isAppInFocus) {
             switch (data.type) {
                 case COMMENTSALEPOINTTYPE:
-                    toast("Nouveau commentaire : @" + data.author + " a donné un avis sur votre point de vente.", "info", 5000);
+                    toast.info("Nouveau commentaire : @" + data.author + " a donné un avis sur votre point de vente.");
                     break;
 
                 case COMMENTPROMOTYPE:
-                    toast("Nouveau commentaire : @" + data.author + " a commenté votre promotion.", "info", 5000);
+                    toast.info("Nouveau commentaire : @" + data.author + " a commenté votre promotion.");
                     break;
 
                 case QRCODETYPE:
-                    toast("Nouvelle fidélité : @" + data.author + " était chez vous.", "info", 5000);
+                    toast.info("Nouvelle fidélité : @" + data.author + " était chez vous.");
                     break;    
             }
         }

@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Icon, Text } from 'react-native-elements';
 import PropTypes from 'prop-types';
-import { onSnapshot, createQuery } from '../../../utils/firebase';
+import { onSnapshot } from '../../../utils/firebase';
 import { USERS } from '../../../models/paths';
 import { isEmpty } from 'lodash';
 import moment from 'moment';
@@ -24,7 +24,7 @@ class WappiLoyaltyItem extends PureComponent {
     componentDidMount() {
         this._isMounted = true;
         const { uid } = this.props;
-        const query = createQuery({collection: USERS, doc: uid});
+        const query = {collection: USERS, doc: uid};
 
         this.unsubscribe = onSnapshot(
             (querySnapShot) => {
