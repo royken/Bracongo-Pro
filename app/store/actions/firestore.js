@@ -105,6 +105,10 @@ export const unsetPaginatorListener = (query) => (dispatch, getState) => {
 // Firestore pagination listener
 export const setPaginationListener = (query) => (dispatch, getState) => {
 
+    if(!isArray(query.orderBy)) {
+        throw new Error("Query must have a orderBy field.");
+    }
+
     const key = query.storeAs;
     const state = getState().firestorePaginator;
     let lastDoc = null, canPaginate = false;
@@ -126,6 +130,7 @@ export const setPaginationListener = (query) => (dispatch, getState) => {
 
     query.startAfter = lastDoc;
     query.limit = PAGINATION_ITEM_PER_PAGE;
+    const paginationField = isArray(query.orderBy[0]) ? query.orderBy[0][0] : query.orderBy[0];
 
     const unsubscribe = onSnapshot(
         (querySnapShot) => {
@@ -143,6 +148,7 @@ export const setPaginationListener = (query) => (dispatch, getState) => {
                     key: query.storeAs,
                     dataIds: dataIds,
                     dataObj: dataObj,
+                    paginationField,
                     unsubscribe: unsubscribe
                 }
             });

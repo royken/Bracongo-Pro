@@ -12,7 +12,9 @@ import {
 import { uploadFile, updateFile } from './storage/upload';
 import { PAGINATION_ITEM_PER_PAGE } from './constants';
 
-export { getCurrentUserId, signIn, signOut, signUp };
-export { get, onSnapshot, runTransaction, set, add, update, remove, del };
-export { uploadFile, updateFile };
-export { PAGINATION_ITEM_PER_PAGE };
+export { 
+    getCurrentUserId, signIn, signOut, signUp, 
+    get, onSnapshot, runTransaction, set, add, update, remove, del,
+    uploadFile, updateFile,
+    PAGINATION_ITEM_PER_PAGE
+};

@@ -77,7 +77,7 @@ export default function (state = initialState, action) {
 } 
 
 function set(state, action) {
-    const { key, dataIds, dataObj, unsubscribe } = action.value;
+    const { key, dataIds, dataObj, unsubscribe, paginationField } = action.value;
     let newAllIds, newById, newUnsubscribes, canPaginate, lastDoc, lastIndex;
 
     if(!state.hasOwnProperty(key) || state[key].allIds.length === 0) {
@@ -93,9 +93,9 @@ function set(state, action) {
         newUnsubscribes = deDuplicate(state[key].unsubscribes.concat(unsubscribe));
     }
 
-    canPaginate = dataIds.length > 0 && (newAllIds % PAGINATION_ITEM_PER_PAGE === 0)
+    canPaginate = dataIds.length > 0 && (newAllIds.length % PAGINATION_ITEM_PER_PAGE === 0)
     lastIndex = Math.trunc(newAllIds.length / PAGINATION_ITEM_PER_PAGE) * PAGINATION_ITEM_PER_PAGE - 1;
-    lastDoc = lastIndex > 0 ? newById[newAllIds[lastIndex]] : null;
+    lastDoc = lastIndex > 0 ? newById[newAllIds[lastIndex]][paginationField] : null;
 
     return {
         ...state,
