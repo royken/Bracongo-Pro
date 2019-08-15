@@ -119,7 +119,7 @@ function first(state, action) {
                 ...newState[key],
                 allIds: {
                     ...newState[key].allIds,
-                    [listenerId]: newState[key][listenerId].filter((id) => !data.deleted.dataIds.includes(id))
+                    [listenerId]: newState[key].allIds[listenerId].filter((id) => !data.deleted.dataIds.includes(id))
                 }
             }
         };
@@ -131,7 +131,7 @@ function first(state, action) {
     }
 
     let newLastSnapId, newLastDoc, canPaginate;
-    if(1 <= newState[key].lastSnapId) {
+    if(1 < newState[key].lastSnapId) {
         canPaginate = newState[key].canPaginate;
         newLastDoc = newState[key].lastDoc;
         newLastSnapId = newState[key].lastSnapId;
@@ -216,7 +216,7 @@ function more(state, action) {
                 ...newState[key],
                 allIds: {
                     ...newState[key].allIds,
-                    [listenerId]: newState[key][listenerId].filter((id) => !data.deleted.dataIds.includes(id))
+                    [listenerId]: newState[key].allIds[listenerId].filter((id) => !data.deleted.dataIds.includes(id))
                 }
             }
         };
