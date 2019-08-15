@@ -8,7 +8,7 @@ import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import { 
     setPaginationListener, 
     unsetPaginatorListener, 
-    getStatus 
+    getStatus, getData 
 } from '../../../store/actions';
 import { toast } from '../../../utils/toast';
 import { updateFile, uploadFile, add, update, remove } from '../../../utils/firebase';
@@ -148,13 +148,10 @@ class WappiPhoto extends Component {
     }
 
     _renderItem = ({item, index}) => { 
-        const { byId } = this.props.photos;
-        const fields = byId[item];
-
         return (
             <View style={styles.imageContainerStyle}>
                 <Image 
-                    source={{uri: fields.url}}
+                    source={{uri: item.url}}
                     onError={() => {}}
                     style={styles.imageStyle}
                 />
@@ -163,13 +160,13 @@ class WappiPhoto extends Component {
                         type="font-awesome"
                         name="pencil"
                         iconStyle={{color: 'white'}}
-                        onPress={() => this._editPhoto(fields.id, fields.url)}
+                        onPress={() => this._editPhoto(item.id, item.url)}
                     />
                     <Icon 
                         type="font-awesome"
                         name="trash"
                         iconStyle={{color: 'red'}}
-                        onPress={() => this._showFormConfirm(fields.id)}
+                        onPress={() => this._showFormConfirm(item.id)}
                     />
                 </View>
             </View>
@@ -193,20 +190,18 @@ class WappiPhoto extends Component {
                 </View>
             );
         } else {
-            const { allIds, canPaginate } = photos;
+            const data = getData(photos);
             const { setPaginationListener } = this.props;
 
             return (
                 <FlatList numColumns={3}
                     contentContainerStyle={{marginHorizontal: 10, marginTop: 15, marginBottom: 5}}
-                    keyExtractor={(item, index) => item}
-                    data={allIds}
+                    keyExtractor={(item, index) => item.id}
+                    data={data}
                     renderItem={this._renderItem}
                     onEndReachedThreshold={0.5}
                     onEndReached={() => {
-                        if(canPaginate === true) {
-                            setPaginationListener(this.query);
-                        }
+                        setPaginationListener(this.query, true);
                     }}
                 />
             );

@@ -7,7 +7,7 @@ import { uploadFile, add } from '../../../utils/firebase';
 import { 
     setPaginationListener, 
     unsetPaginatorListener, 
-    getStatus 
+    getStatus, getData 
 } from '../../../store/actions';
 import { toast } from '../../../utils/toast';
 import { shareToSN } from '../../../utils/shareUtil';
@@ -73,9 +73,8 @@ class WappiPromo extends Component {
     }
 
     _renderItem = ({item, index}) => {
-        const { byId } = this.props.promotions;
         return (
-            <WappiPromoItem promo={byId[item]} 
+            <WappiPromoItem promo={item} 
                 displayDetails={this._displayDetails} 
                 onShare={this._share} 
             />
@@ -99,20 +98,18 @@ class WappiPromo extends Component {
                 </View>
             );
         } else {
-            const { allIds, canPaginate } = promotions;
+            const data = getData(promotions);
             const { setPaginationListener } = this.props;
 
             return (
                 <FlatList 
                     contentContainerStyle={{marginHorizontal: 10, marginVertical: 15, paddingBottom: 15}}
-                    keyExtractor={(item, index) => item}
-                    data={allIds}
+                    keyExtractor={(item, index) => item.id}
+                    data={data}
                     renderItem={this._renderItem}
                     onEndReachedThreshold={0.5}
                     onEndReached={() => {
-                        if(canPaginate === true) {
-                            setPaginationListener(this.query);
-                        }
+                        setPaginationListener(this.query, true);
                     }}
                 />
             );

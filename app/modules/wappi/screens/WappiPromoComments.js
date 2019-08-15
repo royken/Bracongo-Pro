@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { 
     setPaginationListener, 
     unsetPaginatorListener, 
-    getStatus 
+    getStatus, getData 
 } from '../../../store/actions';
 
 import { PROMOTION_COMMENTS } from '../../../models/paths';
@@ -40,14 +40,11 @@ class WappiPromoComments extends Component {
     }
 
     _renderItem = ({item, index}) => {
-        const { byId } = this.props.comments;
-        const fields = byId[item];
-
         return (
             <CommentsItem 
-                uid={fields.uid}
-                date={fields.createdAt}
-                comment={fields.content}
+                uid={item.uid}
+                date={item.createdAt}
+                comment={item.content}
             />
         );
     }
@@ -69,19 +66,17 @@ class WappiPromoComments extends Component {
                 </View>
             );
         } else {
-            const { allIds, canPaginate } = comments;
+            const data = getData(comments);
+            const { setPaginationListener } = this.props;
 
             return (
                 <FlatList
-                    keyExtractor={(item, index) => item} 
-                    data={allIds}
+                    keyExtractor={(item, index) => item.id} 
+                    data={data}
                     renderItem={this._renderItem}
                     onEndReachedThreshold={0.5}
                     onEndReached={() => {
-                        if(canPaginate) {
-                            const { setPaginationListener } = this.props;
-                            setPaginationListener(this.query);
-                        }
+                        setPaginationListener(this.query, true);
                     }}
                 />
             );

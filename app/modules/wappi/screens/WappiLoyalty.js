@@ -7,7 +7,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { 
     setPaginationListener, 
     unsetPaginatorListener, 
-    getStatus 
+    getStatus, getData 
 } from '../../../store/actions';
 import { onSnapshot } from '../../../utils/firebase';
 
@@ -77,14 +77,11 @@ class WappiLoyalty extends Component {
     }
 
     _renderItem = ({item, index}) => {
-        const { byId } = this.props.loyalties;
-        const fields = byId[item];
-        
         return (
             <WappiLoyaltyItem 
-                uid={fields.uid}
-                scanDate={fields.lastDate}
-                scansCount={fields.scansCount}
+                uid={item.uid}
+                scanDate={item.lastDate}
+                scansCount={item.scansCount}
             />
         );
     }
@@ -106,20 +103,18 @@ class WappiLoyalty extends Component {
                 </View>
             );
         } else {
-            const { allIds, canPaginate } = loyalties;
+            const data = getData(loyalties);
             const { setPaginationListener } = this.props;
 
             return (
                 <FlatList numColumns={3}
                     contentContainerStyle={{marginHorizontal: 10, marginTop: 10, marginBottom: 5}}
-                    keyExtractor={(item, index) => item}
-                    data={allIds}
+                    keyExtractor={(item, index) => item.id}
+                    data={data}
                     renderItem={this._renderItem}
                     onEndReachedThreshold={0.5}
                     onEndReached={() => {
-                        if(canPaginate === true) {
-                            setPaginationListener(this.query);
-                        }
+                        setPaginationListener(this.query, true);
                     }}
                 />
             );

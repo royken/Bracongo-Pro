@@ -7,7 +7,7 @@ import { isFinite } from 'lodash';
 import { 
     setPaginationListener, 
     unsetPaginatorListener, 
-    getStatus 
+    getStatus, getData 
 } from '../../../store/actions';
 import { onSnapshot } from '../../../utils/firebase';
 
@@ -83,10 +83,8 @@ class WappiNote extends Component {
     }
 
     _renderItem = ({item, index}) => {
-        const { byId } = this.props.notes;
-
         return (
-            <WappiNoteItem post={byId[item]} index={index} />
+            <WappiNoteItem post={item} index={index} />
         );
     }
 
@@ -107,20 +105,18 @@ class WappiNote extends Component {
                 </View>
             );
         } else {
-            const { allIds, canPaginate } = notes;
+            const data = getData(notes);
             const { setPaginationListener } = this.props;
 
             return (
                 <FlatList 
                     contentContainerStyle={{marginHorizontal: 10, marginTop: 5, marginBottom: 5}}
-                    keyExtractor={(item, index) => item}
-                    data={allIds}
+                    keyExtractor={(item, index) => item.id}
+                    data={data}
                     renderItem={this._renderItem}
                     onEndReachedThreshold={0.5}
                     onEndReached={() => {
-                        if(canPaginate === true) {
-                            setPaginationListener(this.query);
-                        }
+                        setPaginationListener(this.query, true);
                     }}
                 />
             );
