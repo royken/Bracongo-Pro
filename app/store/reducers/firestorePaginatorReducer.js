@@ -1,7 +1,7 @@
 import { 
     FIRESTORE_PAGINATOR_INIT, 
-    FIRESTORE_PAGINATOR_SET, 
-    FIRESTORE_PAGINATOR_UNSET, 
+    FIRESTORE_PAGINATOR_MORE, 
+    FIRESTORE_PAGINATOR_RESET, 
     FIRESTORE_PAGINATOR_ERROR 
 } from "../actions/types";
 import { PAGINATION_ITEM_PER_PAGE } from "../../utils/firebase";
@@ -12,9 +12,11 @@ const initialState = {};
 
 const init = { 
     byId: {},
-    allIds: [],
+    allIds: {},
     canPaginate: false,
     lastDoc: null,
+    lastSnapId: 0,
+    paginationField: "id",
     unsubscribes: [],
     isLoaded: false,
     isError: false,
@@ -23,49 +25,22 @@ const init = {
 
 export default function (state = initialState, action) {
     let newState;
-    let key;
 
     switch (action.type) {
         case FIRESTORE_PAGINATOR_INIT:
-            key = action.value.key;
-
-            if(state.hasOwnProperty(key)) {
-                newState = {
-                    ...state,
-                    [key]: {
-                        ...state[key],
-                        isLoaded: false,
-                        isError: false
-                    }
-                };
-            } else {       
-                newState = {
-                    ...state,
-                    [key]: {...init}
-                };
-            }
+            newState = first(state, action);
             break;
 
-        case FIRESTORE_PAGINATOR_SET:
-            newState = set(state, action);
+        case FIRESTORE_PAGINATOR_MORE:
+            newState = more(state, action);
             break;
 
-        case FIRESTORE_PAGINATOR_UNSET:
-            newState = unset(state, action);
+        case FIRESTORE_PAGINATOR_RESET:
+            newState = reset(state, action);
             break;
 
         case FIRESTORE_PAGINATOR_ERROR:
-            key = action.value.key;
-
-            newState = {
-                ...state,
-                [key]: {
-                    ...state[key],
-                    isLoaded: true,
-                    isError: true,
-                    isEmpty: isEmpty(state[key].allIds)
-                }
-            };
+            newState = setError(state, action);
             break;
 
         default:
@@ -76,44 +51,211 @@ export default function (state = initialState, action) {
     return newState || state;
 } 
 
-function set(state, action) {
-    const { key, dataIds, dataObj, unsubscribe, paginationField } = action.value;
-    let newAllIds, newById, newUnsubscribes, canPaginate, lastDoc, lastIndex;
+function first(state, action) {
+    const { key, data, unsubscribe, paginationField } = action.value;
+    let newState = state;
+    const listenerId = "L1";
 
-    if(!state.hasOwnProperty(key) || state[key].allIds.length === 0) {
-        newAllIds = dataIds;
-        newById = dataObj;
-        newUnsubscribes = [].concat(unsubscribe);
-    } else {
-        newAllIds = deDuplicate(state[key].allIds.concat(dataIds));
-        newById = {
-            ...state[key].byId,
-            ...dataObj
+    if(!state.hasOwnProperty(key)) {
+        newState = {
+            ...state,
+            [key]: {
+                ...state,
+                ...init,
+                allIds: {
+                    [listenerId]: []
+                }
+            }
         };
-        newUnsubscribes = deDuplicate(state[key].unsubscribes.concat(unsubscribe));
     }
 
-    canPaginate = dataIds.length > 0 && (newAllIds.length % PAGINATION_ITEM_PER_PAGE === 0)
-    lastIndex = Math.trunc(newAllIds.length / PAGINATION_ITEM_PER_PAGE) * PAGINATION_ITEM_PER_PAGE - 1;
-    lastDoc = lastIndex > 0 ? newById[newAllIds[lastIndex]][paginationField] : null;
+    if(!newState[key].allIds.hasOwnProperty(listenerId)) {
+        newState = {
+            ...newState,
+            [key]: {
+                ...newState[key],
+                allIds: {
+                    ...newState[key].allIds,
+                    [listenerId]: []
+                }
+            }
+        };
+    }
 
-    return {
-        ...state,
-        [key]: {
-            ...state[key],
-            byId: newById,
-            allIds: newAllIds,
-            canPaginate: canPaginate,
-            lastDoc: lastDoc,
-            unsubscribes: newUnsubscribes,
-            isLoaded: true,
-            isError: false,
-            isEmpty: newAllIds.length === 0
+    if(data.added.dataIds.length > 0) {
+        newState = {
+            ...newState,
+            [key]: {
+                ...newState[key],
+                byId: {
+                    ...newState[key].byId,
+                    ...data.added.dataObj
+                },
+                allIds: {
+                    ...newState[key].allIds,
+                    [listenerId]: data.added.dataIds
+                }
+            }
+        }; 
+    }
+    
+    if(data.updated.dataObj !== {}) {
+        newState = {
+            ...newState,
+            [key]: {
+                ...newState[key],
+                byId: {
+                    ...newState[key].byId,
+                    ...data.updated.dataObj
+                }
+            }
+        };
+    }
+
+    if(data.deleted.dataIds.length > 0) {
+        newState = {
+            ...newState,
+            [key]: {
+                ...newState[key],
+                allIds: {
+                    ...newState[key].allIds,
+                    [listenerId]: newState[key][listenerId].filter((id) => !data.deleted.dataIds.includes(id))
+                }
+            }
+        };
+        
+        let id;
+        for(id of data.deleted.dataIds) {
+            delete newState[key].byId[id];
         }
     }
+
+    let newLastSnapId, newLastDoc, canPaginate;
+    if(1 <= newState[key].lastSnapId) {
+        canPaginate = newState[key].canPaginate;
+        newLastDoc = newState[key].lastDoc;
+        newLastSnapId = newState[key].lastSnapId;
+    } else {
+        const dataIds = newState[key].allIds[listenerId];
+        const dataObj = newState[key].byId;
+        canPaginate = dataIds.length === PAGINATION_ITEM_PER_PAGE;
+        newLastDoc = canPaginate ? dataObj[dataIds[dataIds.length - 1]][paginationField] : newState[key].lastDoc;
+        newLastSnapId = 1;
+    }
+
+    return {
+        ...newState,
+        [key]: {
+            ...newState[key],
+            canPaginate: canPaginate,
+            lastDoc: newLastDoc,
+            lastSnapId: newLastSnapId,
+            paginationField: paginationField,
+            unsubscribes: deDuplicate(newState[key].unsubscribes.concat(unsubscribe)),
+            isLoaded: true,
+            isError: false,
+            isEmpty: isEmpty(newState[key].byId)
+        }
+    };
 }
 
-function unset(state, action) {
+function more(state, action) {
+    let newState = state;
+    const { key, data, unsubscribe, currentLastSnapId } = action.value;
+    const { paginationField, lastSnapId } = state[key];
+    
+    const listenerId = "L" + currentLastSnapId;
+
+    if(!state[key].allIds.hasOwnProperty(listenerId)) {
+        newState = {
+            ...state,
+            [key]: {
+                ...state[key],
+                allIds: {
+                    ...state[key].allIds,
+                    [listenerId]: []
+                }
+            }
+        };
+    }
+
+    if(data.added.dataIds.length > 0) {
+        newState = {
+            ...newState,
+            [key]: {
+                ...newState[key],
+                byId: {
+                    ...newState[key].byId,
+                    ...data.added.dataObj
+                },
+                allIds: {
+                    ...newState[key].allIds,
+                    [listenerId]: data.added.dataIds
+                }
+            }
+        }; 
+    }
+    
+    if(data.updated.dataObj !== {}) {
+        newState = {
+            ...newState,
+            [key]: {
+                ...newState[key],
+                byId: {
+                    ...newState[key].byId,
+                    ...data.updated.dataObj
+                }
+            }
+        };
+    }
+
+    if(data.deleted.dataIds.length > 0) {
+        newState = {
+            ...newState,
+            [key]: {
+                ...newState[key],
+                allIds: {
+                    ...newState[key].allIds,
+                    [listenerId]: newState[key][listenerId].filter((id) => !data.deleted.dataIds.includes(id))
+                }
+            }
+        };
+        
+        let id;
+        for(id of data.deleted.dataIds) {
+            delete newState[key].byId[id];
+        }
+    }
+
+    let newLastSnapId, newLastDoc, canPaginate;
+    if(currentLastSnapId <= lastSnapId) {
+        canPaginate = newState[key].canPaginate;
+        newLastDoc = newState[key].lastDoc;
+        newLastSnapId = lastSnapId;
+    } else {
+        const dataIds = newState[key].allIds[listenerId];
+        const dataObj = newState[key].byId;
+        canPaginate = dataIds.length === PAGINATION_ITEM_PER_PAGE;
+        newLastDoc = canPaginate ? dataObj[dataIds[dataIds.length - 1]][paginationField] : newState[key].lastDoc;
+        newLastSnapId = currentLastSnapId;
+    }
+
+    return {
+        ...newState,
+        [key]: {
+            ...newState[key],
+            canPaginate: canPaginate,
+            lastDoc: newLastDoc,
+            lastSnapId: newLastSnapId,
+            unsubscribes: deDuplicate(newState[key].unsubscribes.concat(unsubscribe)),
+            isLoaded: true,
+            isError: false,
+            isEmpty: isEmpty(newState[key].byId)
+        }
+    };
+}
+
+function reset(state, action) {
     const key = action.value.key;
     
     if(state.hasOwnProperty(key)) {
@@ -127,4 +269,18 @@ function unset(state, action) {
     } else {
         return state;
     }
+}
+
+function setError(state, action) {
+    const key = action.value.key;
+
+    return {
+        ...state,
+        [key]: {
+            ...state[key],
+            isLoaded: true,
+            isError: true,
+            isEmpty: isEmpty(state[key].byId)
+        }
+    };
 }

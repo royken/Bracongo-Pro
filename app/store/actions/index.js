@@ -4,7 +4,8 @@ import {
     setPaginationListener, 
     unsetListener, 
     unsetPaginatorListener,
-    getStatus 
+    getStatus,
+    getData 
 } from './firestore';
 import { 
     setProfileListener, 
@@ -30,6 +31,7 @@ export {
     unsetListener, 
     unsetPaginatorListener,
     getStatus,
+    getData,
     setProfileListener, 
     getDiscountAndTurnover, 
     setPlayerId, 

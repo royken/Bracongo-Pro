@@ -3,8 +3,8 @@ import {
     FIRESTORE_LISTENER_SET,
     FIRESTORE_LISTENER_ERROR,
     FIRESTORE_LISTENER_UNSET,
-    FIRESTORE_PAGINATOR_SET,
-    FIRESTORE_PAGINATOR_UNSET,
+    FIRESTORE_PAGINATOR_MORE,
+    FIRESTORE_PAGINATOR_RESET,
     FIRESTORE_PAGINATOR_INIT,
     FIRESTORE_PAGINATOR_ERROR,  
     
@@ -93,7 +93,7 @@ export const unsetPaginatorListener = (query) => (dispatch, getState) => {
     }
 
     dispatch({
-        type: FIRESTORE_PAGINATOR_UNSET,
+        type: FIRESTORE_PAGINATOR_RESET,
         value: {
             key: key
         }
@@ -103,7 +103,7 @@ export const unsetPaginatorListener = (query) => (dispatch, getState) => {
 
 // -----------------------------------------------
 // Firestore pagination listener
-export const setPaginationListener = (query) => (dispatch, getState) => {
+export const setPaginationListener = (query, more = false) => (dispatch, getState) => {
 
     if(!isArray(query.orderBy)) {
         throw new Error("Query must have a orderBy field.");
@@ -111,58 +111,72 @@ export const setPaginationListener = (query) => (dispatch, getState) => {
 
     const key = query.storeAs;
     const state = getState().firestorePaginator;
-    let lastDoc = null, canPaginate = false;
-
-    if(state.hasOwnProperty(key)) {
-        const meta = state[key];
-        lastDoc = meta.lastDoc;
-        canPaginate = meta.canPaginate;
-    }
     
-    if(lastDoc === null && canPaginate === false){
-        dispatch({
-            type: FIRESTORE_PAGINATOR_INIT,
-            value: {
-                key: key
-            }
-        });
-    } 
-
-    query.startAfter = lastDoc;
     query.limit = PAGINATION_ITEM_PER_PAGE;
-    const paginationField = isArray(query.orderBy[0]) ? query.orderBy[0][0] : query.orderBy[0];
 
-    const unsubscribe = onSnapshot(
-        (querySnapShot) => {
-            let dataIds = [];
-            let dataObj = {};
-            
-            querySnapShot.docs.forEach((snap) => {
-                dataObj[snap.id] = snap.data();           
-                dataIds.push(snap.id);
-            });
+    if(more === false) {
+        const paginationField = isArray(query.orderBy[0]) ? query.orderBy[0][0] : query.orderBy[0];
+        const unsubscribe = onSnapshot(
+            (snapshot) => {
+                const data = setDataSnapShot(snapshot);
+                dispatch({
+                    type: FIRESTORE_PAGINATOR_INIT,
+                    value: {
+                        key: key,
+                        data: data,
+                        unsubscribe: unsubscribe,
+                        paginationField
+                    }
+                });
+            },
+            (error) => {
+                dispatch({ 
+                    type: FIRESTORE_PAGINATOR_ERROR,
+                    value: {
+                        key: key
+                    }
+                });
+            },
+            query
+        );
+    } else {
+        if(!state.hasOwnProperty(key)) {
+            console.log("You must call first setPaginationListener function with condition more === false !");
+            return;
+        }
 
-            dispatch({
-                type: FIRESTORE_PAGINATOR_SET,
-                value: {
-                    key: query.storeAs,
-                    dataIds: dataIds,
-                    dataObj: dataObj,
-                    paginationField,
-                    unsubscribe: unsubscribe
-                }
-            });
-        },
-        (error) => { 
-            dispatch({ 
-                type: FIRESTORE_PAGINATOR_ERROR,
-                value: {
-                    key: query.storeAs
-                }
-            });
-        },
-        query
-    ); 
+        const { lastDoc, canPaginate, lastSnapId } = state[key];
+        if(canPaginate === false) {
+            return;
+        }
+
+        query.startAfter = lastDoc;
+        const currentLastSnapId = lastSnapId + 1;
+
+        const unsubscribe = onSnapshot(
+            (snapshot) => {
+                const data = setDataSnapShot(snapshot);
+                dispatch({
+                    type: FIRESTORE_PAGINATOR_MORE,
+                    value: {
+                        key: key,
+                        data: data,
+                        unsubscribe: unsubscribe,
+                        currentLastSnapId: currentLastSnapId
+                    }
+                });
+            },
+            (error) => {
+                dispatch({ 
+                    type: FIRESTORE_PAGINATOR_ERROR,
+                    value: {
+                        key: key
+                    }
+                });
+            },
+            query
+        );
+    }
 }
 
 export function getStatus(data) {
@@ -183,4 +197,46 @@ export function getStatus(data) {
         isError: false, 
         isEmpty: true
     };
+}
+
+export function getData(dataState) {
+    let data = [];
+
+    if(dataState.hasOwnProperty("allIds")) {
+        const { byId, allIds, lastSnapId } = dataState;
+        let listenerId, next;
+        
+        for(let i = 1; i <= lastSnapId; i++) {
+            listenerId = "L" + i;
+            next = allIds[listenerId].map((id) => byId[id]);
+            data = data.concat(next);
+        }
+    } 
+
+    return data;
+}
+
+function setDataSnapShot(snapshot) {
+    let data = {
+        added: {dataObj: {}, dataIds: []},
+        updated: {dataObj: {}},
+        deleted: {dataIds: []}
+    };
+
+    snapshot.docChanges.forEach((change) => {
+        if(change.type === 'added') {
+            data.added.dataObj[change.doc.id] = {id: change.doc.id, ...change.doc.data()}; 
+            data.added.dataIds.push(change.doc.id);
+        }
+
+        if(change.type === 'modified') {
+            data.updated.dataObj[change.doc.id] = {id: change.doc.id, ...change.doc.data()};
+        }
+
+        if(change.type === 'removed') {
+            data.deleted.dataIds.push(change.doc.id);
+        }
+    });
+
+    return data;
 }

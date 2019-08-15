@@ -13,7 +13,8 @@ import {
     updateCart, 
     postCart, 
     initCart,
-    cancelRequest 
+    cancelRequest,
+    getData 
 } from '../../../store/actions';
 import { PRODUCTPRICES } from '../../../models/paths';
 import { toast } from '../../../utils/toast';
@@ -86,12 +87,11 @@ class OrderHome extends Component {
     }
 
     _renderItem = ({item, index}) => {
-        const { byId } = this.props.products;
         const { initList } = this.state;
         
         return (
             <OrderItem 
-                product={byId[item]}
+                product={item}
                 kin={this.props.kin}
                 increase={this._increase}
                 decrease={this._decrease}
@@ -149,22 +149,20 @@ class OrderHome extends Component {
                 </View>
             );
         } else {
-            const { allIds, canPaginate } = products;
+            const data = getData(products);
             const { setPaginationListener } = this.props;
-
+            
             return (
                 <FlatList 
                     contentContainerStyle={styles.listContent}
-                    keyExtractor={(item, index) => item}
-                    data={allIds}
+                    keyExtractor={(item, index) => item.id}
+                    data={data}
                     ItemSeparatorComponent={() => (<View style={{height: 10}}></View>)}
                     ListHeaderComponent={this._renderHeader}
                     renderItem={this._renderItem}
                     onEndReachedThreshold={0.5}
                     onEndReached={() => {
-                        if(canPaginate === true) {
-                            setPaginationListener(this.query);
-                        }
+                        setPaginationListener(this.query, true);
                     }}
                 />
             );
