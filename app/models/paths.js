@@ -8,11 +8,11 @@ export const SALEPOINTSPHOTOS = "salepointPhotos";
 export const LOYALTIES = "loyalties"
 export const POSTS = "posts";
 
-export const NOTESALEPOINTS = "noteSalepoints"; 
+export const NOTESALEPOINTS = "salepointNotes"; 
 
-export const PROMOTIONS = "promotionSalepoints";
-export const PROMOTION_COMMENTS = "promotionSalepointComments";
-export const PROMOTIONSTORAGE = "promotionstorage";
+export const PROMOTIONS = "salepointPromotions";
+export const PROMOTION_COMMENTS = "salepointPromotionComments";
+export const PROMOTIONSTORAGE = "salepointsPromotionsStorage";
 
 export const USERS = "users";
 

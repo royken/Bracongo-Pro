@@ -24,7 +24,7 @@ import {
 } from './purchases';
 import { postCart, updateCart, initCart } from './orders';
 
-export {
+export default {
     cancelRequest,
     setListener, 
     setPaginationListener, 

@@ -8,4 +8,4 @@ export const BASEFIELD = {
     deleted: 'deleted'
 };
 
-export const PAGINATION_ITEM_PER_PAGE = 10;
+export const PAGINATION_ITEM_PER_PAGE = 50;
