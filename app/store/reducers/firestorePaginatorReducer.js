@@ -274,13 +274,25 @@ function reset(state, action) {
 function setError(state, action) {
     const key = action.value.key;
 
-    return {
-        ...state,
-        [key]: {
-            ...state[key],
-            isLoaded: true,
-            isError: true,
-            isEmpty: isEmpty(state[key].byId)
-        }
-    };
+    if(state.hasOwnProperty(key)) {
+        return {
+            ...state,
+            [key]: {
+                ...state[key],
+                isLoaded: true,
+                isError: true,
+                isEmpty: isEmpty(state[key].byId)
+            }
+        };
+    } else {
+        return {
+            ...state,
+            [key]: {
+                ...state[key],
+                isLoaded: true,
+                isError: true,
+                isEmpty: true
+            }
+        };
+    }
 }
