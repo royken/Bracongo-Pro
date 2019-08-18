@@ -93,7 +93,7 @@ function first(state, action) {
                 },
                 allIds: {
                     ...newState[key].allIds,
-                    [listenerId]: data.added.dataIds.concat(newState[key].allIds[listenerId])
+                    [listenerId]: deDuplicate(data.added.dataIds.concat(newState[key].allIds[listenerId]))
                 }
             }
         }; 
@@ -190,7 +190,7 @@ function more(state, action) {
                 },
                 allIds: {
                     ...newState[key].allIds,
-                    [listenerId]: data.added.dataIds.concat(newState[key].allIds[listenerId])
+                    [listenerId]: deDuplicate(data.added.dataIds.concat(newState[key].allIds[listenerId]))
                 }
             }
         }; 
