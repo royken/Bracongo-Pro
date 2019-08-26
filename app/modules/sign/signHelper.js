@@ -59,7 +59,7 @@ export function signInHelper(numero, password) {
                                                 ...oldSalepoint,
                                                 ...salepoint
                                             };
-
+                                            
                                             update(query, newSalepoint)
                                             .then(() => resolve({id: id, ...newSalepoint}))
                                             .catch((error) => reject(error));
