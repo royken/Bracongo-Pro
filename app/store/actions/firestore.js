@@ -6,8 +6,7 @@ import {
     FIRESTORE_PAGINATOR_MORE,
     FIRESTORE_PAGINATOR_RESET,
     FIRESTORE_PAGINATOR_INIT,
-    FIRESTORE_PAGINATOR_ERROR,  
-    
+    FIRESTORE_PAGINATOR_ERROR
 } from './types';
 import { onSnapshot, PAGINATION_ITEM_PER_PAGE } from '../../utils/firebase';
 import { isArray } from 'lodash';
