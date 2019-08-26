@@ -95,7 +95,6 @@ class SignIn extends Component {
         const { signIn } = this.props;
 
         signIn(numero, password);
-        
     }
 
     render() {
