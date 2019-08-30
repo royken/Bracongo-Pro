@@ -51,17 +51,20 @@ export function add(query, data) {
     }
 
     query.doc = generateID();
+    const currentDate = getCurrentDate();
+    const newData = {   
+        id: query.doc, 
+        [BASEFIELD.createdAt]: currentDate,
+        [BASEFIELD.updatedAt]: currentDate,
+        [BASEFIELD.deleted]: false, 
+        ...data
+    };
 
-    return set(
-        query, 
-        {   
-            id: query.doc, 
-            [BASEFIELD.createdAt]: getCurrentDate(),
-            [BASEFIELD.updatedAt]: getCurrentDate(),
-            [BASEFIELD.deleted]: false, 
-            ...data
-        }
-    );
+    return new Promise((resolve, reject) => {
+        set(query, newData)
+        .then(() => resolve(newData))
+        .catch((error) => reject(error));
+    });
 }
 
 export function update(query, data) {
