@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import PropTypes from 'prop-types';
-import { Image } from 'react-native-elements';
+import FastImage from 'react-native-fast-image';
 import moment from 'moment';
 
 const MessageItem = (props) => {
@@ -14,7 +14,7 @@ const MessageItem = (props) => {
                 <Text style={{color: 'white'}}>{contenu}</Text>
                 {hasImage === true ?
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: 10}}>
-                        <Image 
+                        <FastImage 
                             source={{uri: lienImage}}
                             onError={() => {}}
                             style={{

@@ -6,6 +6,7 @@ import android.support.multidex.MultiDexApplication;
 import cl.json.RNSharePackage;
 import cl.json.ShareApplication;
 import com.facebook.react.ReactApplication;
+import com.dylanvann.fastimage.FastImageViewPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.geektime.rnonesignalandroid.ReactNativeOneSignalPackage;
@@ -40,6 +41,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new FastImageViewPackage(),
             new RNFetchBlobPackage(),
             new SplashScreenReactPackage(),
             new ReactNativeOneSignalPackage(),

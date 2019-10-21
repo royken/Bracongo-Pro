@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react'
 import { StyleSheet, View } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import { Image, Text, Icon } from 'react-native-elements';
+import { Text, Icon } from 'react-native-elements';
+import FastImage from 'react-native-fast-image';
 import PropTypes from 'prop-types';
 
 class OrderItem extends PureComponent {
@@ -29,7 +30,7 @@ class OrderItem extends PureComponent {
 
         return (
             <View style={styles.container}>
-                <Image 
+                <FastImage 
                     source={{uri: image}} 
                     style={{height: hp("12%"), width: wp("7%")}} 
                     onError={() => {}} 

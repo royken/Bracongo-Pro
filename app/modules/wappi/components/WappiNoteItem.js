@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { StyleSheet, View, Dimensions } from 'react-native';
-import { ListItem, Image, Text, Icon } from 'react-native-elements';
+import { ListItem, Text, Icon } from 'react-native-elements';
+import FastImage from 'react-native-fast-image';
 import StarsVote from '../../core/layout/StarsVote';
 import { isString, isEmpty, isFinite } from 'lodash';
 import moment from 'moment';
@@ -83,7 +84,7 @@ class WappiNoteItem extends PureComponent {
                 <View>
                     <ListItem containerStyle={{borderRadius: 10}}
                         leftElement={
-                            <Image 
+                            <FastImage 
                                 source={{uri: photo}}
                                 onError={() => {}}
                                 style={{
@@ -119,7 +120,7 @@ class WappiNoteItem extends PureComponent {
                     }
                     {isString(post.url) && !isEmpty(post.url) &&
                         <View style={{marginHorizontal: 10, marginBottom: 5}}>
-                            <Image 
+                            <FastImage 
                                 source={{uri: post.url}}
                                 onError={() => {}}
                                 style={{

@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { ListItem, Image, Text, Icon } from 'react-native-elements';
+import { ListItem, Text, Icon } from 'react-native-elements';
+import FastImage from 'react-native-fast-image';
 import PropTypes from 'prop-types';
 
 const WappiPromoItem = (props) => {
@@ -17,11 +18,10 @@ const WappiPromoItem = (props) => {
                 </Text>
             }
             leftAvatar={
-                <Image 
+                <FastImage 
                     source={{uri: image}}
                     onError={() => {}}
-                    style={{backgroundColor: 'grey', width: 90, height: 90, borderRadius: 10}}
-                    containerStyle={{width: 90, height: 90, marginHorizontal: 5}}
+                    style={{backgroundColor: 'grey', width: 90, height: 90, borderRadius: 10, marginHorizontal: 5}}
                 />
             }
             subtitle={
